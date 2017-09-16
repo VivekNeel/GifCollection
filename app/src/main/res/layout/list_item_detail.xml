@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="gifDetailViewModel"
+            type="in.gif.collection.model.GifDetailViewModel" />
+
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/detailIvThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:tint="#BB3E50B4" />
+
+            <ImageView
+                android:id="@+id/detailIv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:tint="#BB3E50B4"
+                android:transitionName="main" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:onClick="@{gifDetailViewModel::onFabClicked}"
+                android:src="@drawable/ic_arrow_downward_black_24dp"
+                android:visibility="@{gifDetailViewModel.downloadButton}"
+                app:fabSize="normal">
+
+            </android.support.design.widget.FloatingActionButton>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/download"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|end"
+                android:onClick="@{gifDetailViewModel::onFabClicked}"
+                android:layout_margin="@dimen/fab_margin"
+                android:visibility="@{gifDetailViewModel.downloadProgress}"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="@{gifDetailViewModel.fileName}"
+                app:lottie_loop="true" />
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
