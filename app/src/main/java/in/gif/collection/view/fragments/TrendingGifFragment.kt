@@ -1,6 +1,7 @@
 package `in`.gif.collection.view.fragments
 
 import `in`.gif.collection.R
+import `in`.gif.collection.custom.CustomItemDecorator
 import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.databinding.FragmentTrendingBinding
 import `in`.gif.collection.view.TrendingGifAdapter
@@ -44,6 +45,7 @@ class TrendingGifFragment : BaseFragment(), Observer {
 
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(CustomItemDecorator(15))
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
