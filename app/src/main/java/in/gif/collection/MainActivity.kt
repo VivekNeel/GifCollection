@@ -1,5 +1,6 @@
 package `in`.gif.collection
 
+import `in`.gif.collection.custom.CustomTransitionListener
 import `in`.gif.collection.custom.FadeInTransition
 import `in`.gif.collection.custom.FadeOutTransition
 import `in`.gif.collection.databinding.ActivityMainBinding
@@ -65,27 +66,12 @@ class MainActivity : BaseActivity(), Observer {
     }
 
     private fun navigateToSearchWhenDone(): Transition.TransitionListener {
-        return object : Transition.TransitionListener {
+        return object : CustomTransitionListener() {
             override fun onTransitionEnd(transition: Transition?) {
                 val intent = Intent(this@MainActivity, SearchActivity::class.java)
                 startActivity(intent)
-
                 overridePendingTransition(0, 0)
-
             }
-
-            override fun onTransitionResume(transition: Transition?) {
-            }
-
-            override fun onTransitionPause(transition: Transition?) {
-            }
-
-            override fun onTransitionCancel(transition: Transition?) {
-            }
-
-            override fun onTransitionStart(transition: Transition?) {
-            }
-
         }
     }
 

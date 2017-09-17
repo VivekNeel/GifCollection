@@ -1,15 +1,16 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.R
-import `in`.gif.collection.custom.CustomTextWatcher
-import `in`.gif.collection.custom.FadeInTransition
-import `in`.gif.collection.custom.FadeOutTransition
+import `in`.gif.collection.custom.*
+import `in`.gif.collection.databinding.ActivitySearchBinding
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.ViewTreeObserver
+import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
 
@@ -19,13 +20,19 @@ import kotlinx.android.synthetic.main.merge_search.*
  */
 class SearchActivity : BaseActivity() {
 
+    private lateinit var searchBinding: ActivitySearchBinding
+    private lateinit var searchToolbar: CustomSearchBar
+    private lateinit var searchEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
 
-        setSupportActionBar(search_toolbar)
-        toolbar_search_edittext.addTextChangedListener(object : CustomTextWatcher() {
+        searchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        searchToolbar = searchBinding.searchToolbar
+        searchEditText = toolbar_search_edittext
+
+        setSupportActionBar(searchToolbar)
+        searchEditText.addTextChangedListener(object : CustomTextWatcher() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d("textchanged", s.toString())
@@ -37,12 +44,12 @@ class SearchActivity : BaseActivity() {
         if (savedInstanceState == null) {
             // Start with an empty looking Toolbar
             // We are going to fade its contents in, as long as the activity finishes rendering
-            search_toolbar?.hideContent()
+            searchToolbar.hideContent()
 
-            val viewTreeObserver = search_toolbar?.viewTreeObserver
+            val viewTreeObserver = searchToolbar?.viewTreeObserver
             viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    search_toolbar!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    searchToolbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                     // after the activity has finished drawing the initial layout, we are going to continue the animation
                     // that we left off from the MainActivity
@@ -51,9 +58,9 @@ class SearchActivity : BaseActivity() {
 
                 private fun showSearch() {
                     // use the TransitionManager to animate the changes of the Toolbar
-                    TransitionManager.beginDelayedTransition(search_toolbar, FadeInTransition.createTransition())
+                    TransitionManager.beginDelayedTransition(searchToolbar, FadeInTransition.createTransition())
                     // here we are just changing all children to VISIBLE
-                    search_toolbar?.showContent()
+                    searchToolbar.showContent()
                 }
             })
         }
@@ -69,27 +76,14 @@ class SearchActivity : BaseActivity() {
 
     private fun exitTransitionWithAction(endingAction: () -> Unit) {
 
-        val transition = FadeOutTransition.withAction(object : Transition.TransitionListener {
-            override fun onTransitionResume(transition: Transition?) {
-
-            }
-
-            override fun onTransitionPause(transition: Transition?) {
-            }
-
-            override fun onTransitionCancel(transition: Transition?) {
-            }
-
-            override fun onTransitionStart(transition: Transition?) {
-            }
-
-            override fun onTransitionEnd(transition: Transition) {
+        val transition = FadeOutTransition.withAction(object : CustomTransitionListener() {
+            override fun onTransitionEnd(transition: Transition?) {
                 endingAction()
             }
         })
 
-        TransitionManager.beginDelayedTransition(search_toolbar, transition)
-        search_toolbar.hideContent()
+        TransitionManager.beginDelayedTransition(searchToolbar, transition)
+        searchToolbar.hideContent()
     }
 
 
