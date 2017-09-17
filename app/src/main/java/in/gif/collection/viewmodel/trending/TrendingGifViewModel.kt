@@ -1,4 +1,4 @@
-package `in`.gif.collection.viewmodel
+package `in`.gif.collection.viewmodel.trending
 
 import `in`.gif.collection.GifApplication
 import `in`.gif.collection.model.GifResponse
@@ -14,7 +14,7 @@ import java.util.*
 /**
  * Created by vivek on 15/09/17.
  */
-class RandomGifViewModel(context: Context) : Observable() {
+class TrendingGifViewModel(context: Context) : Observable() {
 
     var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)

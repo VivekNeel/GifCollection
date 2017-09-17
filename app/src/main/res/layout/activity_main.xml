@@ -6,7 +6,7 @@
 
         <variable
             name="randomGifModel"
-            type="in.gif.collection.viewmodel.RandomGifViewModel" />
+            type="in.gif.collection.viewmodel.trending.TrendingGifViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

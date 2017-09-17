@@ -3,8 +3,12 @@ package `in`.gif.collection.view
 import `in`.gif.collection.R
 import `in`.gif.collection.custom.*
 import `in`.gif.collection.databinding.ActivitySearchBinding
+import `in`.gif.collection.viewmodel.search.SearchGifViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Handler
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.Log
@@ -13,12 +17,13 @@ import android.view.ViewTreeObserver
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
+import java.util.*
 
 
 /**
  * Created by vivek on 17/09/17.
  */
-class SearchActivity : BaseActivity() {
+class SearchActivity : BaseActivity(), Observer {
 
     private lateinit var searchBinding: ActivitySearchBinding
     private lateinit var searchToolbar: CustomSearchBar
@@ -27,17 +32,9 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        searchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search)
-        searchToolbar = searchBinding.searchToolbar
-        searchEditText = toolbar_search_edittext
-
-        setSupportActionBar(searchToolbar)
-        searchEditText.addTextChangedListener(object : CustomTextWatcher() {
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("textchanged", s.toString())
-            }
-        })
+        initDataBinding()
+        setupObservers(searchBinding.viewModel)
+        setupList(searchBinding.randomGifRV)
 
         // make sure to check if this is the first time running the activity
         // we don't want to play the enter animation on configuration changes (i.e. orientation)
@@ -66,6 +63,34 @@ class SearchActivity : BaseActivity() {
         }
     }
 
+    fun initDataBinding() {
+        searchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        searchBinding.viewModel = SearchGifViewModel()
+        searchToolbar = searchBinding.searchToolbar
+        searchEditText = toolbar_search_edittext
+
+        setSupportActionBar(searchToolbar)
+        searchEditText.addTextChangedListener(object : CustomTextWatcher() {
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Handler().postDelayed({
+                    searchBinding.viewModel?.fetchSearchableGif(s.toString())
+                }, 2000)
+            }
+        })
+    }
+
+    fun setupObservers(observable: SearchGifViewModel?) {
+        observable?.addObserver(this)
+    }
+
+    fun setupList(recyclerView: RecyclerView) {
+        var adapter = SearchAdapter(this)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
+    }
+
     override fun finish() {
         hideKb()
         exitTransitionWithAction({
@@ -92,4 +117,13 @@ class SearchActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun update(o: Observable?, arg: Any?) {
+        when (o) {
+            is SearchGifViewModel -> {
+                val adapter = searchBinding.randomGifRV.adapter as SearchAdapter
+                adapter.setGifList(o.getGifs())
+
+            }
+        }
+    }
 }

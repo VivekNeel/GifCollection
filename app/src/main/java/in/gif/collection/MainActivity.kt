@@ -7,7 +7,7 @@ import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.TrendingGifAdapter
-import `in`.gif.collection.viewmodel.RandomGifViewModel
+import `in`.gif.collection.viewmodel.trending.TrendingGifViewModel
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity(), Observer {
 
     fun initDataBinding() {
         mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mainActivityDataBinding.randomGifModel = RandomGifViewModel(this)
+        mainActivityDataBinding.randomGifModel = TrendingGifViewModel(this)
         setSupportActionBar(mainActivityDataBinding.toolbar)
 
         toolbarMargin = resources.getDimensionPixelSize(R.dimen.toolbarMargin)
@@ -119,7 +119,7 @@ class MainActivity : BaseActivity(), Observer {
 
     override fun update(o: Observable?, arg: Any?) {
         when (o) {
-            is RandomGifViewModel -> {
+            is TrendingGifViewModel -> {
                 isLoading = false
                 mainActivityDataBinding.loadMoreProgress.visibility = View.GONE
                 val adapter = mainActivityDataBinding.randomGifRV.adapter as TrendingGifAdapter
