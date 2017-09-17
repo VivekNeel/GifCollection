@@ -12,6 +12,8 @@
     <dimen name="card_sides_margin">1.41dp</dimen>
     <dimen name="card_vertical_margin">0.41dp</dimen>
 
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="toolbarMargin">8dp</dimen>
 
 
 </resources>

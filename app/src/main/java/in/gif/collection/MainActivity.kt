@@ -1,5 +1,6 @@
 package `in`.gif.collection
 
+import `in`.gif.collection.custom.CustomToolbar
 import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.TrendingGifAdapter
 import `in`.gif.collection.viewmodel.RandomGifViewModel
@@ -8,14 +9,33 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.Toolbar
 import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import `in`.gif.collection.R.id.toolbar
+import `in`.gif.collection.custom.FadeOutTransition
+import `in`.gif.collection.view.BaseActivity
+import android.transition.TransitionManager
+import android.widget.FrameLayout
+import android.content.Intent
+import android.support.constraint.ConstraintLayout
+import android.transition.Transition
+import `in`.gif.collection.view.SearchActivity
+import `in`.gif.collection.R.id.toolbar
+import `in`.gif.collection.R.dimen.toolbarMargin
+import `in`.gif.collection.custom.FadeInTransition
+import android.content.Context
+import android.view.Menu
+import android.view.inputmethod.InputMethodManager
 
-class MainActivity : AppCompatActivity(), Observer {
+
+class MainActivity : BaseActivity(), Observer {
 
     private lateinit var mainActivityDataBinding: ActivityMainBinding
     var isLoading = false
     var currentOffsetValue = 1
+    private var toolbarMargin: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +48,56 @@ class MainActivity : AppCompatActivity(), Observer {
     fun initDataBinding() {
         mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mainActivityDataBinding.randomGifModel = RandomGifViewModel(this)
+        setSupportActionBar(mainActivityDataBinding.toolbar)
+
+        toolbarMargin = resources.getDimensionPixelSize(R.dimen.toolbarMargin)
+        toolbar.setOnClickListener {
+            showKb()
+            transitionToSearch()
+        }
+
     }
+
+    private fun transitionToSearch() {
+        // create a transition that navigates to search when complete
+        val transition = FadeOutTransition.withAction(navigateToSearchWhenDone())
+
+        // let the TransitionManager do the heavy work for us!
+        // all we have to do is change the attributes of the toolbar and the TransitionManager animates the changes
+        // in this case I am removing the bounds of the toolbar (to hide the blue padding on the screen) and
+        // I am hiding the contents of the Toolbar (Navigation icon, Title and Option Items)
+        TransitionManager.beginDelayedTransition(toolbar, transition)
+        val frameLP = toolbar.layoutParams as FrameLayout.LayoutParams
+        frameLP.setMargins(0, 0, 0, 0)
+        toolbar.layoutParams = frameLP
+        toolbar.hideContent()
+    }
+
+    private fun navigateToSearchWhenDone(): Transition.TransitionListener {
+        return object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition?) {
+                val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(intent)
+
+                overridePendingTransition(0, 0)
+
+            }
+
+            override fun onTransitionResume(transition: Transition?) {
+            }
+
+            override fun onTransitionPause(transition: Transition?) {
+            }
+
+            override fun onTransitionCancel(transition: Transition?) {
+            }
+
+            override fun onTransitionStart(transition: Transition?) {
+            }
+
+        }
+    }
+
 
     fun setUPObserver(observable: Observable) {
         observable.addObserver(this)
@@ -80,6 +149,25 @@ class MainActivity : AppCompatActivity(), Observer {
                 adapter.setGifList(list = o.getGifs())
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fadeToolbarIn()
+    }
+
+    private fun fadeToolbarIn() {
+
+        TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition())
+        val layoutParams = toolbar.layoutParams as FrameLayout.LayoutParams
+        layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin)
+        toolbar.showContent()
+        toolbar.layoutParams = layoutParams
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
 }

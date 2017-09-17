@@ -13,6 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/main_holder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="?colorPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <in.gif.collection.custom.MainToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/toolbarMargin"
+                android:elevation="8dp"
+                app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        </FrameLayout>
+
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"
@@ -36,7 +56,7 @@
             android:visibility="@{randomGifModel.gifRecyclerView}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@id/main_holder"></android.support.v7.widget.RecyclerView>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loadMoreProgress"
