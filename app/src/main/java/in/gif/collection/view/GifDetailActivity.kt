@@ -3,7 +3,7 @@ package `in`.gif.collection.view
 import `in`.gif.collection.Constants
 import `in`.gif.collection.R
 import `in`.gif.collection.databinding.ListItemDetailBinding
-import `in`.gif.collection.model.GifDetailViewModel
+import `in`.gif.collection.viewmodel.GifDetailViewModel
 import `in`.gif.collection.model.TrendingGifResponse
 import android.content.Context
 import android.content.Intent

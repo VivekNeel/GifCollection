@@ -12,4 +12,7 @@ interface GifService {
 
     @GET("gifs/trending?api_key=61dfb1c03a8440b891d9661b2521214c&limit=25&rating=G")
     fun fetchTrendingGif(@Query("offset") offset: Int): Call<GifResponse>
+
+    @GET("gifs/search?api_key=61dfb1c03a8440b891d9661b2521214c&q=&limit=25&offset=0&rating=G&lang=en")
+    fun fetchSearchableGifs(@Query("q") query: String): Call<GifResponse>
 }

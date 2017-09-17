@@ -1,4 +1,4 @@
-package `in`.gif.collection.model
+package `in`.gif.collection.viewmodel
 
 import `in`.gif.collection.R
 import android.app.NotificationManager
