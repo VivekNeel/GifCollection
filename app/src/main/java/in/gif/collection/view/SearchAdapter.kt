@@ -3,14 +3,13 @@ package `in`.gif.collection.view
 import `in`.gif.collection.R
 import `in`.gif.collection.databinding.ListItemRandomGifBinding
 import `in`.gif.collection.model.TrendingGifResponse
-import `in`.gif.collection.viewmodel.ItemRandomGifModel
+import `in`.gif.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -81,7 +80,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
 
         fun bindGif(gif: TrendingGifResponse, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = ItemRandomGifModel(activity, gif, pos)
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos)
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(gif)
         }

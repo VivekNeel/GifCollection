@@ -13,7 +13,7 @@ import android.view.View
  */
 
 
-class ItemRandomGifModel(context: Activity, gifData: TrendingGifResponse, pos: Int) : BaseObservable() {
+class CommonItemGifModel(context: Activity, gifData: TrendingGifResponse, pos: Int) : BaseObservable() {
 
     private var context = context
     private var gif = gifData

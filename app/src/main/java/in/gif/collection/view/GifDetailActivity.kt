@@ -40,7 +40,7 @@ class GifDetailActivity : AppCompatActivity() {
     }
 
     fun getExtrasFromIntent() {
-        imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_IMAGE_URL)
+        imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL)
         binding.gifDetailViewModel = GifDetailViewModel(imageUrl, this)
         binding.progress.visibility = View.VISIBLE
         binding.detailIv.visibility = View.VISIBLE

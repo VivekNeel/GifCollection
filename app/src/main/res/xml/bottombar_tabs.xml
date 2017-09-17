@@ -1,0 +1,17 @@
+<tabs>
+    <tab
+        barColorWhenSelected="@color/colorPrimaryDark"
+        icon="@drawable/ic_trending_up"
+        id="@+id/trending"
+        title="Trending" />
+    <tab
+        barColorWhenSelected="@color/colorPrimaryDark"
+        icon="@drawable/ic_random"
+        id="@+id/random"
+        title="Random" />
+    <tab
+        barColorWhenSelected="@color/colorPrimaryDark"
+        icon="@drawable/ic_translate"
+        id="@+id/translate"
+        title="Translate" />
+</tabs>

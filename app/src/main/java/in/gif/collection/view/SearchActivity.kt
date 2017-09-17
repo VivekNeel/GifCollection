@@ -122,6 +122,7 @@ class SearchActivity : BaseActivity(), Observer {
             is SearchGifViewModel -> {
                 val adapter = searchBinding.randomGifRV.adapter as SearchAdapter
                 adapter.setGifList(o.getGifs())
+                hideKb()
 
             }
         }

@@ -30,7 +30,7 @@ class TrendingGifViewModel(context: Context) : Observable() {
         val gifApp = GifApplication.createGifApplication(context)
         gifApp.getGifService().fetchTrendingGif(offset).enqueue(object : Callback<GifResponse> {
             override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
-                changeDataSet(response!!.body().data)
+                changeDataSet(response!!.body()!!.data)
                 gifRecyclerView.set(View.VISIBLE)
                 gifProgress.set(View.GONE)
             }

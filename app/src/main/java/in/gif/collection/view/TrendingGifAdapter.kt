@@ -3,7 +3,7 @@ package `in`.gif.collection.view
 import `in`.gif.collection.R
 import `in`.gif.collection.databinding.ListItemRandomGifBinding
 import `in`.gif.collection.model.TrendingGifResponse
-import `in`.gif.collection.viewmodel.ItemRandomGifModel
+import `in`.gif.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil.inflate
 import android.support.v7.widget.RecyclerView
@@ -25,7 +25,7 @@ import java.lang.Exception
 class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var list: List<TrendingGifResponse> = emptyList()
-    var activity: Activity = activity
+    val activity: Activity = activity
     val VIEW_TYPE_LOADING = 1
     val VIEW_TYPE_CONTENT = 2
     private var shouldLoadMore: Boolean = false
@@ -34,15 +34,15 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
             is TrendingGifViewHolder -> {
-                holder?.itemGifBinding?.progress?.visibility = View.VISIBLE
-                var view = holder?.itemGifBinding?.gifIv
-                Glide.with(view?.context)
+                holder.itemGifBinding.progress.visibility = View.VISIBLE
+                val view = holder.itemGifBinding.gifIv
+                Glide.with(view.context)
                         .load(list[position].images.fixedHeightGifs.url)
                         .asGif()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .listener(object : RequestListener<String, GifDrawable> {
                             override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                                holder?.itemGifBinding?.progress?.visibility = View.GONE
+                                holder.itemGifBinding.progress.visibility = View.GONE
                                 return false
                             }
 
@@ -50,11 +50,11 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                                 return false
                             }
                         }).into(view)
-                holder?.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
+                holder.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
             }
 
             is LoadingViewHolder -> {
-                holder.progress.isIndeterminate = true
+                holder.progress?.isIndeterminate = true
             }
         }
 
@@ -92,26 +92,21 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
     }
 
 
-    class TrendingGifViewHolder : RecyclerView.ViewHolder {
-        var itemGifBinding: ListItemRandomGifBinding
-
-        constructor(itemView: View?, itemGifBinding: ListItemRandomGifBinding) : super(itemView) {
-            this.itemGifBinding = itemGifBinding
-        }
+    class TrendingGifViewHolder(itemView: View?, var itemGifBinding: ListItemRandomGifBinding) : RecyclerView.ViewHolder(itemView) {
 
         fun bindGif(gif: TrendingGifResponse, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = ItemRandomGifModel(activity, gif, pos)
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos)
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(gif)
         }
     }
 
     class LoadingViewHolder : RecyclerView.ViewHolder {
-        var progress: ProgressBar
+        var progress: ProgressBar?
 
         constructor(itemView: View?) : super(itemView) {
-            progress = itemView?.findViewById(R.id.progressBar) as ProgressBar
+            progress = itemView?.findViewById(R.id.progressBar)
 
         }
     }

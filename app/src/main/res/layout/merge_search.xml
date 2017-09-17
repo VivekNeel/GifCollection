@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="Search for stuff"
+            android:hint="Search for Gifs"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1" />

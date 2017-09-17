@@ -1,75 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
 
-        <variable
-            name="randomGifModel"
-            type="in.gif.collection.viewmodel.trending.TrendingGifViewModel" />
-    </data>
-
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/main_holder"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:background="?colorPrimary"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
-            <in.gif.collection.custom.MainToolbar
-                android:id="@+id/toolbar"
+            <FrameLayout
+                android:id="@+id/main_holder"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/toolbarMargin"
-                android:elevation="8dp"
-                app:titleTextAppearance="@style/Toolbar.TitleText" />
+                android:layout_height="@dimen/toolbar_height"
+                android:background="?colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </FrameLayout>
+                <in.gif.collection.custom.MainToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/toolbarMargin"
+                    android:elevation="8dp"
+                    app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:visibility="@{randomGifModel.gifProgress}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/loadMoreProgress"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="moving_ball.json"
-            app:lottie_loop="true" />
+            </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/randomGifRV"
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{randomGifModel.gifRecyclerView}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_holder"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:background="#EFEFEF" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loadMoreProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="moving_ball.json"
-            app:lottie_loop="true" />
+        <com.roughike.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            app:bb_behavior="shy"
+            app:bb_activeTabAlpha="1"
+            app:bb_inActiveTabAlpha="0.6"
+            app:bb_inActiveTabColor="#ffffff"
+            app:bb_activeTabColor="#ffffff"
+            app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
+    </android.support.design.widget.CoordinatorLayout>
 
-    </android.support.constraint.ConstraintLayout>
 </layout>

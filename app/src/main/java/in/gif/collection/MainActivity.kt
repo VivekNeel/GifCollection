@@ -6,48 +6,78 @@ import `in`.gif.collection.custom.FadeOutTransition
 import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
-import `in`.gif.collection.view.TrendingGifAdapter
-import `in`.gif.collection.viewmodel.trending.TrendingGifViewModel
+import `in`.gif.collection.view.fragments.RandomGifFragment
+import `in`.gif.collection.view.fragments.TrendingGifFragment
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v4.app.Fragment
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.Menu
-import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
-class MainActivity : BaseActivity(), Observer {
+class MainActivity : BaseActivity() {
 
-    private lateinit var mainActivityDataBinding: ActivityMainBinding
-    var isLoading = false
-    var currentOffsetValue = 1
     private var toolbarMargin: Int = 0
+    private lateinit var mainActivityBinding: ActivityMainBinding
+
+    companion object {
+        const val TAG_TRENDING = "trend"
+        const val TAG_RANDOM = "random"
+        const val TAG_TRANSLATE = "translate"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initDataBinding()
-        setUPList(mainActivityDataBinding.randomGifRV)
-        setUPObserver(mainActivityDataBinding.randomGifModel!!)
-        mainActivityDataBinding.randomGifModel!!.getData(0)
+        mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setupToolbar()
+        if(savedInstanceState == null)
+        setupBottomNavigation()
     }
 
-    fun initDataBinding() {
-        mainActivityDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mainActivityDataBinding.randomGifModel = TrendingGifViewModel(this)
-        setSupportActionBar(mainActivityDataBinding.toolbar)
+    fun setupBottomNavigation() {
+        val bottomNavigator = mainActivityBinding.bottomBar
+        bottomNavigator.apply {
+            setDefaultTab(R.id.trending)
+            setOnTabSelectListener { tabId ->
+                when (tabId) {
+                    R.id.trending -> setupFragments(TAG_TRENDING)
+                    R.id.random -> setupFragments(TAG_RANDOM)
+                    R.id.translate -> setupFragments(TAG_TRANSLATE)
+                }
+            }
+        }
+    }
 
+
+    fun setupFragments(tag: String) {
+
+        when (tag) {
+            TAG_TRENDING -> {
+
+                commitFragment(TrendingGifFragment(), R.id.frame, TAG_TRENDING)
+            }
+            TAG_RANDOM -> {
+                commitFragment(RandomGifFragment(), R.id.frame, TAG_RANDOM)
+            }
+
+            TAG_TRANSLATE -> {
+                commitFragment(RandomGifFragment(), R.id.frame, TAG_TRANSLATE)
+            }
+
+        }
+    }
+
+    fun setupToolbar() {
+        setSupportActionBar(toolbar)
         toolbarMargin = resources.getDimensionPixelSize(R.dimen.toolbarMargin)
         toolbar.setOnClickListener {
             showKb()
             transitionToSearch()
         }
-
     }
 
     private fun transitionToSearch() {
@@ -71,59 +101,6 @@ class MainActivity : BaseActivity(), Observer {
                 val intent = Intent(this@MainActivity, SearchActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(0, 0)
-            }
-        }
-    }
-
-
-    fun setUPObserver(observable: Observable) {
-        observable.addObserver(this)
-    }
-
-    fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
-        var maxSize = 0
-        for (i in lastVisibleItemPositions.indices) {
-            if (i == 0) {
-                maxSize = lastVisibleItemPositions[i]
-            } else if (lastVisibleItemPositions[i] > maxSize) {
-                maxSize = lastVisibleItemPositions[i]
-            }
-        }
-        return maxSize
-    }
-
-    fun setUPList(recyclerView: RecyclerView) {
-        val adapter = TrendingGifAdapter(this@MainActivity)
-
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView.adapter = adapter
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    val layoutManager: StaggeredGridLayoutManager = recyclerView?.layoutManager as StaggeredGridLayoutManager
-                    val totalItemCount = layoutManager.itemCount
-                    val lastVisibleItemPos = layoutManager.findLastCompletelyVisibleItemPositions(null)
-                    if ((totalItemCount - 1) == getLastVisibleItem(lastVisibleItemPos)) {
-                        isLoading = true
-                        currentOffsetValue++
-                        mainActivityDataBinding.loadMoreProgress.visibility = View.VISIBLE
-                        mainActivityDataBinding.randomGifModel?.fetchTrendingGif(currentOffsetValue)
-                    }
-                }
-            }
-        }
-        )
-
-    }
-
-    override fun update(o: Observable?, arg: Any?) {
-        when (o) {
-            is TrendingGifViewModel -> {
-                isLoading = false
-                mainActivityDataBinding.loadMoreProgress.visibility = View.GONE
-                val adapter = mainActivityDataBinding.randomGifRV.adapter as TrendingGifAdapter
-                adapter.setGifList(list = o.getGifs())
             }
         }
     }

@@ -4,6 +4,7 @@ import `in`.gif.collection.R
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.view.View
 import android.widget.EditText
 
 /**
@@ -21,8 +22,8 @@ class CustomSearchBar(context: Context?, attrs: AttributeSet?) : CustomToolbar(c
 
      override fun onFinishInflate() {
         super.onFinishInflate()
-        inflate(context, R.layout.merge_search, this)
-        editText = findViewById(R.id.toolbar_search_edittext) as EditText
+        var view : View = inflate(context, R.layout.merge_search, this)
+        editText = findViewById(R.id.toolbar_search_edittext)
     }
 
     override fun showContent() {
