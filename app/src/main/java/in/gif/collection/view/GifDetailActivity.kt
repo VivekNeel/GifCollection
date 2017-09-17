@@ -8,15 +8,9 @@ import `in`.gif.collection.model.TrendingGifResponse
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.view.animation.FastOutLinearInInterpolator
-import android.support.v4.view.animation.FastOutSlowInInterpolator
-import android.support.v4.view.animation.LinearOutSlowInInterpolator
 import android.support.v7.app.AppCompatActivity
-import android.transition.*
-import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,8 +18,6 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import java.lang.Exception
-import com.bumptech.glide.DrawableRequestBuilder
-import com.bumptech.glide.GifRequestBuilder
 
 
 /**

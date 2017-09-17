@@ -1,16 +1,12 @@
 package `in`.gif.collection.viewmodel
 
-import `in`.gif.collection.loadImage
 import `in`.gif.collection.model.TrendingGifResponse
 import `in`.gif.collection.view.GifDetailActivity
 import android.app.Activity
-import android.content.Context
 import android.databinding.BaseObservable
-import android.databinding.BindingAdapter
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.view.ViewCompat
 import android.view.View
-import android.widget.ImageView
 
 /**
  * Created by vivek on 15/09/17.

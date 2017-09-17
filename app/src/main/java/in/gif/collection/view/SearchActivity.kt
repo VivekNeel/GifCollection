@@ -1,21 +1,15 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.R
-import `in`.gif.collection.custom.CustomSearchBar
 import `in`.gif.collection.custom.CustomTextWatcher
 import `in`.gif.collection.custom.FadeInTransition
 import `in`.gif.collection.custom.FadeOutTransition
-import `in`.gif.collection.showKeyboard
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
 

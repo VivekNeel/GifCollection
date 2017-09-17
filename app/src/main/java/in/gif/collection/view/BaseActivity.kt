@@ -3,7 +3,6 @@ package `in`.gif.collection.view
 import `in`.gif.collection.hideKeyboard
 import `in`.gif.collection.showKeyboard
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 
 /**
  * Created by vivek on 17/09/17.

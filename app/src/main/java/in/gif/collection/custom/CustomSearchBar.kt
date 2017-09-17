@@ -3,7 +3,6 @@ package `in`.gif.collection.custom
 import `in`.gif.collection.R
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.widget.EditText
 

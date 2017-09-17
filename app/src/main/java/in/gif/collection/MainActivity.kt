@@ -1,33 +1,24 @@
 package `in`.gif.collection
 
-import `in`.gif.collection.custom.CustomToolbar
+import `in`.gif.collection.custom.FadeInTransition
+import `in`.gif.collection.custom.FadeOutTransition
 import `in`.gif.collection.databinding.ActivityMainBinding
+import `in`.gif.collection.view.BaseActivity
+import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.TrendingGifAdapter
 import `in`.gif.collection.viewmodel.RandomGifViewModel
+import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.Toolbar
+import android.transition.Transition
+import android.transition.TransitionManager
+import android.view.Menu
 import android.view.View
+import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import `in`.gif.collection.R.id.toolbar
-import `in`.gif.collection.custom.FadeOutTransition
-import `in`.gif.collection.view.BaseActivity
-import android.transition.TransitionManager
-import android.widget.FrameLayout
-import android.content.Intent
-import android.support.constraint.ConstraintLayout
-import android.transition.Transition
-import `in`.gif.collection.view.SearchActivity
-import `in`.gif.collection.R.id.toolbar
-import `in`.gif.collection.R.dimen.toolbarMargin
-import `in`.gif.collection.custom.FadeInTransition
-import android.content.Context
-import android.view.Menu
-import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : BaseActivity(), Observer {

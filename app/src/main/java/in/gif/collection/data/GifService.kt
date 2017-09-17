@@ -1,7 +1,6 @@
 package `in`.gif.collection.data
 
 import `in`.gif.collection.model.GifResponse
-import `in`.gif.collection.model.TrendingGifResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
