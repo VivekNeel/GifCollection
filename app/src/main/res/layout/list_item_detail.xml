@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,66 +16,111 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ProgressBar
-                android:id="@+id/progress"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/detailIvThumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:tint="#BB3E50B4" />
+                <android.support.v7.widget.CardView
+                    style="@style/Card"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/detailIv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:tint="#BB3E50B4"
-                android:transitionName="main" />
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/detailIv"
+                            android:layout_width="0dp"
+                            android:layout_height="300dp"
+                            android:scaleType="centerCrop"
+                            android:transitionName="detail"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            tools:targetApi="lollipop" />
+
+                        <android.support.v7.widget.CardView
+                            style="@style/Card"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="30dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/detailIv">
+
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/sizeLabel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center"
+                                    android:text="Size"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                                    android:textSize="14sp"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/sizeTv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="500mb"
+                                    android:textAppearance="@style/TextAppearance.AppCompat"
+                                    android:textSize="16sp"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/sizeLabel" />
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginTop="25dp"
+                                    android:foregroundTint="@color/darkGrey"
+                                    app:cardBackgroundColor="@color/colorPrimary"
+                                    app:cardCornerRadius="3dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/sizeTv">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:onClick="@{gifDetailViewModel::onFabClicked}"
+                                        android:padding="5dp"
+                                        android:text="Download"
+                                        android:textColor="@android:color/white" />
+
+                                </android.support.v7.widget.CardView>
 
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:onClick="@{gifDetailViewModel::onFabClicked}"
-                android:src="@drawable/ic_arrow_downward_black_24dp"
-                android:visibility="@{gifDetailViewModel.downloadButton}"
-                app:fabSize="normal">
+                            </android.support.constraint.ConstraintLayout>
 
-            </android.support.design.widget.FloatingActionButton>
+                        </android.support.v7.widget.CardView>
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/download"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|end"
-                android:onClick="@{gifDetailViewModel::onFabClicked}"
-                android:layout_margin="@dimen/fab_margin"
-                android:visibility="@{gifDetailViewModel.downloadProgress}"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="@{gifDetailViewModel.fileName}"
-                app:lottie_loop="true" />
+                    </android.support.constraint.ConstraintLayout>
 
-        </FrameLayout>
+                </android.support.v7.widget.CardView>
+
+            </android.support.constraint.ConstraintLayout>
+        </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

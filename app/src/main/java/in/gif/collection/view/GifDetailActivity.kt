@@ -30,7 +30,6 @@ class GifDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDataBinding()
-        supportActionBar?.apply { setDisplayHomeAsUpEnabled(true) }
         getExtrasFromIntent()
     }
 
@@ -42,9 +41,7 @@ class GifDetailActivity : AppCompatActivity() {
     fun getExtrasFromIntent() {
         imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL)
         binding.gifDetailViewModel = GifDetailViewModel(imageUrl, this)
-        binding.progress.visibility = View.VISIBLE
         binding.detailIv.visibility = View.VISIBLE
-        binding.detailIvThumbnail.visibility = View.GONE
 
         Glide.with(binding.detailIv.context)
                 .load(imageUrl)
@@ -52,7 +49,6 @@ class GifDetailActivity : AppCompatActivity() {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(object : RequestListener<String, GifDrawable> {
                     override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        binding.progress.visibility = View.GONE
                         return false
 
                     }
