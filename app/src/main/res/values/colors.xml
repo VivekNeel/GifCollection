@@ -6,5 +6,6 @@
     <color name="colorTrending">#ff90</color>
     <color name="colorAccentSecondary">#ad1a7f</color>
     <color name="darkGrey">#EEEEEE</color>
+    <color name="white">#ffffff</color>
 
 </resources>

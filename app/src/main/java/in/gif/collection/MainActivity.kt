@@ -7,11 +7,12 @@ import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.fragments.RandomGifFragment
+import `in`.gif.collection.view.fragments.TranslateFragment
+import `in`.gif.collection.view.fragments.TranslateGifFragment
 import `in`.gif.collection.view.fragments.TrendingGifFragment
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.Menu
@@ -34,8 +35,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setupToolbar()
-        if(savedInstanceState == null)
-        setupBottomNavigation()
+        if (savedInstanceState == null)
+            setupBottomNavigation()
     }
 
     fun setupBottomNavigation() {
@@ -57,7 +58,6 @@ class MainActivity : BaseActivity() {
 
         when (tag) {
             TAG_TRENDING -> {
-
                 commitFragment(TrendingGifFragment(), R.id.frame, TAG_TRENDING)
             }
             TAG_RANDOM -> {
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
             }
 
             TAG_TRANSLATE -> {
-                commitFragment(RandomGifFragment(), R.id.frame, TAG_TRANSLATE)
+                commitFragment(TranslateFragment(), R.id.frame, TAG_TRANSLATE)
             }
 
         }

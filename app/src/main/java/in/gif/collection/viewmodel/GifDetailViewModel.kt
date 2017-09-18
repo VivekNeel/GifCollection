@@ -1,6 +1,10 @@
 package `in`.gif.collection.viewmodel
 
 import `in`.gif.collection.R
+import `in`.gif.collection.data.GifFactory
+import `in`.gif.collection.model.GifResponse
+import `in`.gif.collection.model.RandomGifData
+import `in`.gif.collection.model.RandomGifResponse
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -11,11 +15,17 @@ import android.databinding.ObservableInt
 import android.net.Uri
 import android.os.Environment
 import android.support.v7.app.NotificationCompat
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -31,7 +41,7 @@ fun bindLottie(view: LottieAnimationView, fileName: String) {
     view.playAnimation()
 }
 
-class GifDetailViewModel(url: String, context: Context) : Observable() {
+class GifDetailViewModel(context: Context, url: String = "") : Observable() {
 
     private var url = url
     private var context = context
@@ -40,11 +50,60 @@ class GifDetailViewModel(url: String, context: Context) : Observable() {
     var downloadButton: ObservableInt = ObservableInt(View.VISIBLE)
     var mBuilder = NotificationCompat.Builder(context)
     var mNotificationManager: NotificationManager? = null
+    var translateViewVisibility: ObservableInt = ObservableInt(View.GONE)
+    var detailViewVisibility: ObservableInt = ObservableInt(View.GONE)
+
+    var singleGifSubmitButtonText: ObservableField<String> = ObservableField("Done")
+    var randomgSingleGifSubmitButtonText: ObservableField<String> = ObservableField("Done")
+
+    var fieldText: ObservableField<String> = ObservableField("some")
+    var singleGifDownloadButtonVisibility: ObservableInt = ObservableInt(View.GONE)
 
     fun getImageUrl(): String {
         return url
     }
 
+    fun onSubmitButtonClicked(view: View) {
+        singleGifSubmitButtonText.set("Fetching..")
+        GifFactory.create().fetchSearchableGifs(this.fieldText.get().toString()).enqueue(object : Callback<GifResponse> {
+            override fun onFailure(call: Call<GifResponse>?, t: Throwable?) {
+
+            }
+
+            override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
+                translateViewVisibility.set(View.VISIBLE)
+                singleGifSubmitButtonText.set("Done")
+                if (response != null) {
+                    url = response.body()!!.data.get(0).images.fixedHeightGifs.url
+                    setChanged()
+                    notifyObservers()
+                }
+            }
+        })
+    }
+
+    fun onRandomSubmitButtonClicked(view: View) {
+        randomgSingleGifSubmitButtonText.set("Fetching..")
+        GifFactory.create().fetchRandomGifs(this.fieldText.get().toString()).enqueue(object : Callback<RandomGifData> {
+            override fun onFailure(call: Call<RandomGifData>?, t: Throwable?) {
+                var e = t?.message
+            }
+
+            override fun onResponse(call: Call<RandomGifData>?, response: Response<RandomGifData>?) {
+                randomgSingleGifSubmitButtonText.set("Done..")
+                if (response != null) {
+                    url = response.body()!!.data.url
+                    setChanged()
+                    notifyObservers()
+                }
+            }
+        })
+
+    }
+
+    fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        fieldText.set(s.toString())
+    }
 
     fun onFabClicked(view: View) {
         downloadProgress.set(View.VISIBLE)

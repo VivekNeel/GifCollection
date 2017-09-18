@@ -1,7 +1,10 @@
 package `in`.gif.collection.view.fragments
 
-import `in`.gif.collection.*
+import `in`.gif.collection.R
 import `in`.gif.collection.databinding.LayoutRandomTranslateGifBinding
+import `in`.gif.collection.hide
+import `in`.gif.collection.hideKeyboard
+import `in`.gif.collection.show
 import `in`.gif.collection.viewmodel.GifDetailViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -18,9 +21,9 @@ import java.lang.Exception
 import java.util.*
 
 /**
- * Created by vivek on 17/09/17.
+ * Created by vivek on 19/09/17.
  */
-class RandomGifFragment : BaseFragment(), Observer {
+class TranslateFragment : BaseFragment(), Observer {
 
     lateinit var binding: LayoutRandomTranslateGifBinding
 
@@ -32,8 +35,8 @@ class RandomGifFragment : BaseFragment(), Observer {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
-        labelText.text = "Try searching for random gif by tag.."
-        submitCardView.hide()
+        labelText.text = "Translate your words/phrase to gif by searching.."
+        randomSubmitCardView.hide()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

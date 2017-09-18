@@ -40,8 +40,8 @@ class GifDetailActivity : AppCompatActivity() {
 
     fun getExtrasFromIntent() {
         imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL)
-        binding.gifDetailViewModel = GifDetailViewModel(imageUrl, this)
-        binding.detailIv.visibility = View.VISIBLE
+        binding.gifDetailViewModel = GifDetailViewModel(this, imageUrl)
+        (binding.gifDetailViewModel as GifDetailViewModel).detailViewVisibility.set(View.VISIBLE)
 
         Glide.with(binding.detailIv.context)
                 .load(imageUrl)

@@ -15,6 +15,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 /**
  * Created by vivek on 15/09/17.
@@ -61,3 +63,4 @@ fun AppCompatActivity.commitFragment(fragment: Fragment, @IdRes containerId: Int
 fun Context.fetchColor(@ColorRes id: Int): Int {
     return ContextCompat.getColor(this, id)
 }
+
