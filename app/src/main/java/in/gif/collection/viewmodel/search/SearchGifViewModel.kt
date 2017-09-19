@@ -15,28 +15,37 @@ import java.util.*
  */
 class SearchGifViewModel : Observable() {
 
-    var gifProgress: ObservableInt = ObservableInt(View.VISIBLE)
+    var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)
     var gifs: ArrayList<TrendingGifResponse> = arrayListOf()
+
+    var noGifContainerVisibility: ObservableInt = ObservableInt(View.VISIBLE)
 
     fun initialiseViews() {
         gifProgress.set(View.VISIBLE)
         gifRecyclerView.set(View.GONE)
+        noGifContainerVisibility.set(View.GONE)
     }
 
     fun fetchSearchableGif(search: String) {
         initialiseViews()
         GifFactory.create().fetchSearchableGifs(search).enqueue(object : Callback<GifResponse> {
             override fun onFailure(call: Call<GifResponse>?, t: Throwable?) {
-
+                gifProgress.set(View.GONE)
+                noGifContainerVisibility.set(View.VISIBLE)
             }
 
             override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
-                if (response != null) {
-                    changeDataSet(response.body()!!.data)
-                }
                 gifProgress.set(View.GONE)
-                gifRecyclerView.set(View.VISIBLE)
+                if (response != null) {
+                    if (response.body()?.data!!.isNotEmpty()) {
+                        changeDataSet(response.body()!!.data)
+                        gifRecyclerView.set(View.VISIBLE)
+                    } else {
+                        noGifContainerVisibility.set(View.VISIBLE)
+                        gifRecyclerView.set(View.GONE)
+                    }
+                }
 
             }
         })

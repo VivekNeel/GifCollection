@@ -1,6 +1,6 @@
 package `in`.gif.collection.view.fragments
 
-import `in`.gif.collection.runOnApiLevelLessThanLollipop
+import `in`.gif.collection.runOnM
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
@@ -21,7 +21,7 @@ open class BaseFragment : Fragment() {
     override fun onAttach(activity: Activity) {
         @Suppress("DEPRECATION")
         super.onAttach(activity)
-        activity.runOnApiLevelLessThanLollipop { this.activity = activity }
+        activity.runOnM { this.activity = activity }
     }
 
     fun getFragmentHost(): Activity {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -34,6 +35,7 @@
                     android:textSize="16sp" />
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/translateInputlayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Search by tag.."
@@ -51,57 +53,70 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.v7.widget.CardView
+                <Button
                     android:id="@+id/submitCardView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:foregroundTint="@color/darkGrey"
+                    android:background="@color/white"
                     android:onClick="@{gifDetailViewModel.onSubmitButtonClicked}"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="3dp">
+                    android:text="@{gifDetailViewModel.singleGifSubmitButtonText}"
+                    android:textColor="@color/colorPrimary"
+                    tools:targetApi="lollipop" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="@{gifDetailViewModel.singleGifSubmitButtonText}"
-                        android:textColor="@android:color/black" />
 
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
+                <Button
                     android:id="@+id/randomSubmitCardView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:foregroundTint="@color/darkGrey"
                     android:onClick="@{gifDetailViewModel.onRandomSubmitButtonClicked}"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="3dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="@{gifDetailViewModel.randomgSingleGifSubmitButtonText}"
-                        android:textColor="@android:color/black" />
-
-                </android.support.v7.widget.CardView>
+                    android:text="@{gifDetailViewModel.randomgSingleGifSubmitButtonText}"
+                    android:textColor="@color/colorPrimary"
+                    tools:targetApi="lollipop" />
 
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/noGifContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="@{gifDetailViewModel.noGifContainerVisibility}">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="There is no gif, try searching for one."
+                        android:textColor="#90000000"
+                        android:textSize="18sp" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="30dp"
+                        android:layout_marginTop="10dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_fileName="no_gif.json"
+                        app:lottie_loop="true" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/detailIv"
@@ -115,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="70dp"
                     android:layout_gravity="center"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:lottie_autoPlay="true"
                     app:lottie_fileName="loading.json"
                     app:lottie_loop="true" />
@@ -123,30 +138,20 @@
 
             </FrameLayout>
 
-            <android.support.v7.widget.CardView
+            <Button
                 android:id="@+id/downloadCardView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:foregroundTint="@color/darkGrey"
+                android:background="@color/colorPrimary"
+                android:onClick="@{gifDetailViewModel::onFabClicked}"
+                android:text="Save"
+                android:textColor="@color/white"
                 android:visibility="@{gifDetailViewModel.singleGifDownloadButtonVisibility}"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="3dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:onClick="@{gifDetailViewModel::onFabClicked}"
-                    android:padding="5dp"
-                    android:text="@{gifDetailViewModel.singleGifSubmitButtonText}"
-                    android:textColor="@android:color/white" />
-
-            </android.support.v7.widget.CardView>
-
+                tools:targetApi="lollipop" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

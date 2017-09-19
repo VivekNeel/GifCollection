@@ -2,6 +2,7 @@ package `in`.gif.collection.view
 
 import `in`.gif.collection.Constants
 import `in`.gif.collection.R
+import `in`.gif.collection.ShowDialogCallback
 import `in`.gif.collection.databinding.ListItemDetailBinding
 import `in`.gif.collection.viewmodel.GifDetailViewModel
 import `in`.gif.collection.model.TrendingGifResponse
@@ -10,6 +11,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.bumptech.glide.Glide
@@ -23,7 +25,7 @@ import java.lang.Exception
 /**
  * Created by vivek on 15/09/17.
  */
-class GifDetailActivity : AppCompatActivity() {
+class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
 
     private lateinit var binding: ListItemDetailBinding
     private lateinit var imageUrl: String;
@@ -40,7 +42,7 @@ class GifDetailActivity : AppCompatActivity() {
 
     fun getExtrasFromIntent() {
         imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL)
-        binding.gifDetailViewModel = GifDetailViewModel(this, imageUrl)
+        binding.gifDetailViewModel = GifDetailViewModel(this, this, imageUrl)
         (binding.gifDetailViewModel as GifDetailViewModel).detailViewVisibility.set(View.VISIBLE)
 
         Glide.with(binding.detailIv.context)
@@ -75,5 +77,9 @@ class GifDetailActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             f()
         }
+    }
+
+    override fun showDialog() {
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.REQUEST_CODE_STORAGE)
     }
 }

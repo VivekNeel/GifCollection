@@ -8,7 +8,6 @@ import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.fragments.RandomGifFragment
 import `in`.gif.collection.view.fragments.TranslateFragment
-import `in`.gif.collection.view.fragments.TranslateGifFragment
 import `in`.gif.collection.view.fragments.TrendingGifFragment
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -24,6 +23,7 @@ class MainActivity : BaseActivity() {
 
     private var toolbarMargin: Int = 0
     private lateinit var mainActivityBinding: ActivityMainBinding
+    private val REQUEST_STORAGE_PERMISSION_CODE = 199
 
     companion object {
         const val TAG_TRENDING = "trend"
@@ -38,6 +38,7 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null)
             setupBottomNavigation()
     }
+
 
     fun setupBottomNavigation() {
         val bottomNavigator = mainActivityBinding.bottomBar

@@ -1,6 +1,7 @@
 package `in`.gif.collection.viewmodel
 
-import `in`.gif.collection.R
+import `in`.gif.collection.*
+import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.data.GifFactory
 import `in`.gif.collection.model.GifResponse
 import `in`.gif.collection.model.RandomGifData
@@ -9,11 +10,15 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.net.Uri
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.NotificationCompat
 import android.text.Editable
 import android.text.TextWatcher
@@ -41,8 +46,9 @@ fun bindLottie(view: LottieAnimationView, fileName: String) {
     view.playAnimation()
 }
 
-class GifDetailViewModel(context: Context, url: String = "") : Observable() {
+class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: String = "") : Observable() {
 
+    val urlKey = "url"
     private var url = url
     private var context = context
     var fileName: ObservableField<String> = ObservableField("check_fit.json")
@@ -50,14 +56,17 @@ class GifDetailViewModel(context: Context, url: String = "") : Observable() {
     var downloadButton: ObservableInt = ObservableInt(View.VISIBLE)
     var mBuilder = NotificationCompat.Builder(context)
     var mNotificationManager: NotificationManager? = null
-    var translateViewVisibility: ObservableInt = ObservableInt(View.GONE)
     var detailViewVisibility: ObservableInt = ObservableInt(View.GONE)
 
     var singleGifSubmitButtonText: ObservableField<String> = ObservableField("Done")
     var randomgSingleGifSubmitButtonText: ObservableField<String> = ObservableField("Done")
 
-    var fieldText: ObservableField<String> = ObservableField("some")
+    var fieldText: ObservableField<String> = ObservableField("")
     var singleGifDownloadButtonVisibility: ObservableInt = ObservableInt(View.GONE)
+
+    var noGifContainerVisibility: ObservableInt = ObservableInt(View.VISIBLE)
+
+    var showDialogCallback = callback
 
     fun getImageUrl(): String {
         return url
@@ -67,14 +76,21 @@ class GifDetailViewModel(context: Context, url: String = "") : Observable() {
         singleGifSubmitButtonText.set("Fetching..")
         GifFactory.create().fetchSearchableGifs(this.fieldText.get().toString()).enqueue(object : Callback<GifResponse> {
             override fun onFailure(call: Call<GifResponse>?, t: Throwable?) {
-
+                noGifContainerVisibility.set(View.VISIBLE)
+                singleGifSubmitButtonText.set("Done")
             }
 
             override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
-                translateViewVisibility.set(View.VISIBLE)
                 singleGifSubmitButtonText.set("Done")
+                noGifContainerVisibility.set(View.GONE)
                 if (response != null) {
                     url = response.body()!!.data.get(0).images.fixedHeightGifs.url
+                    if (!url.isNullOrEmpty()) {
+                        noGifContainerVisibility.set(View.GONE)
+
+                    }
+                    val pref = PreferenceHelper.defaultPrefs(view.context)
+                    pref[Constants.KEY_TRANSLATE_GIF_URL] = url
                     setChanged()
                     notifyObservers()
                 }
@@ -86,13 +102,18 @@ class GifDetailViewModel(context: Context, url: String = "") : Observable() {
         randomgSingleGifSubmitButtonText.set("Fetching..")
         GifFactory.create().fetchRandomGifs(this.fieldText.get().toString()).enqueue(object : Callback<RandomGifData> {
             override fun onFailure(call: Call<RandomGifData>?, t: Throwable?) {
-                var e = t?.message
+                noGifContainerVisibility.set(View.VISIBLE)
+                randomgSingleGifSubmitButtonText.set("Done.")
             }
 
             override fun onResponse(call: Call<RandomGifData>?, response: Response<RandomGifData>?) {
-                randomgSingleGifSubmitButtonText.set("Done..")
+                randomgSingleGifSubmitButtonText.set("Done.")
                 if (response != null) {
                     url = response.body()!!.data.url
+                    if (!url.isNullOrEmpty()) {
+                        noGifContainerVisibility.set(View.GONE)
+                    }
+                    PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_RANDOM_GIF_URL] = url
                     setChanged()
                     notifyObservers()
                 }
@@ -106,25 +127,38 @@ class GifDetailViewModel(context: Context, url: String = "") : Observable() {
     }
 
     fun onFabClicked(view: View) {
+        context.runOnM {
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                showDialogCallback.showDialog()
+                return@runOnM
+            } else {
+                saveGif(view.context)
+            }
+        }
+
+        context.runOnKK { saveGif(view.context) }
+
+    }
+
+    fun saveGif(context: Context) {
         downloadProgress.set(View.VISIBLE)
         downloadButton.set(View.GONE)
         fileName.set("loading.json")
         mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
-                .setContentTitle("Downloading")
+                .setContentTitle("Saving")
                 .setAutoCancel(true)
         mNotificationManager?.notify(11, mBuilder.build())
         Thread(Runnable {
-            var cache = Glide.with(view.context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
-            SaveImage(cache, view.context)
+            val cache = Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
+            SaveImage(cache, context)
         }).start()
     }
 
-
     private fun SaveImage(cache: File, context: Context) {
-        var intent = Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setType("image/*");
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.type = "image/*"
         context.startActivity(intent)
 
 
@@ -139,14 +173,13 @@ class GifDetailViewModel(context: Context, url: String = "") : Observable() {
                             .into(300, 300)
                             .get())
                     .setContentIntent(PendingIntent.getActivity(context, 99, intent, 0))
-                    .setContentTitle("Downloaded")
+                    .setContentTitle("Saved")
                     .setAutoCancel(true)
 
             mNotificationManager?.notify(11, mBuilder.build())
         }).start()
-
         val root = Environment.getExternalStorageDirectory().toString()
-        val myDir = File(root + "/saved_images")
+        val myDir = File(root + "/GifCollection")
         myDir.mkdirs()
         val generator = Random()
         var n = 10000
