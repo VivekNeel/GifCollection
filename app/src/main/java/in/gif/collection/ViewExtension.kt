@@ -1,6 +1,7 @@
 package `in`.gif.collection
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.LOLLIPOP
@@ -45,8 +46,14 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun Context.runOnApiLevelLessThanLollipop(run: () -> Unit) {
-    if (SDK_INT < LOLLIPOP) {
+fun Context.runOnM(run: () -> Unit) {
+    if (SDK_INT >= Build.VERSION_CODES.M) {
+        run()
+    }
+}
+
+fun Context.runOnKK(run: () -> Unit){
+    if (SDK_INT < Build.VERSION_CODES.LOLLIPOP){
         run()
     }
 }
@@ -64,3 +71,26 @@ fun Context.fetchColor(@ColorRes id: Int): Int {
     return ContextCompat.getColor(this, id)
 }
 
+inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
+    val editor = edit()
+    operation(editor)
+    editor.apply()
+}
+
+operator inline fun SharedPreferences.set(key: String, value: Any?) {
+    when (value) {
+        is String? -> edit { it.putString(key, value) }
+        is Int -> edit { it.putInt(key, value) }
+        is Boolean -> edit { it.putBoolean(key, value) }
+        else -> throw UnsupportedOperationException("unsupported data type")
+    }
+}
+
+operator inline fun <reified T : Any> SharedPreferences.get(key: String, value: T? = null): T {
+    return when (T::class) {
+        String::class -> getString(key, value as? String ?: "") as T
+        Int::class -> getInt(key, value as? Int ?: -1) as T
+        Boolean::class -> getBoolean(key, value as?  Boolean ?: false) as T
+        else -> throw UnsupportedOperationException("unsupported data type")
+    }
+}
