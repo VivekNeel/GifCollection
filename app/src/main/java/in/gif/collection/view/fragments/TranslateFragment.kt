@@ -47,6 +47,9 @@ class TranslateFragment : BaseFragment(), Observer, ShowDialogCallback {
     }
 
     fun loadGif(url: String) {
+        if (TextUtils.isEmpty(url)) {
+            binding.detailIv.hide()
+        }
         Glide.with(binding.detailIv.context)
                 .load(url)
                 .asGif()
@@ -88,7 +91,7 @@ class TranslateFragment : BaseFragment(), Observer, ShowDialogCallback {
     }
 
     fun setupObserver() {
-        binding.gifDetailViewModel = GifDetailViewModel(getFragmentHost(), this , PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_TRANSLATE_GIF_URL])
+        binding.gifDetailViewModel = GifDetailViewModel(getFragmentHost(), this, PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_TRANSLATE_GIF_URL])
         binding.gifDetailViewModel?.addObserver(this)
     }
 

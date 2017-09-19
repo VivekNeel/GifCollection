@@ -53,7 +53,7 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
     private var context = context
     var fileName: ObservableField<String> = ObservableField("check_fit.json")
     var downloadProgress: ObservableInt = ObservableInt(View.GONE)
-    var downloadButton: ObservableInt = ObservableInt(View.VISIBLE)
+    var downloadButton: ObservableInt = ObservableInt(View.GONE)
     var mBuilder = NotificationCompat.Builder(context)
     var mNotificationManager: NotificationManager? = null
     var detailViewVisibility: ObservableInt = ObservableInt(View.GONE)
@@ -74,25 +74,27 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
 
     fun onSubmitButtonClicked(view: View) {
         singleGifSubmitButtonText.set("Fetching..")
+        singleGifDownloadButtonVisibility.set(View.GONE)
         GifFactory.create().fetchSearchableGifs(this.fieldText.get().toString()).enqueue(object : Callback<GifResponse> {
             override fun onFailure(call: Call<GifResponse>?, t: Throwable?) {
                 noGifContainerVisibility.set(View.VISIBLE)
                 singleGifSubmitButtonText.set("Done")
+                singleGifDownloadButtonVisibility.set(View.GONE)
             }
 
             override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
                 singleGifSubmitButtonText.set("Done")
-                noGifContainerVisibility.set(View.GONE)
-                if (response != null) {
+                if (response!!.body()!!.data.isNotEmpty()) {
                     url = response.body()!!.data.get(0).images.fixedHeightGifs.url
-                    if (!url.isNullOrEmpty()) {
-                        noGifContainerVisibility.set(View.GONE)
-
-                    }
+                    noGifContainerVisibility.set(View.GONE)
                     val pref = PreferenceHelper.defaultPrefs(view.context)
                     pref[Constants.KEY_TRANSLATE_GIF_URL] = url
                     setChanged()
                     notifyObservers()
+                } else {
+                    noGifContainerVisibility.set(View.VISIBLE)
+                    singleGifDownloadButtonVisibility.set(View.GONE)
+
                 }
             }
         })
@@ -100,10 +102,15 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
 
     fun onRandomSubmitButtonClicked(view: View) {
         randomgSingleGifSubmitButtonText.set("Fetching..")
+        singleGifDownloadButtonVisibility.set(View.GONE)
         GifFactory.create().fetchRandomGifs(this.fieldText.get().toString()).enqueue(object : Callback<RandomGifData> {
             override fun onFailure(call: Call<RandomGifData>?, t: Throwable?) {
                 noGifContainerVisibility.set(View.VISIBLE)
                 randomgSingleGifSubmitButtonText.set("Done.")
+                singleGifDownloadButtonVisibility.set(View.GONE)
+                setChanged()
+                notifyObservers()
+
             }
 
             override fun onResponse(call: Call<RandomGifData>?, response: Response<RandomGifData>?) {
@@ -112,6 +119,7 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
                     url = response.body()!!.data.url
                     if (!url.isNullOrEmpty()) {
                         noGifContainerVisibility.set(View.GONE)
+                        singleGifDownloadButtonVisibility.set(View.VISIBLE)
                     }
                     PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_RANDOM_GIF_URL] = url
                     setChanged()

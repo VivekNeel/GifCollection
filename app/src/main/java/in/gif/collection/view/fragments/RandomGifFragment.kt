@@ -69,6 +69,9 @@ class RandomGifFragment : BaseFragment(), Observer, ShowDialogCallback {
     }
 
     fun loadGif(url: String) {
+        if (TextUtils.isEmpty(url)) {
+            binding.detailIv.hide()
+        }
         Glide.with(binding.detailIv.context)
                 .load(url)
                 .asGif()
@@ -81,14 +84,13 @@ class RandomGifFragment : BaseFragment(), Observer, ShowDialogCallback {
                     }
 
                     override fun onException(e: Exception?, model: String?, target: Target<GifDrawable>?, isFirstResource: Boolean): Boolean {
-                        binding.detailIv.hide()
                         return false
                     }
                 }).into(binding.detailIv)
     }
 
     fun setupObserver() {
-        binding.gifDetailViewModel = GifDetailViewModel(getFragmentHost(), this ,PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_RANDOM_GIF_URL])
+        binding.gifDetailViewModel = GifDetailViewModel(getFragmentHost(), this, PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_RANDOM_GIF_URL])
         binding.gifDetailViewModel?.addObserver(this)
     }
 
