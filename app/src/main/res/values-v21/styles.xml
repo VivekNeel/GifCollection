@@ -7,8 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:colorControlNormal">@color/white</item>
-
     </style>
 
     <style name="AppThemeCustom" parent="Theme.AppCompat.NoActionBar">

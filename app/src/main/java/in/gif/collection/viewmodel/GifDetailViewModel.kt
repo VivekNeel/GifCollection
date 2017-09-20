@@ -5,29 +5,28 @@ import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.data.GifFactory
 import `in`.gif.collection.model.GifResponse
 import `in`.gif.collection.model.RandomGifData
-import `in`.gif.collection.model.RandomGifResponse
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.net.Uri
 import android.os.Environment
-import android.support.v4.app.ActivityCompat
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.NotificationCompat
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -157,44 +156,29 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
                 .setContentTitle("Saving")
                 .setAutoCancel(true)
         mNotificationManager?.notify(11, mBuilder.build())
-        Thread(Runnable {
-            val cache = Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
-            SaveImage(cache, context)
-        }).start()
+
+        io.reactivex.Observable.fromCallable {
+            Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    saveImage(it, context)
+                }
     }
 
-    private fun SaveImage(cache: File, context: Context) {
-        val intent = Intent()
-        intent.action = Intent.ACTION_VIEW
-        intent.type = "image/*"
-        context.startActivity(intent)
+    private fun saveImage(cache: File, context: Context) {
 
-
-        Thread(Runnable {
-
-            mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
-                    .setLargeIcon(Glide.with(context)
-                            .load(url)
-                            .asBitmap()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .centerCrop()
-                            .into(300, 300)
-                            .get())
-                    .setContentIntent(PendingIntent.getActivity(context, 99, intent, 0))
-                    .setContentTitle("Saved")
-                    .setAutoCancel(true)
-
-            mNotificationManager?.notify(11, mBuilder.build())
-        }).start()
         val root = Environment.getExternalStorageDirectory().toString()
         val myDir = File(root + "/GifCollection")
+
         myDir.mkdirs()
-        val generator = Random()
-        var n = 10000
-        n = generator.nextInt(n)
+
+        val n = cache.name
         val fname = "Image-$n.gif"
+
         val file = File(myDir, fname)
         if (file.exists()) file.delete()
+
         try {
             val out = FileOutputStream(file)
             out.write(cache.inputStream().readBytes())
@@ -207,7 +191,32 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
             e.printStackTrace()
         }
 
+        val imageUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file)
+        val shareIntent = Intent()
+        with(shareIntent) {
+            action = (Intent.ACTION_SEND);
+            putExtra(Intent.EXTRA_STREAM, imageUri);
+            type = ("image/*");
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
 
+        context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
+        io.reactivex.Observable.fromCallable {
+            mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
+                    .setLargeIcon(Glide.with(context)
+                            .load(url)
+                            .asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .centerCrop()
+                            .into(300, 300)
+                            .get())
+                    .setContentIntent(PendingIntent.getActivity(context, 99, shareIntent, 0))
+                    .setContentTitle("Saved")
+                    .setAutoCancel(true)
+
+            mNotificationManager?.notify(11, mBuilder.build())
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe { }
     }
 
     private fun scanMedia(file: File, context: Context) {
