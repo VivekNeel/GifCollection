@@ -5,6 +5,7 @@ import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.data.GifFactory
 import `in`.gif.collection.model.GifResponse
 import `in`.gif.collection.model.RandomGifData
+import `in`.gif.collection.model.TranslateData
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -74,17 +75,17 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
     fun onSubmitButtonClicked(view: View) {
         singleGifSubmitButtonText.set("Fetching..")
         singleGifDownloadButtonVisibility.set(View.GONE)
-        GifFactory.create().fetchSearchableGifs(this.fieldText.get().toString()).enqueue(object : Callback<GifResponse> {
-            override fun onFailure(call: Call<GifResponse>?, t: Throwable?) {
+        GifFactory.create().fetchTranslateGif(this.fieldText.get().toString()).enqueue(object : Callback<TranslateData> {
+            override fun onFailure(call: Call<TranslateData>?, t: Throwable?) {
                 noGifContainerVisibility.set(View.VISIBLE)
                 singleGifSubmitButtonText.set("Done")
                 singleGifDownloadButtonVisibility.set(View.GONE)
             }
 
-            override fun onResponse(call: Call<GifResponse>?, response: Response<GifResponse>?) {
+            override fun onResponse(call: Call<TranslateData>?, response: Response<TranslateData>?) {
                 singleGifSubmitButtonText.set("Done")
-                if (response!!.body()!!.data.isNotEmpty()) {
-                    url = response.body()!!.data.get(0).images.fixedHeightGifs.url
+                if (response!!.body() != null) {
+                    url = response.body()!!.data.images.fixedHeightGifs.url
                     noGifContainerVisibility.set(View.GONE)
                     val pref = PreferenceHelper.defaultPrefs(view.context)
                     pref[Constants.KEY_TRANSLATE_GIF_URL] = url

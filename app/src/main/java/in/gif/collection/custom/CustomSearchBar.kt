@@ -16,13 +16,13 @@ class CustomSearchBar(context: Context?, attrs: AttributeSet?) : CustomToolbar(c
 
     init {
         setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
-        setNavigationIcon(R.drawable.ic_arrow_back)
+        setNavigationIcon(R.drawable.arrow_back_black)
     }
 
 
-     override fun onFinishInflate() {
+    override fun onFinishInflate() {
         super.onFinishInflate()
-        var view : View = inflate(context, R.layout.merge_search, this)
+        var view: View = inflate(context, R.layout.merge_search, this)
         editText = findViewById(R.id.toolbar_search_edittext)
     }
 

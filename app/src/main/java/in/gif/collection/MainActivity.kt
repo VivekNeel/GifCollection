@@ -4,6 +4,7 @@ import `in`.gif.collection.custom.CustomTransitionListener
 import `in`.gif.collection.custom.FadeInTransition
 import `in`.gif.collection.custom.FadeOutTransition
 import `in`.gif.collection.databinding.ActivityMainBinding
+import `in`.gif.collection.view.AboutActivity
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.fragments.RandomGifFragment
@@ -15,6 +16,7 @@ import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,7 +25,6 @@ class MainActivity : BaseActivity() {
 
     private var toolbarMargin: Int = 0
     private lateinit var mainActivityBinding: ActivityMainBinding
-    private val REQUEST_STORAGE_PERMISSION_CODE = 199
 
     companion object {
         const val TAG_TRENDING = "trend"
@@ -123,6 +124,19 @@ class MainActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.option -> {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
+            }
+            else -> {
+                throw UnsupportedOperationException("unknown id")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

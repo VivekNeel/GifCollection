@@ -7,9 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
+
     </style>
 
-    <style name="AppThemeCustom" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppThemeCustom" parent="ThemeOverlay.AppCompat">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
