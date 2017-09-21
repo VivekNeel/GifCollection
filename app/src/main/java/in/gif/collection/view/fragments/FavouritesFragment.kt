@@ -1,6 +1,5 @@
 package `in`.gif.collection.view.fragments
 
-import `in`.gif.collection.Constants
 import `in`.gif.collection.R
 import `in`.gif.collection.custom.CustomItemDecorator
 import `in`.gif.collection.databinding.FragmentTrendingBinding
@@ -16,13 +15,11 @@ import android.view.ViewGroup
 import java.util.*
 
 /**
- * Created by vivek on 17/09/17.
+ * Created by vivek on 21/09/17.
  */
-class TrendingGifFragment : BaseFragment(), Observer {
+class FavouritesFragment : BaseFragment(), Observer {
 
     private lateinit var mainActivityDataBinding: FragmentTrendingBinding
-    var isLoading = false
-    private var next : String ?= null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mainActivityDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_trending, container, false)
@@ -34,9 +31,8 @@ class TrendingGifFragment : BaseFragment(), Observer {
         super.onViewCreated(view, savedInstanceState)
         setUPList(mainActivityDataBinding.randomGifRV)
         setUPObserver(mainActivityDataBinding.randomGifModel)
-        mainActivityDataBinding.randomGifModel?.getData("")
+        mainActivityDataBinding.randomGifModel?.fetchFavouritesGifs()
     }
-
 
     fun setUPList(recyclerView: RecyclerView) {
         val adapter = TrendingGifAdapter(getFragmentHost())
@@ -44,33 +40,14 @@ class TrendingGifFragment : BaseFragment(), Observer {
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(CustomItemDecorator(15))
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    val layoutManager: StaggeredGridLayoutManager = recyclerView?.layoutManager as StaggeredGridLayoutManager
-                    val totalItemCount = layoutManager.itemCount
-                    val lastVisibleItemPos = layoutManager.findLastCompletelyVisibleItemPositions(null)
-                    if ((totalItemCount - 1) == getLastVisibleItem(lastVisibleItemPos)) {
-                        isLoading = true
-                        mainActivityDataBinding.loadMoreProgress.visibility = View.VISIBLE
-                        mainActivityDataBinding.randomGifModel?.fetchTrendingGif(next)
-                    }
-                }
-            }
-        }
-        )
-
     }
 
     override fun update(o: Observable?, arg: Any?) {
         when (o) {
             is TrendingGifViewModel -> {
-                isLoading = false
                 mainActivityDataBinding.loadMoreProgress.visibility = View.GONE
                 val adapter = mainActivityDataBinding.randomGifRV.adapter as TrendingGifAdapter
                 adapter.setGifList(list = o.getGifs())
-                this.next = o.getNext();
             }
         }
     }
@@ -79,15 +56,4 @@ class TrendingGifFragment : BaseFragment(), Observer {
         observable?.addObserver(this)
     }
 
-    fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
-        var maxSize = 0
-        for (i in lastVisibleItemPositions.indices) {
-            if (i == 0) {
-                maxSize = lastVisibleItemPositions[i]
-            } else if (lastVisibleItemPositions[i] > maxSize) {
-                maxSize = lastVisibleItemPositions[i]
-            }
-        }
-        return maxSize
-    }
 }

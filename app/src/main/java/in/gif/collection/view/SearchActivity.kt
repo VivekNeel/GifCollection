@@ -12,12 +12,16 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.ViewTreeObserver
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
 import java.util.*
+import android.widget.Toast
+import android.view.KeyEvent.KEYCODE_ENTER
+import android.view.View
 
 
 /**
@@ -43,7 +47,7 @@ class SearchActivity : BaseActivity(), Observer {
             // We are going to fade its contents in, as long as the activity finishes rendering
             searchToolbar.hideContent()
 
-            val viewTreeObserver = searchToolbar?.viewTreeObserver
+            val viewTreeObserver = searchToolbar.viewTreeObserver
             viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     searchToolbar.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -70,13 +74,12 @@ class SearchActivity : BaseActivity(), Observer {
         searchEditText = toolbar_search_edittext
 
         setSupportActionBar(searchToolbar)
-        searchEditText.addTextChangedListener(object : CustomTextWatcher() {
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Handler().postDelayed({
-                    searchBinding.viewModel?.fetchSearchableGif(s.toString())
-                }, 2000)
+        searchEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                searchBinding.viewModel?.fetchSearchableGif(searchEditText.text.toString())
+                return@OnKeyListener true
             }
+            false
         })
     }
 
@@ -85,10 +88,11 @@ class SearchActivity : BaseActivity(), Observer {
     }
 
     fun setupList(recyclerView: RecyclerView) {
-        var adapter = SearchAdapter(this)
+        var adapter = TrendingGifAdapter(this)
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(CustomItemDecorator(15))
     }
 
     override fun finish() {
@@ -120,7 +124,7 @@ class SearchActivity : BaseActivity(), Observer {
     override fun update(o: Observable?, arg: Any?) {
         when (o) {
             is SearchGifViewModel -> {
-                val adapter = searchBinding.randomGifRV.adapter as SearchAdapter
+                val adapter = searchBinding.randomGifRV.adapter as TrendingGifAdapter
                 adapter.setGifList(o.getGifs())
                 hideKb()
 

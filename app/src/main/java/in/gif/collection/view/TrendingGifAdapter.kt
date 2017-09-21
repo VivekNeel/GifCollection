@@ -1,8 +1,11 @@
 package `in`.gif.collection.view
 
-import `in`.gif.collection.R
+import `in`.gif.collection.*
+import `in`.gif.collection.Utils.CommonUtils
+import `in`.gif.collection.Utils.NetworkUtil
+import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.databinding.ListItemRandomGifBinding
-import `in`.gif.collection.model.TrendingGifResponse
+import `in`.gif.collection.model.tenor.GifResultsData
 import `in`.gif.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil.inflate
@@ -16,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import kotlinx.android.synthetic.main.list_item_random_gif.view.*
 import java.lang.Exception
 
 /**
@@ -24,7 +28,7 @@ import java.lang.Exception
 
 class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var list: List<TrendingGifResponse> = emptyList()
+    private var list: List<GifResultsData> = emptyList()
     val activity: Activity = activity
     val VIEW_TYPE_LOADING = 1
     val VIEW_TYPE_CONTENT = 2
@@ -36,13 +40,18 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
             is TrendingGifViewHolder -> {
                 holder.itemGifBinding.progress.visibility = View.VISIBLE
                 val view = holder.itemGifBinding.gifIv
+                holder.itemView.fav.hide()
                 Glide.with(view.context)
-                        .load(list[position].images.fixedHeightGifs.url)
+                        .load(NetworkUtil.getAppropriateImageUrl(list[position].mediaData[0], view.context))
                         .asGif()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .listener(object : RequestListener<String, GifDrawable> {
                             override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                                 holder.itemGifBinding.progress.visibility = View.GONE
+                                holder.itemView.fav.show()
+                                if (CommonUtils.isGifFavourited(list[position].id, view.context)) {
+                                    holder.itemView.fav.playAnimation()
+                                }
                                 return false
                             }
 
@@ -51,6 +60,12 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                             }
                         }).into(view)
                 holder.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
+                holder.itemView.fav.setOnClickListener {
+                    val oldSet: MutableSet<String> = PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE]
+                    oldSet.add(list[position].id)
+                    PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = oldSet
+                    holder.itemView.fav.playAnimation()
+                }
             }
 
             is LoadingViewHolder -> {
@@ -86,15 +101,14 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
         return list.size
     }
 
-    fun setGifList(list: List<TrendingGifResponse>) {
+    fun setGifList(list: List<GifResultsData>) {
         this.list = list
         notifyDataSetChanged()
     }
 
-
     class TrendingGifViewHolder(itemView: View?, var itemGifBinding: ListItemRandomGifBinding) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindGif(gif: TrendingGifResponse, pos: Int, activity: Activity) {
+        fun bindGif(gif: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
                 itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos)
             } else

@@ -7,6 +7,7 @@ import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.AboutActivity
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
+import `in`.gif.collection.view.fragments.FavouritesFragment
 import `in`.gif.collection.view.fragments.RandomGifFragment
 import `in`.gif.collection.view.fragments.TranslateFragment
 import `in`.gif.collection.view.fragments.TrendingGifFragment
@@ -63,7 +64,7 @@ class MainActivity : BaseActivity() {
                 commitFragment(TrendingGifFragment(), R.id.frame, TAG_TRENDING)
             }
             TAG_RANDOM -> {
-                commitFragment(RandomGifFragment(), R.id.frame, TAG_RANDOM)
+                commitFragment(FavouritesFragment(), R.id.frame, TAG_RANDOM)
             }
 
             TAG_TRANSLATE -> {

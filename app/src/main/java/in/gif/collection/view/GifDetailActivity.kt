@@ -5,7 +5,7 @@ import `in`.gif.collection.R
 import `in`.gif.collection.ShowDialogCallback
 import `in`.gif.collection.databinding.ListItemDetailBinding
 import `in`.gif.collection.viewmodel.GifDetailViewModel
-import `in`.gif.collection.model.TrendingGifResponse
+import `in`.gif.collection.model.tenor.GifResultsData
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -65,10 +65,10 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
     }
 
     companion object {
-        fun launchDetail(context: Context, gifData: TrendingGifResponse): Intent {
+        fun launchDetail(context: Context, gifData: GifResultsData): Intent {
             val intent = Intent(context, GifDetailActivity::class.java)
-            intent.putExtra(Constants.EXTRA_DETAIL_IMAGE_URL, gifData.images.fixedWidth.url)
-            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL, gifData.images.fixedHeightGifs.url)
+            intent.putExtra(Constants.EXTRA_DETAIL_IMAGE_URL, gifData.mediaData[0].nano.url)
+            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL, gifData.mediaData[0].nano.url)
             return intent
         }
     }

@@ -1,8 +1,10 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.R
+import `in`.gif.collection.Utils.NetworkUtil
 import `in`.gif.collection.databinding.ListItemRandomGifBinding
 import `in`.gif.collection.model.TrendingGifResponse
+import `in`.gif.collection.model.tenor.GifResultsData
 import `in`.gif.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil
@@ -22,7 +24,7 @@ import java.lang.Exception
  */
 class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var list: List<TrendingGifResponse> = emptyList()
+    private var list: List<GifResultsData> = emptyList()
     var activity: Activity = activity
     private var shouldLoadMore: Boolean = false
 
@@ -32,7 +34,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
         holder?.itemGifBinding?.progress?.visibility = View.VISIBLE
         var view = holder?.itemGifBinding?.gifIv
         Glide.with(view?.context)
-                .load(list[position].images.fixedHeightGifs.url)
+                .load(NetworkUtil.getAppropriateImageUrl(list[position].mediaData[0], view.context))
                 .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(object : RequestListener<String, GifDrawable> {
@@ -46,7 +48,6 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
                     }
                 }).into(view)
         holder?.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
@@ -65,7 +66,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
         return list.size
     }
 
-    fun setGifList(list: List<TrendingGifResponse>) {
+    fun setGifList(list: List<GifResultsData>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -78,11 +79,11 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
             this.itemGifBinding = itemGifBinding
         }
 
-        fun bindGif(gif: TrendingGifResponse, pos: Int, activity: Activity) {
+        fun bindGif(nano: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos)
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, nano, pos)
             } else
-                itemGifBinding.itemRandomGifModel!!.setGif(gif)
+                itemGifBinding.itemRandomGifModel!!.setGif(nano)
         }
     }
 

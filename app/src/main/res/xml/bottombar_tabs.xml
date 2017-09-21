@@ -8,7 +8,7 @@
         barColorWhenSelected="@color/colorPrimaryDark"
         icon="@drawable/ic_random"
         id="@+id/random"
-        title="Random" />
+        title="Favourites" />
     <tab
         barColorWhenSelected="@color/colorPrimaryDark"
         icon="@drawable/ic_translate"

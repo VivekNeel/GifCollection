@@ -1,6 +1,6 @@
 package `in`.gif.collection.viewmodel
 
-import `in`.gif.collection.model.TrendingGifResponse
+import `in`.gif.collection.model.tenor.GifResultsData
 import `in`.gif.collection.view.GifDetailActivity
 import android.app.Activity
 import android.databinding.BaseObservable
@@ -13,7 +13,7 @@ import android.view.View
  */
 
 
-class CommonItemGifModel(context: Activity, gifData: TrendingGifResponse, pos: Int) : BaseObservable() {
+class CommonItemGifModel(context: Activity, gifData: GifResultsData, pos: Int) : BaseObservable() {
 
     private var context = context
     private var gif = gifData
@@ -24,10 +24,10 @@ class CommonItemGifModel(context: Activity, gifData: TrendingGifResponse, pos: I
     }
 
     fun getImageUri(): String {
-        return this.gif.images.fixedHeightGifs.url
+        return this.gif.mediaData[pos].nano.url
     }
 
-    fun setGif(gifData: TrendingGifResponse) {
+    fun setGif(gifData: GifResultsData) {
         this.gif = gifData
         notifyChange()
     }
@@ -35,6 +35,11 @@ class CommonItemGifModel(context: Activity, gifData: TrendingGifResponse, pos: I
     fun onItemClick(view: View) {
         var options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view, ViewCompat.getTransitionName(view))
         context.startActivity(GifDetailActivity.launchDetail(context, gifData = gif))
+    }
+
+    //TODO
+    fun onFavClicked(view: View) {
+
     }
 
 }
