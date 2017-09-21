@@ -22,7 +22,7 @@ class TrendingGifFragment : BaseFragment(), Observer {
 
     private lateinit var mainActivityDataBinding: FragmentTrendingBinding
     var isLoading = false
-    private var next : String ?= null
+    private var next: String? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mainActivityDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_trending, container, false)
@@ -70,7 +70,7 @@ class TrendingGifFragment : BaseFragment(), Observer {
                 mainActivityDataBinding.loadMoreProgress.visibility = View.GONE
                 val adapter = mainActivityDataBinding.randomGifRV.adapter as TrendingGifAdapter
                 adapter.setGifList(list = o.getGifs())
-                this.next = o.getNext();
+                this.next = o.getNext()
             }
         }
     }

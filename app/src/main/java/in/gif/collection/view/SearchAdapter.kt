@@ -81,7 +81,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
 
         fun bindGif(nano: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, nano, pos)
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, nano, pos , "")
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(nano)
         }

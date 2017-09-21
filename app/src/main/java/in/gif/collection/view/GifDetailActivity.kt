@@ -65,10 +65,10 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
     }
 
     companion object {
-        fun launchDetail(context: Context, gifData: GifResultsData): Intent {
+        fun launchDetail(context: Context, url: String): Intent {
             val intent = Intent(context, GifDetailActivity::class.java)
-            intent.putExtra(Constants.EXTRA_DETAIL_IMAGE_URL, gifData.mediaData[0].nano.url)
-            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL, gifData.mediaData[0].nano.url)
+            intent.putExtra(Constants.EXTRA_DETAIL_IMAGE_URL, url)
+            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL , url)
             return intent
         }
     }

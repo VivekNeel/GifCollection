@@ -1,44 +1,37 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.R
+import `in`.gif.collection.commitFragment
 import `in`.gif.collection.custom.*
 import `in`.gif.collection.databinding.ActivitySearchBinding
-import `in`.gif.collection.viewmodel.search.SearchGifViewModel
+import `in`.gif.collection.view.fragments.SearchFragment
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.os.Handler
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.transition.Transition
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.ViewTreeObserver
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
-import java.util.*
-import android.widget.Toast
-import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
 
 
 /**
  * Created by vivek on 17/09/17.
  */
-class SearchActivity : BaseActivity(), Observer {
+class SearchActivity : BaseActivity() {
 
-    private lateinit var searchBinding: ActivitySearchBinding
     private lateinit var searchToolbar: CustomSearchBar
     private lateinit var searchEditText: EditText
+    private lateinit var binding: ActivitySearchBinding
+    private var fragment = SearchFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initDataBinding()
-        setupObservers(searchBinding.viewModel)
-        setupList(searchBinding.randomGifRV)
+        init()
 
         // make sure to check if this is the first time running the activity
         // we don't want to play the enter animation on configuration changes (i.e. orientation)
@@ -46,6 +39,7 @@ class SearchActivity : BaseActivity(), Observer {
             // Start with an empty looking Toolbar
             // We are going to fade its contents in, as long as the activity finishes rendering
             searchToolbar.hideContent()
+            this.commitFragment(fragment, R.id.frame, `in`.gif.collection.MainActivity.TAG_SEARCH)
 
             val viewTreeObserver = searchToolbar.viewTreeObserver
             viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -67,33 +61,21 @@ class SearchActivity : BaseActivity(), Observer {
         }
     }
 
-    fun initDataBinding() {
-        searchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search)
-        searchBinding.viewModel = SearchGifViewModel()
-        searchToolbar = searchBinding.searchToolbar
+    fun init() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        searchToolbar = search_toolbar
         searchEditText = toolbar_search_edittext
 
         setSupportActionBar(searchToolbar)
         searchEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                searchBinding.viewModel?.fetchSearchableGif(searchEditText.text.toString())
+                fragment.doSearch(searchEditText.text.toString())
                 return@OnKeyListener true
             }
             false
         })
     }
 
-    fun setupObservers(observable: SearchGifViewModel?) {
-        observable?.addObserver(this)
-    }
-
-    fun setupList(recyclerView: RecyclerView) {
-        var adapter = TrendingGifAdapter(this)
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(CustomItemDecorator(15))
-    }
 
     override fun finish() {
         hideKb()
@@ -101,6 +83,10 @@ class SearchActivity : BaseActivity(), Observer {
             super@SearchActivity.finish()
             overridePendingTransition(0, 0)
         })
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            super.onBackPressed()
+        }
     }
 
     private fun exitTransitionWithAction(endingAction: () -> Unit) {
@@ -121,14 +107,4 @@ class SearchActivity : BaseActivity(), Observer {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun update(o: Observable?, arg: Any?) {
-        when (o) {
-            is SearchGifViewModel -> {
-                val adapter = searchBinding.randomGifRV.adapter as TrendingGifAdapter
-                adapter.setGifList(o.getGifs())
-                hideKb()
-
-            }
-        }
-    }
 }

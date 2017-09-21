@@ -59,9 +59,11 @@ fun Context.runOnKK(run: () -> Unit) {
     }
 }
 
-fun AppCompatActivity.commitFragment(fragment: Fragment, @IdRes containerId: Int, tag: String, @BoolRes allowStateLoss: Boolean = false) {
+fun AppCompatActivity.commitFragment(fragment: Fragment, @IdRes containerId: Int, tag: String, @BoolRes allowStateLoss: Boolean = false, @BoolRes addToBackStack: Boolean = false) {
     val ft = supportFragmentManager.beginTransaction().replace(containerId, fragment, tag)
     if (!supportFragmentManager.isStateSaved) {
+        if (addToBackStack)
+            ft.addToBackStack(null)
         ft.commit()
     } else if (allowStateLoss) {
         ft.commitAllowingStateLoss()

@@ -4,6 +4,7 @@ import `in`.gif.collection.BuildConfig
 import `in`.gif.collection.model.GifResponse
 import `in`.gif.collection.model.RandomGifData
 import `in`.gif.collection.model.TranslateData
+import `in`.gif.collection.model.tenor.HourlyTrendingData
 import `in`.gif.collection.model.tenor.MediaGifResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -29,4 +30,7 @@ interface GifService {
 
     @GET("gifs?key=LIVDSRZULELA")
     fun fetchFavourites(@Query("ids") listOfIds: String): Call<MediaGifResponse>
+
+    @GET("autocomplete?type=trending&key=LIVDSRZULELA")
+    fun fetchHourlyTrendingTerms(): Call<HourlyTrendingData>
 }

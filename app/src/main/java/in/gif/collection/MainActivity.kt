@@ -7,10 +7,7 @@ import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.AboutActivity
 import `in`.gif.collection.view.BaseActivity
 import `in`.gif.collection.view.SearchActivity
-import `in`.gif.collection.view.fragments.FavouritesFragment
-import `in`.gif.collection.view.fragments.RandomGifFragment
-import `in`.gif.collection.view.fragments.TranslateFragment
-import `in`.gif.collection.view.fragments.TrendingGifFragment
+import `in`.gif.collection.view.fragments.*
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -29,8 +26,9 @@ class MainActivity : BaseActivity() {
 
     companion object {
         const val TAG_TRENDING = "trend"
-        const val TAG_RANDOM = "random"
-        const val TAG_TRANSLATE = "translate"
+        const val TAG_FAVOURITE = "fav"
+        const val TAG_TRENDING_TERM = "trendingTerm"
+        const val TAG_SEARCH = "search"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,27 +46,32 @@ class MainActivity : BaseActivity() {
             setDefaultTab(R.id.trending)
             setOnTabSelectListener { tabId ->
                 when (tabId) {
-                    R.id.trending -> setupFragments(TAG_TRENDING)
-                    R.id.random -> setupFragments(TAG_RANDOM)
-                    R.id.translate -> setupFragments(TAG_TRANSLATE)
+                    R.id.trending -> setupFragments(TAG_TRENDING, null)
+                    R.id.favourite -> setupFragments(TAG_FAVOURITE, null)
+                    R.id.trendingTerm -> setupFragments(TAG_TRENDING_TERM, null)
                 }
             }
         }
     }
 
 
-    fun setupFragments(tag: String) {
+    fun setupFragments(tag: String, bundle: Bundle?) {
 
         when (tag) {
             TAG_TRENDING -> {
                 commitFragment(TrendingGifFragment(), R.id.frame, TAG_TRENDING)
             }
-            TAG_RANDOM -> {
-                commitFragment(FavouritesFragment(), R.id.frame, TAG_RANDOM)
+            TAG_FAVOURITE -> {
+                commitFragment(FavouritesFragment(), R.id.frame, TAG_FAVOURITE)
             }
 
-            TAG_TRANSLATE -> {
-                commitFragment(TranslateFragment(), R.id.frame, TAG_TRANSLATE)
+            TAG_TRENDING_TERM -> {
+                commitFragment(TrendingTermFragment(), R.id.frame, TAG_TRENDING_TERM)
+            }
+            TAG_SEARCH -> {
+                val fragment = SearchFragment()
+                fragment.arguments = bundle
+                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM , addToBackStack = true)
             }
 
         }

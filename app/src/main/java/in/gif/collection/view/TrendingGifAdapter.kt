@@ -110,7 +110,7 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
 
         fun bindGif(gif: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos)
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos , "")
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(gif)
         }

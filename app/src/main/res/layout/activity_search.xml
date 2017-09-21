@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="in.gif.collection.viewmodel.search.SearchGifViewModel" />
-    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,48 +15,12 @@
             android:layout_height="@dimen/toolbar_height"
             android:gravity="top" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:visibility="@{viewModel.gifProgress}"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="moving_ball.json"
-            app:lottie_loop="true" />
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.noGifContainerVisibility}">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="There are no gifs, try searching."
-                android:textColor="#90000000"
-                android:textSize="18sp" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="no_gif.json"
-                app:lottie_loop="true" />
-
-        </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/randomGifRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.gifRecyclerView}"></android.support.v7.widget.RecyclerView>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:background="#EFEFEF" />
 
 
     </LinearLayout>
