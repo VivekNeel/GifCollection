@@ -40,7 +40,7 @@ class SearchGifViewModel : Observable() {
             override fun onResponse(call: Call<MediaGifResponse>?, response: Response<MediaGifResponse>?) {
                 gifProgress.set(View.GONE)
                 if (response != null) {
-                    if (response.body()?.results != null) {
+                    if (response.body()?.results != null && response.body()!!.results!!.isNotEmpty()) {
                         changeDataSet(response.body()!!.results!!)
                         gifRecyclerView.set(View.VISIBLE)
                     } else {

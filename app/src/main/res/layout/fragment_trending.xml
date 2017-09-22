@@ -44,6 +44,35 @@
             app:lottie_loop="true" />
 
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="@{randomGifModel.emptyState}"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="empty_state.json"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:text="There are no favourite gifs. Please hit that heart icon in the trending gif page to add gifs to your collection."
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                android:textSize="16sp"
+                android:visibility="@{randomGifModel.emptyState}" />
+
+        </FrameLayout>
+
+
     </RelativeLayout>
 
 </layout>

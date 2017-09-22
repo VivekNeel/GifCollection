@@ -41,6 +41,11 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                 holder.itemGifBinding.progress.visibility = View.VISIBLE
                 val view = holder.itemGifBinding.gifIv
                 holder.itemView.fav.hide()
+                if (CommonUtils.isGifFavourited(list[position].id, view.context)) {
+                    holder.itemView.fav.setBackgroundResource(R.drawable.fav_selected)
+                } else {
+                    holder.itemView.fav.setBackgroundResource(R.drawable.fav_unselected)
+                }
                 Glide.with(view.context)
                         .load(NetworkUtil.getAppropriateImageUrl(list[position].mediaData[0], view.context))
                         .asGif()
@@ -49,9 +54,7 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                             override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                                 holder.itemGifBinding.progress.visibility = View.GONE
                                 holder.itemView.fav.show()
-                                if (CommonUtils.isGifFavourited(list[position].id, view.context)) {
-                                    holder.itemView.fav.playAnimation()
-                                }
+
                                 return false
                             }
 
@@ -62,9 +65,17 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                 holder.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
                 holder.itemView.fav.setOnClickListener {
                     val oldSet: MutableSet<String> = PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE]
-                    oldSet.add(list[position].id)
+                    if (oldSet.contains(list[position].id)) {
+                        oldSet.remove(list[position].id)
+                        holder.itemView.fav.setBackgroundResource(R.drawable.fav_unselected)
+                        view.context.toast("Removed from favourites :(")
+                    } else {
+                        oldSet.add(list[position].id)
+                        holder.itemView.fav.setBackgroundResource(R.drawable.fav_selected)
+                        view.context.toast("Added to favourites!")
+                    }
                     PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = oldSet
-                    holder.itemView.fav.playAnimation()
+
                 }
             }
 
@@ -110,7 +121,7 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
 
         fun bindGif(gif: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos , "")
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, gif, pos, "")
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(gif)
         }

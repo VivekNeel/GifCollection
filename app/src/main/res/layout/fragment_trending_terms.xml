@@ -41,6 +41,34 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="@{randomGifModel.emptyState}"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="empty_state.json"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="There are no hourly trending terms. Please check back later!"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                android:textSize="16sp"
+                android:visibility="@{randomGifModel.emptyState}" />
+
+        </FrameLayout>
+
+
+        <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

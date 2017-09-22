@@ -6,12 +6,12 @@
         title="Trending" />
     <tab
         barColorWhenSelected="@color/colorPrimaryDark"
-        icon="@drawable/ic_random"
+        icon="@drawable/bottom_bar_fav"
         id="@+id/favourite"
         title="Favourites" />
     <tab
         barColorWhenSelected="@color/colorPrimaryDark"
-        icon="@drawable/ic_translate"
+        icon="@drawable/ic_hourly_trending"
         id="@+id/trendingTerm"
-        title="Translate" />
+        title="Hourly Trending" />
 </tabs>

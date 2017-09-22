@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -99,4 +100,8 @@ operator inline fun <reified T : Any> SharedPreferences.get(key: String, value: 
         MutableSet::class -> getStringSet(key, value as? MutableSet<String> ?: mutableSetOf()) as T
         else -> throw UnsupportedOperationException("unsupported data type")
     }
+}
+
+fun Context.toast(msg: String) {
+    Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 }

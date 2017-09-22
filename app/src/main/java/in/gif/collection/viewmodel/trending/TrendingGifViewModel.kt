@@ -29,6 +29,8 @@ class TrendingGifViewModel(context: Context) : Observable() {
 
     var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)
+    var emptyState : ObservableInt = ObservableInt(View.GONE)
+
     private var gifList: ArrayList<GifResultsData> = arrayListOf()
     private var trendingTerms: ArrayList<String> = arrayListOf()
     private var context = context
@@ -64,6 +66,7 @@ class TrendingGifViewModel(context: Context) : Observable() {
         GifFactory.create().fetchFavourites(TextUtils.join(", ", ids.toList())).enqueue(object : Callback<MediaGifResponse> {
             override fun onFailure(call: Call<MediaGifResponse>?, t: Throwable?) {
                 gifProgress.set(View.GONE)
+                emptyState.set(View.VISIBLE)
             }
 
             override fun onResponse(call: Call<MediaGifResponse>?, response: Response<MediaGifResponse>?) {
@@ -73,6 +76,7 @@ class TrendingGifViewModel(context: Context) : Observable() {
                     gifProgress.set(View.GONE)
                 } else {
                     gifProgress.set(View.GONE)
+                    emptyState.set(View.VISIBLE)
                 }
             }
         })
