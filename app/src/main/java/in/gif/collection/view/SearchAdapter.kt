@@ -34,7 +34,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
         holder?.itemGifBinding?.progress?.visibility = View.VISIBLE
         var view = holder?.itemGifBinding?.gifIv
         Glide.with(view?.context)
-                .load(NetworkUtil.getAppropriateImageUrl(list[position].mediaData[0], view.context))
+                .load(list[position].mediaData[0].nano.url)
                 .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(object : RequestListener<String, GifDrawable> {
@@ -81,7 +81,7 @@ class SearchAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView.View
 
         fun bindGif(nano: GifResultsData, pos: Int, activity: Activity) {
             if (itemGifBinding.itemRandomGifModel == null) {
-                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, nano, pos , "")
+                itemGifBinding.itemRandomGifModel = CommonItemGifModel(activity, nano, pos, "")
             } else
                 itemGifBinding.itemRandomGifModel!!.setGif(nano)
         }

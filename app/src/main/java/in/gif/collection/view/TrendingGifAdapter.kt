@@ -46,15 +46,16 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                 } else {
                     holder.itemView.fav.setBackgroundResource(R.drawable.fav_unselected)
                 }
+                holder.itemView.gifIv.isClickable = false
                 Glide.with(view.context)
-                        .load(NetworkUtil.getAppropriateImageUrl(list[position].mediaData[0], view.context))
+                        .load(list[position].mediaData[0].nano.url)
                         .asGif()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .listener(object : RequestListener<String, GifDrawable> {
                             override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                                 holder.itemGifBinding.progress.visibility = View.GONE
                                 holder.itemView.fav.show()
-
+                                holder.itemView.gifIv.isClickable = true
                                 return false
                             }
 

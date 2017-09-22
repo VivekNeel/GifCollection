@@ -1,8 +1,6 @@
 package `in`.gif.collection.view
 
-import `in`.gif.collection.Constants
-import `in`.gif.collection.R
-import `in`.gif.collection.ShowDialogCallback
+import `in`.gif.collection.*
 import `in`.gif.collection.databinding.ListItemDetailBinding
 import `in`.gif.collection.viewmodel.GifDetailViewModel
 import `in`.gif.collection.model.tenor.GifResultsData
@@ -44,15 +42,17 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         imageUrl = intent.getStringExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL)
         binding.gifDetailViewModel = GifDetailViewModel(this, this, imageUrl)
         (binding.gifDetailViewModel as GifDetailViewModel).detailViewVisibility.set(View.VISIBLE)
-
+        binding.animationView.show()
+        binding.downloadCardView.hide()
         Glide.with(binding.detailIv.context)
                 .load(imageUrl)
                 .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(object : RequestListener<String, GifDrawable> {
                     override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        binding.animationView.hide()
+                        binding.downloadCardView.show()
                         return false
-
                     }
 
                     override fun onException(e: Exception?, model: String?, target: Target<GifDrawable>?, isFirstResource: Boolean): Boolean {
@@ -68,7 +68,7 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         fun launchDetail(context: Context, url: String): Intent {
             val intent = Intent(context, GifDetailActivity::class.java)
             intent.putExtra(Constants.EXTRA_DETAIL_IMAGE_URL, url)
-            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL , url)
+            intent.putExtra(Constants.EXTRA_DETAIL_THUMNAIL_URL, url)
             return intent
         }
     }
