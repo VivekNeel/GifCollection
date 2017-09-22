@@ -6,6 +6,7 @@ import `in`.gif.collection.model.RandomGifData
 import `in`.gif.collection.model.TranslateData
 import `in`.gif.collection.model.tenor.HourlyTrendingData
 import `in`.gif.collection.model.tenor.MediaGifResponse
+import android.os.Build
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,11 +15,11 @@ import retrofit2.http.*
  */
 interface GifService {
 
-    @GET("trending?key=LIVDSRZULELA")
-    fun fetchTrendingGif(@Query("pos") offset: String?): Call<MediaGifResponse>
+    @GET("trending")
+    fun fetchTrendingGif(@Query("pos") offset: String?, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
 
-    @GET("search?key=LIVDSRZULELA")
-    fun fetchSearchableGifs(@Query("q") query: String): Call<MediaGifResponse>
+    @GET("search")
+    fun fetchSearchableGifs(@Query("q") query: String, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
 
     @Headers("accept: image/*")
     @GET("gifs/translate")
@@ -31,6 +32,6 @@ interface GifService {
     @GET("gifs?key=LIVDSRZULELA")
     fun fetchFavourites(@Query("ids") listOfIds: String): Call<MediaGifResponse>
 
-    @GET("autocomplete?type=trending&key=LIVDSRZULELA")
-    fun fetchHourlyTrendingTerms(): Call<HourlyTrendingData>
+    @GET("autocomplete?type=trending")
+    fun fetchHourlyTrendingTerms(@Query("key") apiKey: String = BuildConfig.API_KEY): Call<HourlyTrendingData>
 }
