@@ -19,15 +19,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    buildTypes.each {
+        it.buildConfigField 'String', 'API_KEY', keystoreProperties['API_KEY']
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField("String", "API_KEY", '"61dfb1c03a8440b891d9661b2521214c"')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
-            buildConfigField("String", "API_KEY", '"61dfb1c03a8440b891d9661b2521214c"')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
