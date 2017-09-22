@@ -34,9 +34,5 @@ class AboutActivity : BaseActivity() {
         supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.versionTv.text = "Version : ${BuildConfig.VERSION_NAME}"
-        Glide.with(this)
-                .load(R.drawable.powered)
-                .asGif()
-                .into(poweredIv)
     }
 }
