@@ -149,13 +149,29 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
     }
 
     fun onShareButtonClicked(view: View) {
-        io.reactivex.Observable.fromCallable {
-            Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    saveImage(it, context, true)
-                }
+        context.runOnM {
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                showDialogCallback.showDialog()
+                return@runOnM
+            } else {
+                io.reactivex.Observable.fromCallable {
+                    Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
+                }.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            saveImage(it, context, true)
+                        }
+            }
+        }
+        context.runOnKK {
+            io.reactivex.Observable.fromCallable {
+                Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
+            }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        saveImage(it, context, true)
+                    }
+        }
     }
 
     fun saveGif(context: Context) {
@@ -211,7 +227,7 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-       if (!isShareButtonClicked) {
+        if (!isShareButtonClicked) {
             io.reactivex.Observable.fromCallable {
                 mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
                         .setLargeIcon(Glide.with(context)
@@ -231,8 +247,8 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe { }
         } else {
-           context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
-       }
+            context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
+        }
     }
 
     private fun scanMedia(file: File, context: Context) {
