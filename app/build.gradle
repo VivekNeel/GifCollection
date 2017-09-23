@@ -29,12 +29,12 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' , 'proguard-custom.pro'
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-custom.pro'
         }
     }
 
@@ -73,4 +73,7 @@ dependencies {
         transitive = true;
     }
 
+    implementation 'com.google.firebase:firebase-ads:10.2.4'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -20,6 +20,27 @@
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
 
-# If you keep the line number information, uncomment this to
+# If you keep the line number information, uncomment this tod
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-printseeds build/mapping/release/seeds.txt
+-printusage build/mapping/release/unused.txt
+-printmapping build/mapping/release/mapping.txt
+
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+-keep class com.crashlytics.** { *; }
+
+
+#removing logs
+-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...);
+    public static int i(...);
+    public static int w(...);
+    public static int d(...);
+    public static int e(...);
+}
+
+-dontobfuscate
