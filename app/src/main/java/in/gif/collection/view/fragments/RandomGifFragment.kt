@@ -35,7 +35,7 @@ class RandomGifFragment : BaseFragment(), Observer, ShowDialogCallback {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
-        labelText.text = "Try searching for random gif by tag.."
+        labelText.text = "Try searching for random nano by tag.."
         submitCardView.hide()
         translateInputlayout.hint = "Enter tag"
         val dbUrl: String = PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_RANDOM_GIF_URL]

@@ -14,5 +14,7 @@ class Constants {
         const val KEY_RANDOM_GIF_URL = "randomGifUrl"
         const val KEY_TRANSLATE_GIF_URL = "translateGifUrl"
         const val REQUEST_CODE_STORAGE = 199
+        const val KEY_FAVOURITE = "keyF"
+        const val KEY_FRAGMENT_SEARCH_QUERY = "query"
     }
 }

@@ -35,7 +35,7 @@ class TranslateFragment : BaseFragment(), Observer, ShowDialogCallback {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
-        labelText.text = "Translate your words/phrases to gif by searching.."
+        labelText.text = "Translate your words/phrases to nano by searching.."
         randomSubmitCardView.hide()
         translateInputlayout.hint = "Enter word/phrase"
         val dbUrl: String = PreferenceHelper.defaultPrefs(getFragmentHost())[Constants.KEY_TRANSLATE_GIF_URL]

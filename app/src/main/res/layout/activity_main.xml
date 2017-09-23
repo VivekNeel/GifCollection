@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,7 +18,7 @@
                 android:id="@+id/main_holder"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
-                android:background="?colorPrimary"
+                android:background="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -35,23 +36,26 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <FrameLayout
-            android:id="@+id/frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:background="#EFEFEF" />
+            <FrameLayout
+
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:background="#EFEFEF">
+
+            </FrameLayout>
 
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="bottom"
-            app:bb_behavior="shy"
             app:bb_activeTabAlpha="1"
+            app:bb_activeTabColor="#ffffff"
+            app:bb_behavior="shy"
             app:bb_inActiveTabAlpha="0.6"
             app:bb_inActiveTabColor="#ffffff"
-            app:bb_activeTabColor="#ffffff"
             app:bb_tabXmlResource="@xml/bottombar_tabs" />
 
     </android.support.design.widget.CoordinatorLayout>

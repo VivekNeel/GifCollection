@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
 
@@ -14,20 +15,39 @@ android {
 
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    buildTypes.each {
+        it.buildConfigField 'String', 'API_KEY', keystoreProperties['API_KEY']
+    }
+
+
+    signingConfigs {
+
+        release {
+            storeFile file(keystoreProperties['RELEASE_STORE_FILE'])
+            storePassword keystoreProperties['RELEASE_STORE_PASSWORD']
+            keyAlias keystoreProperties['RELEASE_KEY_ALIAS']
+            keyPassword keystoreProperties['RELEASE_KEY_PASSWORD']
+
+        }
+    }
+
     buildTypes {
         debug {
-            minifyEnabled false
-            buildConfigField("String", "API_KEY", '"61dfb1c03a8440b891d9661b2521214c"')
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' , 'proguard-custom.pro'
         }
         release {
-            minifyEnabled false
-            buildConfigField("String", "API_KEY", '"61dfb1c03a8440b891d9661b2521214c"')
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard-custom.pro'
         }
     }
 
@@ -62,5 +82,11 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'io.reactivex:rxjava:1.3.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 
+    implementation 'com.google.firebase:firebase-ads:10.2.4'
 }
+
+apply plugin: 'com.google.gms.google-services'

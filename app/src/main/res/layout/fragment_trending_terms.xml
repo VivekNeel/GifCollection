@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,7 +10,7 @@
             type="in.gif.collection.viewmodel.trending.TrendingGifViewModel" />
     </data>
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,53 +20,25 @@
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:visibility="@{randomGifModel.gifProgress}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_fileName="moving_ball.json"
             app:lottie_loop="true" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/randomGifRV"
+            android:id="@+id/termRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:paddingTop="5dp"
-            android:visibility="@{randomGifModel.gifRecyclerView}" />
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/activityAddView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id" />
-
-        </FrameLayout>
-
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loadMoreProgress"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="moving_ball.json"
-            app:lottie_loop="true" />
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id" />
-
+            android:visibility="@{randomGifModel.gifRecyclerView}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -85,11 +57,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="80dp"
+                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="There are no favourite gifs. Please hit that heart icon in the trending gif page to add gifs to your collection."
+                android:text="There are no hourly trending terms. Please check back later!"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
                 android:textSize="16sp"
                 android:visibility="@{randomGifModel.emptyState}" />
@@ -97,6 +68,15 @@
         </FrameLayout>
 
 
-    </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:background="#EFEFEF" />
+
+
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

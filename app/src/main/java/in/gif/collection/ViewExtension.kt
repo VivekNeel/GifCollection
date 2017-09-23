@@ -15,9 +15,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.ArrayList
 
 /**
  * Created by vivek on 15/09/17.
@@ -52,15 +54,17 @@ fun Context.runOnM(run: () -> Unit) {
     }
 }
 
-fun Context.runOnKK(run: () -> Unit){
-    if (SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+fun Context.runOnKK(run: () -> Unit) {
+    if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         run()
     }
 }
 
-fun AppCompatActivity.commitFragment(fragment: Fragment, @IdRes containerId: Int, tag: String, @BoolRes allowStateLoss: Boolean = false) {
+fun AppCompatActivity.commitFragment(fragment: Fragment, @IdRes containerId: Int, tag: String, @BoolRes allowStateLoss: Boolean = false, @BoolRes addToBackStack: Boolean = false) {
     val ft = supportFragmentManager.beginTransaction().replace(containerId, fragment, tag)
     if (!supportFragmentManager.isStateSaved) {
+        if (addToBackStack)
+            ft.addToBackStack(null)
         ft.commit()
     } else if (allowStateLoss) {
         ft.commitAllowingStateLoss()
@@ -74,6 +78,7 @@ fun Context.fetchColor(@ColorRes id: Int): Int {
 inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
     val editor = edit()
     operation(editor)
+    editor.clear()
     editor.apply()
 }
 
@@ -82,6 +87,7 @@ operator inline fun SharedPreferences.set(key: String, value: Any?) {
         is String? -> edit { it.putString(key, value) }
         is Int -> edit { it.putInt(key, value) }
         is Boolean -> edit { it.putBoolean(key, value) }
+        is MutableSet<*> -> edit { it.putStringSet(key, value as MutableSet<String>?) }
         else -> throw UnsupportedOperationException("unsupported data type")
     }
 }
@@ -91,6 +97,11 @@ operator inline fun <reified T : Any> SharedPreferences.get(key: String, value: 
         String::class -> getString(key, value as? String ?: "") as T
         Int::class -> getInt(key, value as? Int ?: -1) as T
         Boolean::class -> getBoolean(key, value as?  Boolean ?: false) as T
+        MutableSet::class -> getStringSet(key, value as? MutableSet<String> ?: mutableSetOf()) as T
         else -> throw UnsupportedOperationException("unsupported data type")
     }
+}
+
+fun Context.toast(msg: String) {
+    Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 }
