@@ -35,7 +35,8 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         super.onCreate(savedInstanceState)
         initDataBinding()
         getExtrasFromIntent()
-        setupAds()
+        if (!BuildConfig.DEBUG)
+            setupAds()
     }
 
     fun initDataBinding() {
