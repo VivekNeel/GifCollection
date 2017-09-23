@@ -129,3 +129,24 @@ fabric.properties
 # End of https://www.gitignore.io/api/androidstudio
 .idea/instapk.xml
 instapk.log*
+
+gradle.properties
+keystore.properties
+app/icon2
+app/libs/
+app/release/
+app/src/main/java/in/gif/collection/network/
+app/src/main/res/drawable-xxhdpi/
+app/src/main/res/mipmap-hdpi/
+app/src/main/res/mipmap-mdpi/
+app/src/main/res/mipmap-xhdpi/
+app/src/main/res/mipmap-xxhdpi/
+icon2
+libs/
+release/
+src/main/java/in/gif/collection/network/
+src/main/res/drawable-xxhdpi/
+src/main/res/mipmap-hdpi/
+src/main/res/mipmap-mdpi/
+src/main/res/mipmap-xhdpi/
+src/main/res/mipmap-xxhdpi/
