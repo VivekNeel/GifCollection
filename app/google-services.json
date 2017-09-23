@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "820318125378",
+    "firebase_url": "https://admob-app-id-5881026628.firebaseio.com",
+    "project_id": "admob-app-id-5881026628",
+    "storage_bucket": "admob-app-id-5881026628.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820318125378:android:de69c08c5831774c",
+        "android_client_info": {
+          "package_name": "in.gif.collection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820318125378-p1hkl87tvt7bhrm3if1m1hprfdb77bmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.gif.collection",
+            "certificate_hash": "4c8ce06a86c3cf8e711281df0ab29cab39287e45"
+          }
+        },
+        {
+          "client_id": "820318125378-c4cjmvd5ah8pnn7ongt5md5dhnf97j2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7-AAOjMBSCjY31T0htPp2Ve_8rodbz8k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820318125378-c4cjmvd5ah8pnn7ongt5md5dhnf97j2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

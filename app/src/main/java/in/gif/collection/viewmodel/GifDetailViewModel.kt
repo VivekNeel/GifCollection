@@ -148,6 +148,16 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
 
     }
 
+    fun onShareButtonClicked(view: View) {
+        io.reactivex.Observable.fromCallable {
+            Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get()
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    saveImage(it, context, true)
+                }
+    }
+
     fun saveGif(context: Context) {
         downloadProgress.set(View.VISIBLE)
         downloadButton.set(View.GONE)
@@ -167,7 +177,7 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
                 }
     }
 
-    private fun saveImage(cache: File, context: Context) {
+    private fun saveImage(cache: File, context: Context, isShareButtonClicked: Boolean = false) {
 
         val root = Environment.getExternalStorageDirectory().toString()
         val myDir = File(root + "/GifCollection")
@@ -201,23 +211,28 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
-        io.reactivex.Observable.fromCallable {
-            mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
-                    .setLargeIcon(Glide.with(context)
-                            .load(url)
-                            .asBitmap()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .centerCrop()
-                            .into(300, 300)
-                            .get())
-                    .setContentIntent(PendingIntent.getActivity(context, 99, shareIntent, 0))
-                    .setContentTitle("Saved")
-                    .setAutoCancel(true)
+       if (!isShareButtonClicked) {
+            io.reactivex.Observable.fromCallable {
+                mBuilder.setSmallIcon(R.drawable.ic_arrow_downward_black_24dp)
+                        .setLargeIcon(Glide.with(context)
+                                .load(url)
+                                .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .centerCrop()
+                                .into(300, 300)
+                                .get())
+                        .setContentIntent(PendingIntent.getActivity(context, 99, shareIntent, 0))
+                        .setContentTitle("Saved")
+                        .setAutoCancel(true)
 
-            mNotificationManager?.notify(11, mBuilder.build())
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe { }
+                mNotificationManager?.notify(11, mBuilder.build())
+                context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
+
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { }
+        } else {
+           context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
+       }
     }
 
     private fun scanMedia(file: File, context: Context) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -23,6 +24,10 @@
             app:lottie_fileName="moving_ball.json"
             app:lottie_loop="true" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/randomGifRV"
@@ -30,6 +35,16 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:visibility="@{randomGifModel.gifRecyclerView}" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/activityAddView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+
+        </FrameLayout>
 
 
         <com.airbnb.lottie.LottieAnimationView
@@ -42,6 +57,15 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="moving_ball.json"
             app:lottie_loop="true" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
 
 
         <FrameLayout

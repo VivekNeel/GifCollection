@@ -16,7 +16,9 @@ import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_trending.*
 
 
 class MainActivity : BaseActivity() {
@@ -71,7 +73,7 @@ class MainActivity : BaseActivity() {
             TAG_SEARCH -> {
                 val fragment = SearchFragment()
                 fragment.arguments = bundle
-                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM , addToBackStack = true)
+                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = true)
             }
 
         }
@@ -135,9 +137,6 @@ class MainActivity : BaseActivity() {
             R.id.option -> {
                 val intent = Intent(this, AboutActivity::class.java)
                 startActivity(intent)
-            }
-            else -> {
-                throw UnsupportedOperationException("unknown id")
             }
         }
         return super.onOptionsItemSelected(item)

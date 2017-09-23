@@ -13,6 +13,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.ads.AdRequest
+import kotlinx.android.synthetic.main.fragment_trending.*
 import java.util.*
 
 /**
@@ -35,6 +37,13 @@ class TrendingGifFragment : BaseFragment(), Observer {
         setUPList(mainActivityDataBinding.randomGifRV)
         setUPObserver(mainActivityDataBinding.randomGifModel)
         mainActivityDataBinding.randomGifModel?.getData("")
+        setupAds()
+    }
+
+    fun setupAds() {
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+        activityAddView.loadAd(adRequest)
     }
 
 
