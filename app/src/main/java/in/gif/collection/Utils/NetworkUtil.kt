@@ -25,7 +25,7 @@ class NetworkUtil {
                     return "3g"
                 TelephonyManager.NETWORK_TYPE_LTE ->
                     return "4g"
-                else -> return "Unknown network type"
+                else -> return "4g"
             }
         }
 
@@ -33,7 +33,7 @@ class NetworkUtil {
             when (getNetworkType(context)) {
                 "2g" -> return mediaGifData.nano.url
                 "3g", "4g" -> return mediaGifData.highGif.url
-                else -> throw UnsupportedOperationException("unknown network type found")
+                else -> return mediaGifData.highGif.url
             }
         }
     }
