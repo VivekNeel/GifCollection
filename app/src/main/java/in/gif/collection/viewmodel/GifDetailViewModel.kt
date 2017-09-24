@@ -222,7 +222,7 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
         val shareIntent = Intent()
         with(shareIntent) {
             action = (Intent.ACTION_SEND);
-            putExtra(Intent.EXTRA_STREAM, imageUri);
+            putExtra(Intent.EXTRA_STREAM, imageUri)
             type = ("image/*");
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }

@@ -68,7 +68,7 @@ class MainActivity : BaseActivity() {
             }
 
             TAG_TRENDING_TERM -> {
-                commitFragment(TrendingTermFragment(), R.id.frame, TAG_TRENDING_TERM)
+                commitFragment(VideoListFragment(), R.id.frame, TAG_TRENDING_TERM)
             }
             TAG_SEARCH -> {
                 val fragment = SearchFragment()

@@ -16,5 +16,6 @@ class Constants {
         const val REQUEST_CODE_STORAGE = 199
         const val KEY_FAVOURITE = "keyF"
         const val KEY_FRAGMENT_SEARCH_QUERY = "query"
+        const val EXTRA_VIDEO_ID = "id"
     }
 }

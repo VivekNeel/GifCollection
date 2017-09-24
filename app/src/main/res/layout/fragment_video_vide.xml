@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <FrameLayout
+            android:id="@+id/youtubeLayout"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/youtubeLayout"
+            android:id="@+id/shareButton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_bg"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Share"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+</layout>

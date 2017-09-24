@@ -4,15 +4,15 @@ import `in`.gif.collection.Constants
 import `in`.gif.collection.GifApplication
 import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.data.GifFactory
+import `in`.gif.collection.data.db.StorageService
 import `in`.gif.collection.get
-import `in`.gif.collection.model.GifResponse
-import `in`.gif.collection.model.TrendingGifResponse
 import `in`.gif.collection.model.tenor.GifResultsData
 import `in`.gif.collection.model.tenor.HourlyTrendingData
 import `in`.gif.collection.model.tenor.MediaGifResponse
+import `in`.gif.collection.model.youtube.ItemsData
+import `in`.gif.collection.model.youtube.YoutubeSearchResponse
 import android.content.Context
 import android.databinding.ObservableInt
-import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.view.View
 import retrofit2.Call
@@ -20,7 +20,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 /**
  * Created by vivek on 15/09/17.
@@ -29,10 +28,11 @@ class TrendingGifViewModel(context: Context) : Observable() {
 
     var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)
-    var emptyState : ObservableInt = ObservableInt(View.GONE)
+    var emptyState: ObservableInt = ObservableInt(View.GONE)
 
     private var gifList: ArrayList<GifResultsData> = arrayListOf()
     private var trendingTerms: ArrayList<String> = arrayListOf()
+    private var videosData: ArrayList<ItemsData> = arrayListOf()
     private var context = context
     private var next: String? = null
 
@@ -82,6 +82,32 @@ class TrendingGifViewModel(context: Context) : Observable() {
         })
     }
 
+    fun fetchYoutubeVideos(query: String) {
+        initializeViews()
+        GifFactory.createYoutubeService().fetchSearcableVideos(query).enqueue(object : Callback<YoutubeSearchResponse> {
+            override fun onFailure(call: Call<YoutubeSearchResponse>?, t: Throwable?) {
+                gifProgress.set(View.GONE)
+                changeVideoDataSet(StorageService.getVideosFromDb())
+                gifRecyclerView.set(View.VISIBLE)
+            }
+
+            override fun onResponse(call: Call<YoutubeSearchResponse>?, response: Response<YoutubeSearchResponse>?) {
+                if (response != null && response.body() != null && response.body()!!.itemsData?.isNotEmpty()!!) {
+                    for (item in response.body()!!.itemsData){
+                        StorageService.putDataIntoDB(item)
+                    }
+                    changeVideoDataSet(StorageService.getVideosFromDb())
+                    gifRecyclerView.set(View.VISIBLE)
+                    gifProgress.set(View.GONE)
+                } else {
+                    gifProgress.set(View.GONE)
+                    changeVideoDataSet(StorageService.getVideosFromDb())
+                }
+                gifRecyclerView.set(View.VISIBLE)
+            }
+        })
+    }
+
     fun fetchTrendingTerms() {
         initializeViews()
         GifFactory.create().fetchHourlyTrendingTerms().enqueue(object : Callback<HourlyTrendingData> {
@@ -120,11 +146,21 @@ class TrendingGifViewModel(context: Context) : Observable() {
         notifyObservers()
     }
 
+    fun changeVideoDataSet(gifList: List<ItemsData>) {
+        this.videosData.addAll(gifList)
+        setChanged()
+        notifyObservers()
+    }
+
     fun getGifs(): List<GifResultsData> {
         return gifList
     }
 
-    fun getTerms() : List<String>{
+    fun getVideos(): List<ItemsData> {
+        return videosData
+    }
+
+    fun getTerms(): List<String> {
         return trendingTerms
     }
 

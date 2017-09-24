@@ -1,5 +1,6 @@
 package `in`.gif.collection.view.fragments
 
+import `in`.gif.collection.BuildConfig
 import `in`.gif.collection.Constants
 import `in`.gif.collection.R
 import `in`.gif.collection.custom.CustomItemDecorator
@@ -37,6 +38,7 @@ class TrendingGifFragment : BaseFragment(), Observer {
         setUPList(mainActivityDataBinding.randomGifRV)
         setUPObserver(mainActivityDataBinding.randomGifModel)
         mainActivityDataBinding.randomGifModel?.getData("")
+        if(!BuildConfig.DEBUG)
         setupAds()
     }
 

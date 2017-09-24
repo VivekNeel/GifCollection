@@ -16,5 +16,13 @@ class GifFactory {
                     .build()
             return retrofit.create(GifService::class.java)
         }
+
+        fun createYoutubeService(): YoutubeService {
+            val retrofit = Retrofit.Builder().baseUrl("https://www.googleapis.com/youtube/v3/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+            return retrofit.create(YoutubeService::class.java)
+        }
+
     }
 }
