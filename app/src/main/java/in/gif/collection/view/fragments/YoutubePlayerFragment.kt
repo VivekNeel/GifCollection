@@ -60,7 +60,7 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
 
     fun setupAds() {
         val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+        binding.adView.loadAd(adRequest)
     }
     private lateinit var binding: FragmentVideoVideBinding
     lateinit var id: String
