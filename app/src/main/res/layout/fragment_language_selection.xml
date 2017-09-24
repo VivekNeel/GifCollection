@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.gif.collection.viewmodel.LanguageSelectionViewModel"/>
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/videoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="45dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="Select Language to proceed"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp"
+        android:gravity="left">
+
+        <RadioButton
+            android:id="@+id/tamil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Tamil"
+            android:textColor="@color/white"
+            tools:targetApi="lollipop" />
+
+        <RadioButton
+            android:id="@+id/hindi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            tools:targetApi="lollipop"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Hindi"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="English"
+            android:textColor="@color/white"
+            tools:targetApi="lollipop" />
+
+        <RadioButton
+            android:id="@+id/marathi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            tools:targetApi="lollipop"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Marathi"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/malayalam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            tools:targetApi="lollipop"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Malayalam"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/gujarthi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            tools:targetApi="lollipop"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Gujrathi"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/punjabi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            tools:targetApi="lollipop"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Punjabi"
+            android:textColor="@color/white" />
+
+
+        <RadioButton
+            android:id="@+id/bihari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorAccent"
+            android:onClick="@{viewModel::onRadioButtonClicked}"
+            android:text="Bihari"
+            android:textColor="@color/white"
+            tools:targetApi="lollipop" />
+
+
+    </RadioGroup>
+
+</LinearLayout>
+</layout>

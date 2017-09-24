@@ -86,6 +86,7 @@ operator inline fun SharedPreferences.set(key: String, value: Any?) {
     when (value) {
         is String? -> edit { it.putString(key, value) }
         is Int -> edit { it.putInt(key, value) }
+        is Long -> edit { it.putLong(key, value) }
         is Boolean -> edit { it.putBoolean(key, value) }
         is MutableSet<*> -> edit { it.putStringSet(key, value as MutableSet<String>?) }
         else -> throw UnsupportedOperationException("unsupported data type")
@@ -96,6 +97,7 @@ operator inline fun <reified T : Any> SharedPreferences.get(key: String, value: 
     return when (T::class) {
         String::class -> getString(key, value as? String ?: "") as T
         Int::class -> getInt(key, value as? Int ?: -1) as T
+        Long::class -> getLong(key, value as? Long ?: -1) as T
         Boolean::class -> getBoolean(key, value as?  Boolean ?: false) as T
         MutableSet::class -> getStringSet(key, value as? MutableSet<String> ?: mutableSetOf()) as T
         else -> throw UnsupportedOperationException("unsupported data type")

@@ -16,6 +16,28 @@ public class SnippetData extends RealmObject {
     @SerializedName("thumbnails")
     private ThumbnailsData thumbnails;
 
+    @SerializedName("publishedAt")
+    private String publishedAt;
+
+    @SerializedName("channelTitle")
+    private String channelTitle;
+
+    public String getChannelTitle() {
+        return channelTitle;
+    }
+
+    public void setChannelTitle(String channelTitle) {
+        this.channelTitle = channelTitle;
+    }
+
+    public String getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
     public String getTitle() {
         return title;
     }

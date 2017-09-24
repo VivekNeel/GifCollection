@@ -11,9 +11,21 @@ import io.realm.annotations.PrimaryKey
 
 open class ItemsData : RealmObject() {
 
+    private var type: String = ""
+
+    var holderType: String = ""
+
+    fun getType(): String {
+        return type
+    }
+
+    fun setType(type: String) {
+        this.type = type
+    }
+
     @PrimaryKey
     @SerializedName("etag")
-    var etag : String = ""
+    var etag: String = ""
 
     @SerializedName("id")
     var idData: IdData? = null

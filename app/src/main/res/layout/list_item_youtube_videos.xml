@@ -2,12 +2,15 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/itemContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/selector_subtle">
 
         <android.support.v7.widget.CardView
             style="@style/Card"
             android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
@@ -18,22 +21,59 @@
                 <ImageView
                     android:id="@+id/videoThumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/videoTitle"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Title"
-                    android:textAppearance="@style/Toolbar.TitleText"
-                    android:textSize="20sp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoThumbnail" />
+                    app:layout_constraintTop_toBottomOf="@+id/videoThumbnail">
+
+                    <TextView
+                        android:id="@+id/videoTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="2"
+                        android:text="Hello"
+                        android:textColor="@color/md_black_1000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/videoDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/videoTitle"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:layout_toLeftOf="@+id/favVideo"
+                        android:text="Village food factoryVillage food factoryVillage food factoryVillage food factory"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/favVideo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fav_unselected_black"
+                        />
+
+                </RelativeLayout>
+
 
             </android.support.constraint.ConstraintLayout>
 

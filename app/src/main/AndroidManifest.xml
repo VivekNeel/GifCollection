@@ -15,15 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="Search for gifs"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustNothing">
+            android:name=".view.SplashActivity"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustNothing">
+
         </activity>
 
         <activity
@@ -43,9 +46,12 @@
 
         <activity
             android:name=".view.VideoViewActivity"
-            android:label="Player"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".view.IntroActivity"
+            android:theme="@style/Theme.Intro" />
 
         <receiver
             android:name=".DownloadListener"

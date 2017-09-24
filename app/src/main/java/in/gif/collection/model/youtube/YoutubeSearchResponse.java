@@ -13,6 +13,17 @@ import io.realm.annotations.PrimaryKey;
 public class YoutubeSearchResponse {
 
 
+    @SerializedName("etag")
+    private String etag;
+
+    public String getEtag() {
+        return etag;
+    }
+
+    public void setEtag(String etag) {
+        this.etag = etag;
+    }
+
     @SerializedName("items")
     private List<ItemsData> itemsData;
 

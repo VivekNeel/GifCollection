@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -18,7 +19,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/toolbarMargin"
                 android:elevation="8dp"
-                app:titleTextAppearance="@style/Toolbar.TitleText" />
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                tools:targetApi="lollipop" />
 
         </android.support.design.widget.AppBarLayout>
 

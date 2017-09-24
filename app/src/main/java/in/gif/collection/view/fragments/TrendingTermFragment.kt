@@ -54,7 +54,7 @@ class TrendingTermFragment : BaseFragment(), Observer, ITermItemClickedCallback 
         recyclerView.adapter = TrendingTermsAdapter(getFragmentHost(), this)
     }
 
-    override fun onTermClicked(name: String) {
+    override fun onTermClicked(name: String , view : View) {
         frame.show()
         val bundle = Bundle()
         bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, name)

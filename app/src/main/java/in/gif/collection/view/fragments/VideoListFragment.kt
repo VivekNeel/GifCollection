@@ -1,40 +1,45 @@
 package `in`.gif.collection.view.fragments
 
-import `in`.gif.collection.BuildConfig
-import `in`.gif.collection.ITermItemClickedCallback
-import `in`.gif.collection.R
+import `in`.gif.collection.*
+import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.databinding.FragmentTrendingBinding
+import `in`.gif.collection.model.youtube.ItemsData
 import `in`.gif.collection.view.TrendingGifAdapter
+import `in`.gif.collection.view.VideoViewActivity
 import `in`.gif.collection.viewmodel.trending.TrendingGifViewModel
-import android.app.DownloadManager
-import android.content.Context
-import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.support.v4.content.FileProvider
+import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.commit451.youtubeextractor.YouTubeExtractionResult
-import com.commit451.youtubeextractor.YouTubeExtractor
-import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_search.*
-import java.io.File
 import java.util.*
+import android.support.v7.widget.DividerItemDecoration
+import com.google.android.gms.ads.AdRequest
+
 
 /**
  * Created by vivek on 24/09/17.
  */
-class VideoListFragment : BaseFragment(), Observer, ITermItemClickedCallback {
-    override fun onTermClicked(name: String) {
+class VideoListFragment : BaseFragment(), Observer, IVideoClickedCallback {
 
+    override fun onItemClicked(itemsData: ItemsData) {
+        val startIntent = VideoViewActivity.getStartIntent(activity, itemsData)
+        getFragmentHost().startActivity(startIntent)
+    }
+
+    private lateinit var query: String
+    private lateinit var type: String
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            query = arguments.getString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY)
+            type = arguments.getString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE)
+        }
     }
 
     lateinit var binding: FragmentTrendingBinding
@@ -44,12 +49,27 @@ class VideoListFragment : BaseFragment(), Observer, ITermItemClickedCallback {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
         setupList()
-        binding.randomGifModel?.fetchYoutubeVideos("english whatsapp videos status")
+        setupAds()
+        val expiryResponseTime: Long = PreferenceManager.getDefaultSharedPreferences(context).getLong("expiryTime", -1)
+
+        if (expiryResponseTime < System.currentTimeMillis()) {
+            binding.randomGifModel?.fetchYoutubeVideos(query, type, true)
+        } else {
+            binding.randomGifModel?.fetchYoutubeVideos(query, type)
+        }
     }
+
+    fun setupAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+        binding.activityAddView.loadAd(adRequest)
+    }
+
 
     override fun update(p0: Observable?, p1: Any?) {
         when (p0) {
@@ -69,6 +89,9 @@ class VideoListFragment : BaseFragment(), Observer, ITermItemClickedCallback {
     fun setupList() {
         randomGifRV.layoutManager = LinearLayoutManager(getFragmentHost())
         randomGifRV.setHasFixedSize(true)
-        randomGifRV.adapter = TrendingGifAdapter(getFragmentHost(), true)
+        randomGifRV.adapter = TrendingGifAdapter(getFragmentHost(), true, this)
+        val dividerItemDecoration = DividerItemDecoration(randomGifRV.context,
+                (randomGifRV.layoutManager as LinearLayoutManager).orientation)
+        randomGifRV.addItemDecoration(dividerItemDecoration)
     }
 }

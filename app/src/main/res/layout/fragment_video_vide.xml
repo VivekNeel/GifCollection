@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/tools">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -9,21 +12,26 @@
         <FrameLayout
             android:id="@+id/youtubeLayout"
             android:layout_width="match_parent"
-            android:layout_margin="20dp"
             android:layout_height="wrap_content"
             android:visibility="visible" />
 
-        <Button
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/relatedVideosRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/youtubeLayout"
+            android:paddingTop="5dp" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/youtubeLayout"
-            android:id="@+id/shareButton"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_bg"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="Share"
-            android:textColor="@color/white" />
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+
 
     </RelativeLayout>
 

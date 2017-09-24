@@ -4,6 +4,7 @@ import `in`.gif.collection.BuildConfig
 import `in`.gif.collection.model.youtube.YoutubeSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 /**
@@ -12,6 +13,8 @@ import retrofit2.http.Query
 interface YoutubeService {
 
     @GET("search?part=snippet")
-    fun fetchSearcableVideos(@Query("q") query: String, @Query("maxResults") limit: Int = 20, @Query("key") apiKey: String = BuildConfig.YOUTUBE_API_KEY)
+    fun fetchSearcableVideos(@Query("q") query: String, @Query("maxResults") limit: Int = 50, @Query("key") apiKey: String = BuildConfig.YOUTUBE_API_KEY)
             : Call<YoutubeSearchResponse>
+
+
 }

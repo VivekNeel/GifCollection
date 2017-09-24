@@ -24,12 +24,18 @@ import kotlinx.android.synthetic.main.list_item_random_gif.view.*
 import kotlinx.android.synthetic.main.list_item_youtube_videos.view.*
 import java.lang.Exception
 import `in`.gif.collection.MainActivity
+import `in`.gif.collection.custom.TransitionHelper
+import android.annotation.TargetApi
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.FileProvider
+import android.support.v4.util.Pair
 import android.util.Log
 import com.commit451.youtubeextractor.YouTubeExtractionResult
 import io.reactivex.disposables.Disposable
@@ -44,7 +50,7 @@ import java.io.File
  * Created by vivek on 15/09/17.
  */
 
-class TrendingGifAdapter(activity: Activity, isYouTube: Boolean = false, callback: ITermItemClickedCallback? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TrendingGifAdapter(activity: Activity, isYouTube: Boolean = false, callback: IVideoClickedCallback? = null) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var list: List<GifResultsData> = emptyList()
     private var videoList: List<ItemsData> = emptyList()
@@ -58,7 +64,7 @@ class TrendingGifAdapter(activity: Activity, isYouTube: Boolean = false, callbac
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder?.itemViewType) {
-            VIEW_TYPE_CONTENT -> {
+            VIEW_TYPE_GIF -> {
                 with(holder as TrendingGifViewHolder) {
                     holder.itemGifBinding.progress.visibility = View.VISIBLE
                     val view = holder.itemGifBinding.gifIv
@@ -106,13 +112,13 @@ class TrendingGifAdapter(activity: Activity, isYouTube: Boolean = false, callbac
             VIEW_TYPE_VIDEO -> {
                 //TODO Follow MVVM
                 with((holder as VideoViewHolder).itemView) {
+
                     Glide.with(context)
                             .load(videoList[position].snippetData?.thumbnails?.medium?.url).into(videoThumbnail)
                     videoTitle.text = videoList[position].snippetData?.title
-                    videoTitle.setOnClickListener {
-                        val intent = Intent(context , VideoViewActivity::class.java)
-                        intent.putExtra(Constants.EXTRA_VIDEO_ID , videoList[position].idData?.videoId)
-                        context.startActivity(intent)
+                    videoDetails.text = "${videoList[position].snippetData?.channelTitle}"
+                    videoThumbnail.setOnClickListener {
+                        callback?.onItemClicked(videoList[position])
                     }
                 }
             }

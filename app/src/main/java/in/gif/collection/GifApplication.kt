@@ -14,34 +14,9 @@ import io.realm.Realm
  */
 class GifApplication : Application() {
 
-    private var gifService: GifService? = null
-
     override fun onCreate() {
         super.onCreate()
         Fabric.with(this, Crashlytics())
         Realm.init(this)
     }
-
-
-
-    companion object {
-        private fun getGifApplication(context: Context): GifApplication {
-            return context.applicationContext as GifApplication
-        }
-
-        fun createGifApplication(context: Context): GifApplication {
-            return getGifApplication(context)
-        }
-
-        fun getApplicationContext() : Context{
-            return GifApplication.getApplicationContext()
-        }
-    }
-
-    fun getGifService(): GifService {
-        if (gifService == null) gifService = GifFactory.create()
-        return gifService as GifService
-    }
-
-
 }

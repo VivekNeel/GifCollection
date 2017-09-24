@@ -11,14 +11,20 @@ import `in`.gif.collection.model.tenor.HourlyTrendingData
 import `in`.gif.collection.model.tenor.MediaGifResponse
 import `in`.gif.collection.model.youtube.ItemsData
 import `in`.gif.collection.model.youtube.YoutubeSearchResponse
+import `in`.gif.collection.set
 import android.content.Context
+import android.content.SharedPreferences
 import android.databinding.ObservableInt
+import android.preference.PreferenceManager
+import android.text.BoringLayout
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**
@@ -42,8 +48,7 @@ class TrendingGifViewModel(context: Context) : Observable() {
     }
 
     fun fetchTrendingGif(offset: String?) {
-        val gifApp = GifApplication.createGifApplication(context)
-        gifApp.getGifService().fetchTrendingGif(offset).enqueue(object : Callback<MediaGifResponse> {
+        GifFactory.create().fetchTrendingGif(offset).enqueue(object : Callback<MediaGifResponse> {
             override fun onResponse(call: Call<MediaGifResponse>?, response: Response<MediaGifResponse>?) {
                 var mediaGifResponse = response?.body()?.results
                 if (mediaGifResponse != null) {
@@ -82,30 +87,39 @@ class TrendingGifViewModel(context: Context) : Observable() {
         })
     }
 
-    fun fetchYoutubeVideos(query: String) {
+    fun fetchYoutubeVideos(query: String, type: String, forceRefresh: Boolean = false) {
         initializeViews()
-        GifFactory.createYoutubeService().fetchSearcableVideos(query).enqueue(object : Callback<YoutubeSearchResponse> {
-            override fun onFailure(call: Call<YoutubeSearchResponse>?, t: Throwable?) {
-                gifProgress.set(View.GONE)
-                changeVideoDataSet(StorageService.getVideosFromDb())
-                gifRecyclerView.set(View.VISIBLE)
-            }
-
-            override fun onResponse(call: Call<YoutubeSearchResponse>?, response: Response<YoutubeSearchResponse>?) {
-                if (response != null && response.body() != null && response.body()!!.itemsData?.isNotEmpty()!!) {
-                    for (item in response.body()!!.itemsData){
-                        StorageService.putDataIntoDB(item)
-                    }
-                    changeVideoDataSet(StorageService.getVideosFromDb())
+        if (StorageService.getVideosFromDb(type).isNotEmpty() && !forceRefresh) {
+            changeVideoDataSet(StorageService.getVideosFromDb(type))
+            gifRecyclerView.set(View.VISIBLE)
+            gifProgress.set(View.GONE)
+        } else {
+            GifFactory.createYoutubeService(context).fetchSearcableVideos(query).enqueue(object : Callback<YoutubeSearchResponse> {
+                override fun onFailure(call: Call<YoutubeSearchResponse>?, t: Throwable?) {
+                    gifProgress.set(View.GONE)
+                    changeVideoDataSet(StorageService.getVideosFromDb(type))
                     gifRecyclerView.set(View.VISIBLE)
-                    gifProgress.set(View.GONE)
-                } else {
-                    gifProgress.set(View.GONE)
-                    changeVideoDataSet(StorageService.getVideosFromDb())
                 }
-                gifRecyclerView.set(View.VISIBLE)
-            }
-        })
+
+                override fun onResponse(call: Call<YoutubeSearchResponse>?, response: Response<YoutubeSearchResponse>?) {
+                    if (response != null && response.body() != null && response.body()!!.itemsData?.isNotEmpty()!!) {
+                        val expiryTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(12)
+                        PreferenceManager.getDefaultSharedPreferences(context).set("expiryTime", expiryTime)
+                        for (item in response.body()!!.itemsData) {
+                            item.setType(type)
+                            StorageService.putDataIntoDB(item)
+                        }
+                        changeVideoDataSet(StorageService.getVideosFromDb(type))
+                        gifRecyclerView.set(View.VISIBLE)
+                        gifProgress.set(View.GONE)
+                    } else {
+                        gifProgress.set(View.GONE)
+                        changeVideoDataSet(StorageService.getVideosFromDb(type))
+                    }
+                    gifRecyclerView.set(View.VISIBLE)
+                }
+            })
+        }
     }
 
     fun fetchTrendingTerms() {

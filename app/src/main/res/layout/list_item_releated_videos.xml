@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/releatedVideoThumbnail"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/releatedVideoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/releatedVideoThumbnail"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="Titfdkfjdkfjdkfjdkfdjfkdjfkdkffdjkfdkjfdflefdkfjkdjfkdjfdkfjkdfjdkfdkff"
+            android:textColor="@color/md_black_1000"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/relatedVideoDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/releatedVideoTitle"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/releatedVideoThumbnail"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Village food factory"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+</layout>

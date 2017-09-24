@@ -17,5 +17,8 @@ class Constants {
         const val KEY_FAVOURITE = "keyF"
         const val KEY_FRAGMENT_SEARCH_QUERY = "query"
         const val EXTRA_VIDEO_ID = "id"
+        const val KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY = "youtubeQuery"
+        const val KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE = "type"
+        const val KEY_LANGUAGE = "lang"
     }
 }

@@ -27,7 +27,7 @@ class TrendingTermsAdapter(context: Context, callback: ITermItemClickedCallback)
         holder?.let {
             holder.bindTerm(data[position])
             holder.itemView.itemCard.setOnClickListener {
-                callback.onTermClicked(data[position])
+                callback.onTermClicked(data[position] , holder.itemView)
             }
         }
     }

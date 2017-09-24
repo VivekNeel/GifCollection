@@ -10,7 +10,7 @@ import io.realm.RealmObject;
 
 public class ThumbnailsData extends RealmObject {
 
-    @SerializedName("medium")
+    @SerializedName("high")
     private UrlData medium;
 
     public UrlData getMedium() {

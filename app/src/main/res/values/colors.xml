@@ -8,4 +8,16 @@
     <color name="darkGrey">#EEEEEE</color>
     <color name="white">#ffffff</color>
 
+    <color name="touch_effect">#9ccc</color>
+    <color name="custom_slide_background">#4CAF50</color>
+    <color name="custom_slide_buttons">#4CAF50</color>
+
+    <color name="third_slide_background">#009688</color>
+    <color name="third_slide_buttons">#004D40</color>
+
+    <color name="fourth_slide_background">#795548</color>
+    <color name="fourth_slide_buttons">#3E2723</color>
+
+
+
 </resources>

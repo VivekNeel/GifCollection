@@ -1,8 +1,10 @@
 package `in`.gif.collection
 
+import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.custom.CustomTransitionListener
 import `in`.gif.collection.custom.FadeInTransition
 import `in`.gif.collection.custom.FadeOutTransition
+import `in`.gif.collection.data.db.StorageService
 import `in`.gif.collection.databinding.ActivityMainBinding
 import `in`.gif.collection.view.AboutActivity
 import `in`.gif.collection.view.BaseActivity
@@ -10,39 +12,171 @@ import `in`.gif.collection.view.SearchActivity
 import `in`.gif.collection.view.fragments.*
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v4.content.ContextCompat
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
-import com.google.android.gms.ads.AdRequest
+import com.mikepenz.materialdrawer.DrawerBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_trending.*
+import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.model.*
+import java.util.concurrent.TimeUnit
+import android.view.WindowManager
 
 
 class MainActivity : BaseActivity() {
 
     private var toolbarMargin: Int = 0
     private lateinit var mainActivityBinding: ActivityMainBinding
+    private var bundle = Bundle()
+    private var queryFromDb: String? = null
 
     companion object {
         const val TAG_TRENDING = "trend"
         const val TAG_FAVOURITE = "fav"
         const val TAG_TRENDING_TERM = "trendingTerm"
         const val TAG_SEARCH = "search"
+        const val TAG_VIDEO = "video"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        queryFromDb = StorageService.getLangKey()?.getL()
         setupToolbar()
-        if (savedInstanceState == null)
-            setupBottomNavigation()
+        setupDrawer()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("on", "d")
     }
 
 
+    fun setupDrawer() {
+        DrawerBuilder().withActivity(this)
+
+        val item1 = PrimaryDrawerItem().withIdentifier(1).withIcon(R.drawable.love).withName(R.string.video_love)
+        val item2 = PrimaryDrawerItem().withIdentifier(2).withIcon(R.drawable.sad).withName(R.string.video_love_sad)
+        val item3 = PrimaryDrawerItem().withIdentifier(3).withIcon(R.drawable.old).withName(R.string.video_old)
+        val item4 = PrimaryDrawerItem().withIdentifier(4).withIcon(R.drawable.general).withName(R.string.video_general)
+        val item5 = PrimaryDrawerItem().withIdentifier(5).withIcon(R.drawable.friends).withName(R.string.video_friendship)
+        val item6 = PrimaryDrawerItem().withIdentifier(6).withIcon(R.drawable.birthday).withName(R.string.video_happy_birthday)
+
+
+        val item7 = PrimaryDrawerItem().withIdentifier(7).withIcon(R.drawable.gif).withName(R.string.gif)
+
+        val headerResult = AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.sidebar)
+                .build()
+
+
+        //create the drawer and remember the `Drawer` result object
+        val result = DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult)
+                .withToolbar(toolbar)
+                .withActionBarDrawerToggle(true)
+                .addDrawerItems(
+                        SectionDrawerItem().withName(R.string.video_category_name),
+                        item1,
+                        item2,
+                        item3,
+                        item4,
+                        item5,
+                        item6,
+                        DividerDrawerItem(),
+                        SectionDrawerItem().withName("Whatsapp Gifs"),
+                        item7
+                )
+                .withOnDrawerItemClickListener { _, _, drawerItem ->
+
+                    toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+                    toolbar.isClickable = false
+                    bottomBar.hide()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        val window = window
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                        window.statusBarColor = Color.parseColor("#E0E0E0")
+                    }
+
+                    val frameLP = toolbar.layoutParams as FrameLayout.LayoutParams
+                    frameLP.setMargins(0, 0, 0, 0)
+                    toolbar.layoutParams = frameLP
+
+
+                    if (drawerItem?.identifier == 1.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb love video status")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "love")
+                        toolbar.title = "Love videos"
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 2.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb sad love video status")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "sad")
+                        toolbar.title = "Sad videos"
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 3.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb old video status")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "old")
+                        toolbar.title = "Old videos"
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 4.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb video status")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "general")
+                        toolbar.title = "General videos"
+
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 5.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb friendship status ")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "friend")
+                        toolbar.title = "Friendship videos"
+
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 6.toLong()) {
+                        bundle.putString(Constants.KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY, "whatsapp $queryFromDb birthday video status")
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "birthday")
+                        toolbar.title = "Birthday videos"
+
+                        setupFragments(TAG_VIDEO, bundle)
+                    } else if (drawerItem?.identifier == 7.toLong()) {
+                        setupBottomNavigation()
+                    }
+                    false
+                }
+
+                .build()
+        result.setSelection(1)
+
+    }
+
     fun setupBottomNavigation() {
+
+        bottomBar.show()
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        toolbar.isClickable = true
+        toolbar.title = "Search for gifs"
+
+        toolbar.setTitleTextColor(Color.parseColor("#212121"))
+        val frameLP = toolbar.layoutParams as FrameLayout.LayoutParams
+        main_holder.setBackgroundColor(ContextCompat.getColor(this, R.color.primary))
+        frameLP.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin)
+        toolbar.layoutParams = frameLP
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.primary_dark)
+        }
+
         val bottomNavigator = mainActivityBinding.bottomBar
         bottomNavigator.apply {
             setDefaultTab(R.id.trending)
@@ -68,12 +202,19 @@ class MainActivity : BaseActivity() {
             }
 
             TAG_TRENDING_TERM -> {
-                commitFragment(VideoListFragment(), R.id.frame, TAG_TRENDING_TERM)
+                val fragment = VideoListFragment()
+                fragment.arguments = bundle
+                commitFragment(TrendingTermFragment(), R.id.frame, TAG_TRENDING_TERM)
             }
             TAG_SEARCH -> {
                 val fragment = SearchFragment()
                 fragment.arguments = bundle
                 commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = true)
+            }
+            TAG_VIDEO -> {
+                val fragment = VideoListFragment()
+                fragment.arguments = bundle
+                commitFragment(fragment, R.id.frame, TAG_VIDEO, addToBackStack = false)
             }
 
         }
@@ -140,6 +281,11 @@ class MainActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 }

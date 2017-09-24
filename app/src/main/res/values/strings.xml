@@ -1,7 +1,21 @@
 <resources>
-    <string name="app_name">Gif Collection</string>
+    <string name="app_name">Whats app status video</string>
     <string name="banner_ad_unit_id">ca-app-pub-2885720067654353/7567382224</string>
     <string name="inter">ca-app-pub-2885720067654353/3996459417</string>
     <string name="youtube_apikey">AIzaSyBgVlnkvgq7qUVPMR9lzTEnKcf5weG1cN0</string>
+
+    <string name="video_category_name">Whats app video status</string>
+    <string name="video_love">Love status video</string>
+    <string name="video_love_sad">Sad love status video</string>
+    <string name="video_old">Old status video</string>
+    <string name="video_general">General status video</string>
+    <string name="video_happy_birthday">Birthday status video</string>
+    <string name="video_friendship">Friendship status</string>
+
+    <string name="gif_category_name_secondary">Whats app Gifs</string>
+    <string name="gif">Gifs</string>
+    <string name="transition_toolbar">transition_tb</string>
+    <string name="error_message">Please select language.</string>
+
 
 </resources>

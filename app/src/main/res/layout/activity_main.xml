@@ -17,8 +17,8 @@
             <FrameLayout
                 android:id="@+id/main_holder"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_height"
-                android:background="@color/colorPrimary"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -54,6 +54,7 @@
             app:bb_activeTabAlpha="1"
             app:bb_activeTabColor="#ffffff"
             app:bb_behavior="shy"
+            android:visibility="gone"
             app:bb_inActiveTabAlpha="0.6"
             app:bb_inActiveTabColor="#ffffff"
             app:bb_tabXmlResource="@xml/bottombar_tabs" />
