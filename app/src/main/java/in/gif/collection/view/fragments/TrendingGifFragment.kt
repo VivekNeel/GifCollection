@@ -3,6 +3,7 @@ package `in`.gif.collection.view.fragments
 import `in`.gif.collection.BuildConfig
 import `in`.gif.collection.Constants
 import `in`.gif.collection.R
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.custom.CustomItemDecorator
 import `in`.gif.collection.databinding.FragmentTrendingBinding
 import `in`.gif.collection.view.TrendingGifAdapter
@@ -11,10 +12,12 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import kotlinx.android.synthetic.main.fragment_trending.*
 import java.util.*
 
@@ -38,14 +41,17 @@ class TrendingGifFragment : BaseFragment(), Observer {
         setUPList(mainActivityDataBinding.randomGifRV)
         setUPObserver(mainActivityDataBinding.randomGifModel)
         mainActivityDataBinding.randomGifModel?.getData("")
-        if(!BuildConfig.DEBUG)
+        CommonUtils.showInterstitialAds(InterstitialAd(getFragmentHost()))
         setupAds()
     }
 
     fun setupAds() {
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-        activityAddView.loadAd(adRequest)
+        val adRequest = AdRequest.Builder()
+        if (BuildConfig.DEBUG) {
+            adRequest.addTestDevice("BB86E6BA9A2A567C9E68AC37E9755267")
+        }
+        adView.loadAd(adRequest.build())
+        activityAddView.loadAd(adRequest.build())
     }
 
 

@@ -2,6 +2,7 @@ package `in`.gif.collection.view
 
 import `in`.gif.collection.MainActivity
 import `in`.gif.collection.R
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.view.fragments.LanguageSelectionFragment
 import android.widget.Toast
 import agency.tango.materialintroscreen.SlideFragmentBuilder
@@ -12,6 +13,7 @@ import android.Manifest
 import android.content.Intent
 import android.support.annotation.Nullable
 import android.view.View
+import com.google.android.gms.ads.InterstitialAd
 
 
 /**
@@ -22,6 +24,8 @@ class IntroActivity : MaterialIntroActivity() {
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CommonUtils.showInterstitialAds(InterstitialAd(this))
+
         enableLastSlideAlphaExitTransition(true)
 
         backButtonTranslationWrapper

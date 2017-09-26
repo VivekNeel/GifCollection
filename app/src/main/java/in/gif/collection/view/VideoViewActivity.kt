@@ -9,12 +9,15 @@ import `in`.gif.collection.view.fragments.YoutubePlayerFragment
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat.setEnterSharedElementCallback
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Interpolator
 import com.google.android.gms.ads.AdRequest
 import com.google.samples.apps.topeka.widget.TextSharedElementCallback
@@ -36,6 +39,11 @@ class VideoViewActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_view)
         setSupportActionBar(toolbar)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#E0E0E0")
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         getIntentFromExtras()

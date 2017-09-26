@@ -19,6 +19,5 @@ class Constants {
         const val EXTRA_VIDEO_ID = "id"
         const val KEY_FRAGMENT_YOUTUBE_SEARCH_QUERY = "youtubeQuery"
         const val KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE = "type"
-        const val KEY_LANGUAGE = "lang"
     }
 }

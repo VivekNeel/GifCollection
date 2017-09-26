@@ -4,6 +4,7 @@ import `in`.gif.collection.runOnM
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created by vivek on 17/09/17.
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment
 open class BaseFragment : Fragment() {
 
     lateinit var activity: Activity
+    protected val disposable = CompositeDisposable()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -26,6 +28,11 @@ open class BaseFragment : Fragment() {
 
     fun getFragmentHost(): Activity {
         return activity
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposable.clear()
     }
 }
 

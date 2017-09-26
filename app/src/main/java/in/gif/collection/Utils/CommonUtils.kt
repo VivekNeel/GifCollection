@@ -1,14 +1,19 @@
 package `in`.gif.collection.Utils
 
-import `in`.gif.collection.Constants
-import `in`.gif.collection.get
+import `in`.gif.collection.*
 import android.content.Context
+import android.os.Environment
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 
 /**
  * Created by vivek on 21/09/17.
@@ -47,5 +52,36 @@ class CommonUtils {
             return ""
 
         }
+
+        fun showInterstitialAds(mInterstitialAd: InterstitialAd) {
+            mInterstitialAd.adUnitId = "ca-app-pub-2885720067654353/6367966726"
+            val builder = AdRequest.Builder()
+            if (BuildConfig.DEBUG) {
+                builder.addTestDevice("BB86E6BA9A2A567C9E68AC37E9755267")
+            }
+            mInterstitialAd.loadAd(builder.build())
+            mInterstitialAd.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    showInterstitial(mInterstitialAd)
+                }
+            }
+        }
+
+        private fun showInterstitial(interstitial: InterstitialAd) {
+            if (interstitial.isLoaded) {
+                interstitial.show()
+            }
+        }
+
+        fun checkIfAlreadyDownloaded(id: String): Boolean {
+            val root = Environment.getExternalStorageDirectory()
+            val myDir = File("${root}${"/GifVideos"}")
+            val file = File(myDir, id + ".mp4")
+            if (file.exists()) {
+                return true
+            }
+            return false
+        }
     }
+
 }

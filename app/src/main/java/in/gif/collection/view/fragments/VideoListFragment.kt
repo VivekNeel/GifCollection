@@ -54,7 +54,6 @@ class VideoListFragment : BaseFragment(), Observer, IVideoClickedCallback {
         super.onViewCreated(view, savedInstanceState)
         setupObserver()
         setupList()
-        setupAds()
         val expiryResponseTime: Long = PreferenceManager.getDefaultSharedPreferences(context).getLong("expiryTime", -1)
 
         if (expiryResponseTime < System.currentTimeMillis()) {
@@ -62,12 +61,6 @@ class VideoListFragment : BaseFragment(), Observer, IVideoClickedCallback {
         } else {
             binding.randomGifModel?.fetchYoutubeVideos(query, type)
         }
-    }
-
-    fun setupAds() {
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-        binding.activityAddView.loadAd(adRequest)
     }
 
 

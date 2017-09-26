@@ -21,38 +21,29 @@ class LanguageSelectionViewModel : Observable() {
         when (view.id) {
             R.id.tamil -> {
                 data.setL("tamil")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "tamil"
             }
             R.id.hindi -> {
                 data.setL("hindi")
-
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "hindi"
             }
 
             R.id.english -> {
                 data.setL("english")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "english"
             }
             R.id.marathi -> {
                 data.setL("marathi")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "marathi"
             }
             R.id.punjabi -> {
                 data.setL("punjabi")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "punjabi"
             }
 
             R.id.malayalam -> {
                 data.setL("malayalam")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "malayalam"
             }
             R.id.gujarthi -> {
                 data.setL("gujrathi")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "gujrathi"
             }
             R.id.bihari -> {
                 data.setL("bihari")
-                PreferenceHelper.defaultPrefs(activity)[Constants.KEY_LANGUAGE] = "bihari"
             }
         }
         StorageService.putDataIntoDB(data)

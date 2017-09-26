@@ -63,6 +63,7 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Download"
+                android:visibility="gone"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toRightOf="@+id/shareButton"

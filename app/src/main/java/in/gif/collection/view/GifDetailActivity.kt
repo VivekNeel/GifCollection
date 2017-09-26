@@ -1,6 +1,7 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.*
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.databinding.ListItemDetailBinding
 import `in`.gif.collection.viewmodel.GifDetailViewModel
 import `in`.gif.collection.model.tenor.GifResultsData
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_trending.*
 import kotlinx.android.synthetic.main.list_item_detail.*
 import java.lang.Exception
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.AdListener
 
 
 /**
@@ -30,14 +32,24 @@ import com.google.android.gms.ads.InterstitialAd
 class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
 
     private lateinit var binding: ListItemDetailBinding
-    private lateinit var imageUrl: String;
+    private lateinit var imageUrl: String
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupInterstitialAds()
         initDataBinding()
         getExtrasFromIntent()
         if (!BuildConfig.DEBUG)
             setupAds()
     }
+
+    fun setupInterstitialAds(){
+        mInterstitialAd = InterstitialAd(this)
+        CommonUtils.showInterstitialAds(mInterstitialAd)
+    }
+
+
 
     fun initDataBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.list_item_detail)
@@ -45,9 +57,12 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
     }
 
     fun setupAds() {
-        val adRequest = AdRequest.Builder().build()
-        activityDetailAddView.loadAd(adRequest)
-        activityDetailBottomAddView.loadAd(adRequest)
+        val adRequest = AdRequest.Builder()
+        if(BuildConfig.DEBUG){
+            adRequest.addTestDevice("3D30EA777328A8A7CC4F14B5BA1CD2EF")
+        }
+        activityDetailAddView.loadAd(adRequest.build())
+        activityDetailBottomAddView.loadAd(adRequest.build())
 
     }
 

@@ -55,7 +55,7 @@ fun Context.runOnM(run: () -> Unit) {
 }
 
 fun Context.runOnKK(run: () -> Unit) {
-    if (SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+    if (SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
         run()
     }
 }

@@ -1,10 +1,12 @@
 package `in`.gif.collection.view.fragments
 
 import `in`.gif.collection.*
-import `in`.gif.collection.Utils.PreferenceHelper
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.data.db.StorageService
 import `in`.gif.collection.databinding.FragmentVideoVideBinding
 import `in`.gif.collection.model.youtube.ItemsData
+import `in`.gif.collection.rx.RxBus
+import `in`.gif.collection.rx.events.Events
 import `in`.gif.collection.view.ReleatedViewsAdapter
 import android.app.DownloadManager
 import android.app.ProgressDialog
@@ -14,7 +16,6 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.LinearLayoutManager
@@ -22,22 +23,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
 import com.commit451.youtubeextractor.YouTubeExtractionResult
 import com.commit451.youtubeextractor.YouTubeExtractor
-import com.google.android.gms.ads.AdRequest
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_video_vide.*
-import kotlinx.android.synthetic.main.list_item_releated_videos.*
 import java.io.File
 
 
@@ -46,11 +42,15 @@ import java.io.File
  */
 class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClickedCallback {
     override fun onDownloadButtonClicked() {
-        doShare()
+        downloadVideo()
     }
 
     override fun onShareButtonClicked() {
-        doShare()
+        if (CommonUtils.checkIfAlreadyDownloaded(id)) {
+            createIntentChooser()
+            return
+        }
+        downloadVideo()
     }
 
     override fun onItemClicked(itemsData: ItemsData) {
@@ -58,10 +58,6 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         setupPlayer()
     }
 
-    fun setupAds() {
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-    }
     private lateinit var binding: FragmentVideoVideBinding
     lateinit var id: String
     private lateinit var type: String
@@ -96,7 +92,14 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         super.onViewCreated(view, savedInstanceState)
         setupPlayer()
         setupList()
-        setupAds()
+
+        disposable.add(RxBus.toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe { events ->
+            when (events) {
+                is Events.DownloadCompleteEvent -> {
+                    createIntentChooser()
+                }
+            }
+        })
     }
 
     fun setupPlayer() {
@@ -123,39 +126,22 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
     }
 
     fun triggerDownload(uri: Uri) {
-        val request =
-                DownloadManager.Request(uri)
-        request.setTitle("Download")
-        request.setDescription("video status is downloading...")
-        request.allowScanningByMediaScanner()
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-
-        val root = Environment.getExternalStorageDirectory().toString()
-        val myDir = File(root + "/GifVideos")
-
-        myDir.mkdirs()
-        val file = File(myDir, id + ".mp4")
-        request.setDestinationUri(Uri.fromFile(file))
-        PreferenceHelper.defaultPrefs(getFragmentHost())["downloadId"] = id
-        manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
         context.runOnM {
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.REQUEST_CODE_STORAGE)
                 return@runOnM
             } else {
                 showNoticeDialog()
-                manager?.enqueue(request)
             }
         }
 
         context.runOnKK {
             showNoticeDialog()
-            manager?.enqueue(request)
         }
     }
 
-    fun doShare() {
+    fun downloadVideo() {
+
         val extractor = YouTubeExtractor.create()
         val progressDialog = ProgressDialog(getFragmentHost())
         progressDialog.show()
@@ -188,7 +174,23 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         val builder = android.support.v7.app.AlertDialog.Builder(getFragmentHost()).setTitle("Downloading")
                 .setMessage("Now the app will download your video to be able to share. Check the progress in notification")
                 .setCancelable(true)
-                .setPositiveButton("Okay") { p0, p1 ->
+                .setPositiveButton("Okay") { _, _ ->
+                    val request =
+                            DownloadManager.Request(uri)
+                    request.setTitle("Download")
+                    request.setDescription("video status is downloading...")
+                    request.allowScanningByMediaScanner()
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+
+                    val root = Environment.getExternalStorageDirectory().toString()
+                    val myDir = File(root + "/GifVideos")
+
+                    myDir.mkdirs()
+                    val file = File(myDir, id + ".mp4")
+
+                    request.setDestinationUri(Uri.fromFile(file))
+                    manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                    manager?.enqueue(request)
                     dialog?.dismiss()
                 }
 
@@ -196,9 +198,31 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         dialog.show()
     }
 
+    fun createIntentChooser() {
+        val root = Environment.getExternalStorageDirectory().toString()
+        val myDir = File(root + "/GifVideos")
+
+        myDir.mkdirs()
+
+        val file = File(myDir, id + ".mp4")
+
+        val imageUri = FileProvider.getUriForFile(getFragmentHost(), BuildConfig.APPLICATION_ID + ".provider", file)
+
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        sendIntent.type = "video/*"
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Video")
+        sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Enjoy the Video")
+        getFragmentHost().startActivity(Intent.createChooser(sendIntent, "Share With"))
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.REQUEST_CODE_STORAGE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (CommonUtils.checkIfAlreadyDownloaded(id)) {
+                createIntentChooser()
+                return
+            }
             triggerDownload(uri!!)
         }
     }

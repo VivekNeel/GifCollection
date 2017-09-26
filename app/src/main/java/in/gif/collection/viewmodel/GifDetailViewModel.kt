@@ -1,6 +1,7 @@
 package `in`.gif.collection.viewmodel
 
 import `in`.gif.collection.*
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.data.GifFactory
 import `in`.gif.collection.model.GifResponse
@@ -26,6 +27,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
+import com.google.android.gms.ads.InterstitialAd
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
@@ -242,11 +244,13 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
                         .setAutoCancel(true)
 
                 mNotificationManager?.notify(11, mBuilder.build())
+
                 context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
 
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { }
+                    .subscribe { CommonUtils.showInterstitialAds(InterstitialAd(context)) }
         } else {
+            CommonUtils.showInterstitialAds(InterstitialAd(context))
             context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
         }
     }

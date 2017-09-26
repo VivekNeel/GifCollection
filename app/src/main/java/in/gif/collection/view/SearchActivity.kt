@@ -1,6 +1,7 @@
 package `in`.gif.collection.view
 
 import `in`.gif.collection.R
+import `in`.gif.collection.Utils.CommonUtils
 import `in`.gif.collection.commitFragment
 import `in`.gif.collection.custom.*
 import `in`.gif.collection.databinding.ActivitySearchBinding
@@ -16,6 +17,7 @@ import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
 import android.view.View
+import com.google.android.gms.ads.InterstitialAd
 
 
 /**
@@ -32,6 +34,7 @@ class SearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         init()
+        CommonUtils.showInterstitialAds(InterstitialAd(this))
 
         // make sure to check if this is the first time running the activity
         // we don't want to play the enter animation on configuration changes (i.e. orientation)
