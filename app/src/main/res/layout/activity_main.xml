@@ -23,7 +23,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <in.gif.collection.custom.MainToolbar
+                <com.gifs.collection.custom.MainToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -52,6 +52,7 @@
             android:layout_height="60dp"
             android:layout_gravity="bottom"
             app:bb_activeTabAlpha="1"
+            android:visibility="gone"
             app:bb_activeTabColor="#ffffff"
             app:bb_behavior="shy"
             app:bb_inActiveTabAlpha="0.6"

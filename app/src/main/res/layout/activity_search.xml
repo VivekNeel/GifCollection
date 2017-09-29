@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <in.gif.collection.custom.CustomSearchBar
+        <com.gifs.collection.custom.CustomSearchBar
             android:id="@+id/search_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"

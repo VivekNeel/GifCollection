@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -8,7 +7,7 @@
 
         <variable
             name="gifDetailViewModel"
-            type="in.gif.collection.viewmodel.GifDetailViewModel" />
+            type="com.gifs.collection.viewmodel.GifDetailViewModel" />
 
     </data>
 
@@ -41,25 +40,11 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    ads:cardCornerRadius="9dp"
+                    app:cardCornerRadius="9dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.gms.ads.AdView
-                        android:id="@+id/activityDetailAddView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="60dp"
-                        ads:adSize="LEADERBOARD"
-                        ads:adUnitId="@string/banner_ad_unit_id"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -91,43 +76,109 @@
                             app:layout_constraintRight_toRightOf="parent"
                             tools:targetApi="lollipop" />
 
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="#64212121"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/detailIv" />
 
-                        <Button
-                            android:id="@+id/downloadCardView"
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/shareButtonsContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                            <TextView
+                                android:id="@+id/whatsapp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:drawableTop="@drawable/whatsapp"
+                                android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
+                                android:text="Whatsapp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@+id/telegram"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/telegram"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:drawableTop="@drawable/telegram"
+                                android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
+                                android:text="Telegram"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@+id/whatsapp"
+                                app:layout_constraintRight_toLeftOf="@+id/insta"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/insta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:drawableTop="@drawable/insta"
+                                android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
+                                android:text="Insta"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@+id/telegram"
+                                app:layout_constraintRight_toLeftOf="@+id/twitter"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/twitter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:drawableTop="@drawable/twitter"
+                                android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
+                                android:text="Twitter"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@+id/insta"
+                                app:layout_constraintRight_toLeftOf="@+id/slack"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/slack"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:drawableTop="@drawable/slack"
+                                android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
+                                android:text="Slack"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toRightOf="@+id/twitter"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <TextView
+                            android:id="@+id/save"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="40dp"
-                            android:background="@drawable/button_bg"
-                            android:foregroundTint="@color/darkGrey"
+                            android:layout_marginTop="10dp"
+                            android:drawableTop="@drawable/download"
                             android:onClick="@{gifDetailViewModel::onFabClicked}"
                             android:text="Save"
-                            android:textColor="@color/white"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@+id/shareButton"
-                            app:layout_constraintTop_toBottomOf="@+id/detailIv"
-                            tools:targetApi="lollipop" />
-
-                        <Button
-                            android:id="@+id/shareButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="40dp"
-                            android:background="@drawable/button_bg"
-                            android:foregroundTint="@color/darkGrey"
-                            android:onClick="@{gifDetailViewModel::onShareButtonClicked}"
-                            android:text="Share"
-                            android:textColor="@color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@+id/downloadCardView"
                             app:layout_constraintRight_toRightOf="parent"
-                            tools:targetApi="lollipop" />
+                            app:layout_constraintTop_toBottomOf="@+id/shareButtonsContainer" />
 
 
                     </android.support.constraint.ConstraintLayout>
@@ -135,15 +186,6 @@
                 </android.support.v7.widget.CardView>
 
             </android.support.constraint.ConstraintLayout>
-
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/activityDetailBottomAddView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="60dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/banner_ad_unit_id" />
 
         </RelativeLayout>
 
