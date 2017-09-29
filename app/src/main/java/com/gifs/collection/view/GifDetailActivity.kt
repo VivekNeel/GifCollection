@@ -1,8 +1,5 @@
 package com.gifs.collection.view
 
-import com.gifs.collection.*
-import com.gifs.collection.databinding.ListItemDetailBinding
-import com.gifs.collection.viewmodel.GifDetailViewModel
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -16,7 +13,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.google.android.gms.ads.AdRequest
+import com.gifs.collection.*
+import com.gifs.collection.databinding.ListItemDetailBinding
+import com.gifs.collection.viewmodel.GifDetailViewModel
 import kotlinx.android.synthetic.main.list_item_detail.*
 import java.lang.Exception
 

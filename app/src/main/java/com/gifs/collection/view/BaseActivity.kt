@@ -1,8 +1,8 @@
 package com.gifs.collection.view
 
+import android.support.v7.app.AppCompatActivity
 import com.gifs.collection.hideKeyboard
 import com.gifs.collection.showKeyboard
-import android.support.v7.app.AppCompatActivity
 
 /**
  * Created by vivek on 17/09/17.

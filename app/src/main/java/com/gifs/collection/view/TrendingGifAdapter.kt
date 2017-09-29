@@ -1,11 +1,5 @@
 package com.gifs.collection.view
 
-import com.gifs.collection.*
-import com.gifs.collection.Utils.CommonUtils
-import com.gifs.collection.Utils.PreferenceHelper
-import com.gifs.collection.databinding.ListItemRandomGifBinding
-import com.gifs.collection.model.tenor.GifResultsData
-import com.gifs.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil.inflate
 import android.support.v7.widget.RecyclerView
@@ -18,6 +12,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.gifs.collection.*
+import com.gifs.collection.Utils.CommonUtils
+import com.gifs.collection.Utils.PreferenceHelper
+import com.gifs.collection.databinding.ListItemRandomGifBinding
+import com.gifs.collection.model.tenor.GifResultsData
+import com.gifs.collection.viewmodel.CommonItemGifModel
 import kotlinx.android.synthetic.main.list_item_random_gif.view.*
 import java.lang.Exception
 

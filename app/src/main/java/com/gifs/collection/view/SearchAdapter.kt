@@ -1,9 +1,5 @@
 package com.gifs.collection.view
 
-import com.gifs.collection.R
-import com.gifs.collection.databinding.ListItemRandomGifBinding
-import com.gifs.collection.model.tenor.GifResultsData
-import com.gifs.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
@@ -15,6 +11,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.gifs.collection.R
+import com.gifs.collection.databinding.ListItemRandomGifBinding
+import com.gifs.collection.model.tenor.GifResultsData
+import com.gifs.collection.viewmodel.CommonItemGifModel
 import java.lang.Exception
 
 /**

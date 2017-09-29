@@ -1,10 +1,5 @@
 package com.gifs.collection.view.fragments
 
-import com.gifs.collection.R
-import com.gifs.collection.custom.CustomItemDecorator
-import com.gifs.collection.databinding.FragmentTrendingBinding
-import com.gifs.collection.view.TrendingGifAdapter
-import com.gifs.collection.viewmodel.trending.TrendingGifViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -12,6 +7,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.gifs.collection.R
+import com.gifs.collection.custom.CustomItemDecorator
+import com.gifs.collection.databinding.FragmentTrendingBinding
+import com.gifs.collection.view.TrendingGifAdapter
+import com.gifs.collection.viewmodel.trending.TrendingGifViewModel
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_trending.*
 import java.util.*

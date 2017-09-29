@@ -1,8 +1,8 @@
 package com.gifs.collection.Utils
 
-import com.gifs.collection.model.tenor.MediaGifData
 import android.content.Context
 import android.telephony.TelephonyManager
+import com.gifs.collection.model.tenor.MediaGifData
 
 
 /**

@@ -1,13 +1,5 @@
 package com.gifs.collection
 
-import com.gifs.collection.custom.CustomTransitionListener
-import com.gifs.collection.custom.FadeInTransition
-import com.gifs.collection.custom.FadeOutTransition
-import com.gifs.collection.databinding.ActivityMainBinding
-import com.gifs.collection.view.AboutActivity
-import com.gifs.collection.view.BaseActivity
-import com.gifs.collection.view.SearchActivity
-import com.gifs.collection.view.fragments.*
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -15,30 +7,23 @@ import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.activity_main.*
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.SectionDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
-import com.mikepenz.materialdrawer.AccountHeader
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.gifs.collection.custom.CustomTransitionListener
+import com.gifs.collection.custom.FadeInTransition
+import com.gifs.collection.custom.FadeOutTransition
+import com.gifs.collection.databinding.ActivityMainBinding
+import com.gifs.collection.view.AboutActivity
+import com.gifs.collection.view.BaseActivity
+import com.gifs.collection.view.SearchActivity
+import com.gifs.collection.view.fragments.FavouritesFragment
+import com.gifs.collection.view.fragments.SearchFragment
+import com.gifs.collection.view.fragments.TrendingGifFragment
+import com.gifs.collection.view.fragments.TrendingTermFragment
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import android.telephony.PhoneNumberUtils
-import android.content.ComponentName
-import android.net.Uri
-import com.mega4tech.whatsappapilibrary.WhatsappApi
-import com.mega4tech.whatsappapilibrary.liseteners.SendMessageListener
-import com.mega4tech.whatsappapilibrary.model.WContact
-import com.mega4tech.whatsappapilibrary.model.WMessage
-import java.net.MalformedURLException
-import java.net.URL
-import java.net.URLEncoder
+import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.model.SectionDrawerItem
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {

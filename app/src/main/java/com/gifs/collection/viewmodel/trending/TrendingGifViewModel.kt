@@ -1,5 +1,9 @@
 package com.gifs.collection.viewmodel.trending
 
+import android.content.Context
+import android.databinding.ObservableInt
+import android.text.TextUtils
+import android.view.View
 import com.gifs.collection.Constants
 import com.gifs.collection.GifApplication
 import com.gifs.collection.Utils.PreferenceHelper
@@ -8,15 +12,10 @@ import com.gifs.collection.get
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.model.tenor.HourlyTrendingData
 import com.gifs.collection.model.tenor.MediaGifResponse
-import android.content.Context
-import android.databinding.ObservableInt
-import android.text.TextUtils
-import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by vivek on 15/09/17.

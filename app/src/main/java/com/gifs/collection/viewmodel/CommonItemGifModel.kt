@@ -1,11 +1,11 @@
 package com.gifs.collection.viewmodel
 
-import com.gifs.collection.Utils.NetworkUtil
-import com.gifs.collection.model.tenor.GifResultsData
-import com.gifs.collection.view.GifDetailActivity
 import android.content.Context
 import android.databinding.BaseObservable
 import android.view.View
+import com.gifs.collection.Utils.NetworkUtil
+import com.gifs.collection.model.tenor.GifResultsData
+import com.gifs.collection.view.GifDetailActivity
 
 /**
  * Created by vivek on 15/09/17.

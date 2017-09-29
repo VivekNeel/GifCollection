@@ -1,9 +1,5 @@
 package com.gifs.collection.view.fragments
 
-import com.gifs.collection.*
-import com.gifs.collection.databinding.FragmentTrendingTermsBinding
-import com.gifs.collection.view.TrendingTermsAdapter
-import com.gifs.collection.viewmodel.trending.TrendingGifViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.gifs.collection.*
+import com.gifs.collection.databinding.FragmentTrendingTermsBinding
+import com.gifs.collection.view.TrendingTermsAdapter
+import com.gifs.collection.viewmodel.trending.TrendingGifViewModel
 import kotlinx.android.synthetic.main.fragment_trending_terms.*
 import java.util.*
 

@@ -1,10 +1,5 @@
 package com.gifs.collection.viewmodel
 
-import com.gifs.collection.*
-import com.gifs.collection.Utils.PreferenceHelper
-import com.gifs.collection.data.GifFactory
-import com.gifs.collection.model.RandomGifData
-import com.gifs.collection.model.TranslateData
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -23,6 +18,11 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
+import com.gifs.collection.*
+import com.gifs.collection.Utils.PreferenceHelper
+import com.gifs.collection.data.GifFactory
+import com.gifs.collection.model.RandomGifData
+import com.gifs.collection.model.TranslateData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call

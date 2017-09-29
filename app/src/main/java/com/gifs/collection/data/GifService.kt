@@ -6,7 +6,9 @@ import com.gifs.collection.model.TranslateData
 import com.gifs.collection.model.tenor.HourlyTrendingData
 import com.gifs.collection.model.tenor.MediaGifResponse
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Query
 
 /**
  * Created by vivek on 15/09/17.

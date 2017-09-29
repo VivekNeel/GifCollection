@@ -1,11 +1,11 @@
 package com.gifs.collection.custom
 
-import com.gifs.collection.R
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
+import com.gifs.collection.R
 
 /**
  * Created by vivek on 16/09/17.

@@ -1,9 +1,5 @@
 package com.gifs.collection.view.fragments
 
-import com.gifs.collection.*
-import com.gifs.collection.Utils.PreferenceHelper
-import com.gifs.collection.databinding.LayoutRandomTranslateGifBinding
-import com.gifs.collection.viewmodel.GifDetailViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -16,6 +12,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.gifs.collection.*
+import com.gifs.collection.Utils.PreferenceHelper
+import com.gifs.collection.databinding.LayoutRandomTranslateGifBinding
+import com.gifs.collection.viewmodel.GifDetailViewModel
 import kotlinx.android.synthetic.main.layout_random_translate_gif.*
 import java.lang.Exception
 import java.util.*

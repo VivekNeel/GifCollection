@@ -1,12 +1,11 @@
 package com.gifs.collection
 
-import com.gifs.collection.data.GifFactory
-import com.gifs.collection.data.GifService
 import android.app.Application
 import android.content.Context
 import com.crashlytics.android.Crashlytics
+import com.gifs.collection.data.GifFactory
+import com.gifs.collection.data.GifService
 import io.fabric.sdk.android.Fabric
-
 
 
 /**

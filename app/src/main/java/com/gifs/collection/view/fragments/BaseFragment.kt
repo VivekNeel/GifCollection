@@ -1,9 +1,9 @@
 package com.gifs.collection.view.fragments
 
-import com.gifs.collection.runOnM
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
+import com.gifs.collection.runOnM
 
 /**
  * Created by vivek on 17/09/17.

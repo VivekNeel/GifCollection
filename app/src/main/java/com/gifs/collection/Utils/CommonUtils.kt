@@ -1,8 +1,8 @@
 package com.gifs.collection.Utils
 
+import android.content.Context
 import com.gifs.collection.Constants
 import com.gifs.collection.get
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

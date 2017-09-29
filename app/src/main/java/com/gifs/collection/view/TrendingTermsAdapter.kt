@@ -1,16 +1,16 @@
 package com.gifs.collection.view
 
-import com.gifs.collection.ITermItemClickedCallback
-import com.gifs.collection.R
-import com.gifs.collection.databinding.LayoutTermBinding
-import com.gifs.collection.model.tenor.GifResultsData
-import com.gifs.collection.viewmodel.CommonItemGifModel
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.gifs.collection.ITermItemClickedCallback
+import com.gifs.collection.R
+import com.gifs.collection.databinding.LayoutTermBinding
+import com.gifs.collection.model.tenor.GifResultsData
+import com.gifs.collection.viewmodel.CommonItemGifModel
 import kotlinx.android.synthetic.main.layout_term.view.*
 
 /**

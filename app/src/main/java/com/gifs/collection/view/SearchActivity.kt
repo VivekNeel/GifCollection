@@ -1,21 +1,24 @@
 package com.gifs.collection.view
 
-import com.gifs.collection.R
-import com.gifs.collection.commitFragment
-import com.gifs.collection.custom.*
-import com.gifs.collection.databinding.ActivitySearchBinding
-import com.gifs.collection.view.fragments.SearchFragment
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
 import android.view.KeyEvent
 import android.view.Menu
+import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.EditText
+import com.gifs.collection.R
+import com.gifs.collection.commitFragment
+import com.gifs.collection.custom.CustomSearchBar
+import com.gifs.collection.custom.CustomTransitionListener
+import com.gifs.collection.custom.FadeInTransition
+import com.gifs.collection.custom.FadeOutTransition
+import com.gifs.collection.databinding.ActivitySearchBinding
+import com.gifs.collection.view.fragments.SearchFragment
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.merge_search.*
-import android.view.View
 
 
 /**

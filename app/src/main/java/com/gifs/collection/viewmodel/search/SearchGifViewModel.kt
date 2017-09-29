@@ -1,10 +1,10 @@
 package com.gifs.collection.viewmodel.search
 
+import android.databinding.ObservableInt
+import android.view.View
 import com.gifs.collection.data.GifFactory
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.model.tenor.MediaGifResponse
-import android.databinding.ObservableInt
-import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
