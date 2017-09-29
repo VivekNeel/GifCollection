@@ -2,19 +2,20 @@ package `in`.gif.collection.view
 
 import `in`.gif.collection.*
 import `in`.gif.collection.Utils.CommonUtils
-import `in`.gif.collection.Utils.NetworkUtil
 import `in`.gif.collection.Utils.PreferenceHelper
 import `in`.gif.collection.databinding.ListItemRandomGifBinding
 import `in`.gif.collection.model.tenor.GifResultsData
 import `in`.gif.collection.model.youtube.ItemsData
 import `in`.gif.collection.viewmodel.CommonItemGifModel
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil.inflate
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
@@ -22,28 +23,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.list_item_random_gif.view.*
 import kotlinx.android.synthetic.main.list_item_youtube_videos.view.*
-import java.lang.Exception
-import `in`.gif.collection.MainActivity
-import `in`.gif.collection.custom.TransitionHelper
-import android.annotation.TargetApi
-import android.app.DownloadManager
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.FileProvider
-import android.support.v4.util.Pair
-import android.util.Log
-import com.commit451.youtubeextractor.YouTubeExtractionResult
-import io.reactivex.disposables.Disposable
-import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import com.commit451.youtubeextractor.YouTubeExtractor
-import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.lang.Exception
 
 
 /**
@@ -164,6 +145,7 @@ class TrendingGifAdapter(activity: Activity, isYouTube: Boolean = false, callbac
     }
 
     fun setVideoList(list: List<ItemsData>) {
+
         this.videoList = list
         notifyDataSetChanged()
     }

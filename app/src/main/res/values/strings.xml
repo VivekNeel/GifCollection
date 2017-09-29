@@ -9,7 +9,10 @@
     <string name="video_love_sad">Sad love status video</string>
     <string name="video_old">Old status video</string>
     <string name="video_general">General status video</string>
+
     <string name="video_happy_birthday">Birthday status video</string>
+    <string name="video_downloaded">Downloaded videos</string>
+
     <string name="video_friendship">Friendship status</string>
 
     <string name="gif_category_name_secondary">Whats app Gifs</string>

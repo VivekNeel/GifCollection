@@ -18,6 +18,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,8 +33,10 @@ import com.commit451.youtubeextractor.YouTubeExtractor
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_video_vide.*
+import kotlinx.android.synthetic.main.layout_downlaod_progress.view.*
 import java.io.File
 
 
@@ -42,19 +45,20 @@ import java.io.File
  */
 class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClickedCallback {
     override fun onDownloadButtonClicked() {
-        downloadVideo()
-    }
+     }
 
     override fun onShareButtonClicked() {
         if (CommonUtils.checkIfAlreadyDownloaded(id)) {
             createIntentChooser()
             return
         }
-        downloadVideo()
+        initiateDownload()
     }
 
     override fun onItemClicked(itemsData: ItemsData) {
         id = itemsData.idData?.videoId!!
+        title = itemsData.snippetData?.title!!
+        setupList()
         setupPlayer()
     }
 
@@ -64,6 +68,12 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
     private lateinit var title: String
     private var manager: DownloadManager? = null
     private var uri: Uri? = null
+    private var downloadPercentageDisposable: Disposable? = null
+    private val itemDownloadPercentEmitter: ItemDownloadPercentEmitter
+
+    init {
+        itemDownloadPercentEmitter = ItemDownloadPercentEmitter.getInstance()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video_vide, container, false)
@@ -84,7 +94,7 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         relatedVideosRv.layoutManager = LinearLayoutManager(getFragmentHost())
         relatedVideosRv.isNestedScrollingEnabled = false
         relatedVideosRv.setHasFixedSize(true)
-        relatedVideosRv.adapter = ReleatedViewsAdapter(this, this)
+        relatedVideosRv.adapter = ReleatedViewsAdapter(this, this , title)
         (relatedVideosRv.adapter as ReleatedViewsAdapter).setVideoList(getRelatedVideosList())
     }
 
@@ -96,7 +106,6 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
         disposable.add(RxBus.toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe { events ->
             when (events) {
                 is Events.DownloadCompleteEvent -> {
-                    createIntentChooser()
                 }
             }
         })
@@ -110,7 +119,7 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
             override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, player: YouTubePlayer?, p2: Boolean) {
                 if (!p2) {
                     with(player!!) {
-                        setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
+                        setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
                         loadVideo(id)
                         play()
                     }
@@ -131,22 +140,26 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
                 requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.REQUEST_CODE_STORAGE)
                 return@runOnM
             } else {
-                showNoticeDialog()
+                startDownload()
             }
         }
 
         context.runOnKK {
-            showNoticeDialog()
+            startDownload()
         }
     }
 
-    fun downloadVideo() {
+    fun initiateDownload() {
 
         val extractor = YouTubeExtractor.create()
         val progressDialog = ProgressDialog(getFragmentHost())
         progressDialog.show()
         progressDialog.setMessage("Please wait")
-        progressDialog.setCancelable(false)
+        progressDialog.setCancelable(true)
+        if (id.isNullOrEmpty()) {
+            getFragmentHost().toast("id is null")
+            return
+        }
         extractor.extract(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -158,7 +171,11 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
                     override fun onSuccess(value: YouTubeExtractionResult) {
                         progressDialog.hide()
                         uri = value.sd360VideoUri
-                        triggerDownload(value.sd360VideoUri!!)
+                        if (uri == null) {
+                            getFragmentHost().toast("This video is not sharable")
+                            return
+                        }
+                        triggerDownload(uri!!)
                     }
 
 
@@ -168,35 +185,21 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
                 })
     }
 
+    fun startDownload() {
+        val view = LayoutInflater.from(getFragmentHost()).inflate(R.layout.layout_downlaod_progress, null)
 
-    fun showNoticeDialog() {
-        var dialog: android.support.v7.app.AlertDialog? = null
-        val builder = android.support.v7.app.AlertDialog.Builder(getFragmentHost()).setTitle("Downloading")
-                .setMessage("Now the app will download your video to be able to share. Check the progress in notification")
+        val dialog = AlertDialog.Builder(getFragmentHost()).setView(view)
                 .setCancelable(true)
-                .setPositiveButton("Okay") { _, _ ->
-                    val request =
-                            DownloadManager.Request(uri)
-                    request.setTitle("Download")
-                    request.setDescription("video status is downloading...")
-                    request.allowScanningByMediaScanner()
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-
-                    val root = Environment.getExternalStorageDirectory().toString()
-                    val myDir = File(root + "/GifVideos")
-
-                    myDir.mkdirs()
-                    val file = File(myDir, id + ".mp4")
-
-                    request.setDestinationUri(Uri.fromFile(file))
-                    manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                    manager?.enqueue(request)
-                    dialog?.dismiss()
-                }
-
-        dialog = builder.create()
+                .create()
         dialog.show()
+        val itemDownloadPercentEmitter = ItemDownloadPercentEmitter.getInstance()
+
+        val id = CustomDownloadManager(getFragmentHost()).enqueue(uri!!, id, title)
+        itemDownloadPercentEmitter.addDownloadId(getFragmentHost(), id)
+        subscribe(id, dialog, view)
+
     }
+
 
     fun createIntentChooser() {
         val root = Environment.getExternalStorageDirectory().toString()
@@ -237,6 +240,30 @@ class YoutubePlayerFragment : BaseFragment(), IVideoClickedCallback, IButtonClic
 
         listOne.filter { it.idData?.videoId != null && !it.idData!!.videoId.equals(id) }
         return listOne
+
+    }
+
+    private fun subscribe(id: Long, dialog: AlertDialog, view: View) {
+
+        if (downloadPercentageDisposable == null)
+            downloadPercentageDisposable = ItemDownloadPercentEmitter.getInstance()
+                    .getObservable(getFragmentHost(), id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(Consumer<DownloadItem> { downloadItem ->
+                        if (downloadItem == null)
+                            return@Consumer
+                        view.downloadProgress.text = downloadItem.itemDownloadPercent.toString() + " % downloaded"
+                        if (downloadItem.downloadStatus.isNotEmpty()) {
+                            if (downloadItem.downloadStatus.equals("success")) {
+                                dialog.hide()
+                                createIntentChooser()
+                            } else if (downloadItem.downloadStatus.equals("failed")) {
+                                dialog.hide()
+                            }
+                        }
+
+                    }, Consumer<Throwable> { throwable -> Log.d("YOUTUBEPLAYER", "accept: " + throwable) })
 
     }
 

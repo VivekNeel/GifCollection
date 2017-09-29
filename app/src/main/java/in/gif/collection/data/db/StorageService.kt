@@ -23,7 +23,12 @@ object StorageService {
     fun getVideosFromDb(type: String): List<ItemsData> {
         val realm: Realm = Realm.getDefaultInstance()
         realm.beginTransaction()
-        var list = realm.copyFromRealm(realm.where(ItemsData::class.java).equalTo("type", type).findAll())
+        var list : List<ItemsData> ;
+        if(type.isNullOrEmpty()){
+           list=  realm.copyFromRealm(realm.where(ItemsData::class.java).findAll())
+        } else {
+            list = realm.copyFromRealm(realm.where(ItemsData::class.java).equalTo("type", type).findAll())
+        }
         realm.commitTransaction()
         return list
     }

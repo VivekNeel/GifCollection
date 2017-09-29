@@ -16,6 +16,6 @@ import java.io.File
  */
 class DownloadListener : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
-        RxBus.sendEvent(Events().DownloadCompleteEvent())
+   //     RxBus.sendEvent(Events().DownloadCompleteEvent())
     }
 }

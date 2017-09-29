@@ -89,7 +89,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="80dp"
                 android:gravity="center"
-                android:text="There are no favourite gifs. Please hit that heart icon in the trending gif page to add gifs to your collection."
+                android:text="There are no items available."
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
                 android:textSize="16sp"
                 android:visibility="@{randomGifModel.emptyState}" />

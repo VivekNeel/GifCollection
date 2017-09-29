@@ -15,6 +15,7 @@ import `in`.gif.collection.set
 import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.ObservableInt
+import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.BoringLayout
 import android.text.TextUtils
@@ -23,6 +24,7 @@ import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -89,6 +91,7 @@ class TrendingGifViewModel(context: Context) : Observable() {
 
     fun fetchYoutubeVideos(query: String, type: String, forceRefresh: Boolean = false) {
         initializeViews()
+
         if (StorageService.getVideosFromDb(type).isNotEmpty() && !forceRefresh) {
             changeVideoDataSet(StorageService.getVideosFromDb(type))
             gifRecyclerView.set(View.VISIBLE)

@@ -69,9 +69,10 @@ class MainActivity : BaseActivity() {
         val item4 = PrimaryDrawerItem().withIdentifier(4).withIcon(R.drawable.general).withName(R.string.video_general)
         val item5 = PrimaryDrawerItem().withIdentifier(5).withIcon(R.drawable.friends).withName(R.string.video_friendship)
         val item6 = PrimaryDrawerItem().withIdentifier(6).withIcon(R.drawable.birthday).withName(R.string.video_happy_birthday)
+        val item7 = PrimaryDrawerItem().withIdentifier(7).withIcon(R.drawable.downloaded).withName(R.string.video_downloaded)
 
 
-        val item7 = PrimaryDrawerItem().withIdentifier(7).withIcon(R.drawable.gif).withName(R.string.gif)
+        val item8 = PrimaryDrawerItem().withIdentifier(8).withIcon(R.drawable.gif).withName(R.string.gif)
 
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
@@ -93,9 +94,10 @@ class MainActivity : BaseActivity() {
                         item4,
                         item5,
                         item6,
+                        item7,
                         DividerDrawerItem(),
                         SectionDrawerItem().withName("Whatsapp Gifs"),
-                        item7
+                        item8
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
 
@@ -106,7 +108,7 @@ class MainActivity : BaseActivity() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         val window = window
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                        window.statusBarColor = Color.parseColor("#E0E0E0")
+                        window.statusBarColor = Color.parseColor("#BDBDBD")
                     }
 
                     val frameLP = toolbar.layoutParams as FrameLayout.LayoutParams
@@ -148,6 +150,11 @@ class MainActivity : BaseActivity() {
 
                         setupFragments(TAG_VIDEO, bundle)
                     } else if (drawerItem?.identifier == 7.toLong()) {
+                        toolbar.title = "Downloaded videos"
+                        bundle.putString(Constants.KEY_FRAGMEN_YOUTUBE_SEARCH_QUERY_TYPE, "")
+                        setupFragments(TAG_VIDEO, bundle)
+
+                    } else if (drawerItem?.identifier == 8.toLong()) {
                         setupBottomNavigation()
                     }
                     false

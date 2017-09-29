@@ -2,6 +2,7 @@ package `in`.gif.collection.view.fragments
 
 import `in`.gif.collection.*
 import `in`.gif.collection.Utils.PreferenceHelper
+import `in`.gif.collection.data.db.StorageService
 import `in`.gif.collection.databinding.FragmentTrendingBinding
 import `in`.gif.collection.model.youtube.ItemsData
 import `in`.gif.collection.view.TrendingGifAdapter
@@ -9,6 +10,7 @@ import `in`.gif.collection.view.VideoViewActivity
 import `in`.gif.collection.viewmodel.trending.TrendingGifViewModel
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Environment
 import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -17,7 +19,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_search.*
 import java.util.*
 import android.support.v7.widget.DividerItemDecoration
-import com.google.android.gms.ads.AdRequest
+import android.util.Log
+import java.io.File
 
 
 /**
@@ -55,12 +58,37 @@ class VideoListFragment : BaseFragment(), Observer, IVideoClickedCallback {
         setupObserver()
         setupList()
         val expiryResponseTime: Long = PreferenceManager.getDefaultSharedPreferences(context).getLong("expiryTime", -1)
-
-        if (expiryResponseTime < System.currentTimeMillis()) {
-            binding.randomGifModel?.fetchYoutubeVideos(query, type, true)
+        if (type.isNullOrEmpty()) {
+            val adapter = randomGifRV.adapter as TrendingGifAdapter
+            if (getDownloadedVideos().isEmpty()) {
+                binding.randomGifModel?.emptyState?.set(View.VISIBLE)
+                return
+            }
+            adapter.setVideoList(getDownloadedVideos())
+            binding.randomGifModel?.gifRecyclerView?.set(View.VISIBLE)
         } else {
-            binding.randomGifModel?.fetchYoutubeVideos(query, type)
+            if (expiryResponseTime < System.currentTimeMillis()) {
+                binding.randomGifModel?.fetchYoutubeVideos(query, type, true)
+            } else {
+                binding.randomGifModel?.fetchYoutubeVideos(query, type)
+            }
         }
+    }
+
+    fun getDownloadedVideos(): List<ItemsData> {
+        val dir = File(Environment.getExternalStorageDirectory(), "/GifVideos").listFiles()
+        val getAllVideosFromDB = StorageService.getVideosFromDb("")
+        var list = mutableListOf<ItemsData>()
+        if (dir != null) {
+            for (file in dir) {
+                getAllVideosFromDB.filterIndexed { index, itemsData -> itemsData.idData?.videoId != null }
+                        .filter { file.absoluteFile.name.removeSuffix(".mp4") in it.idData!!.videoId }
+                        .forEach { list.add(it) }
+
+            }
+        }
+
+        return list
     }
 
 
