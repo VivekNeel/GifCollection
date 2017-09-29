@@ -5,4 +5,5 @@ package com.gifs.collection
  */
 interface ShowDialogCallback {
     fun showDialog()
+    fun showSnackbar()
 }

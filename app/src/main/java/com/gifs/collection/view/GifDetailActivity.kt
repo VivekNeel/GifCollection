@@ -76,13 +76,11 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         }
     }
 
-    fun run(f: () -> Unit): Unit {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            f()
-        }
-    }
-
     override fun showDialog() {
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.REQUEST_CODE_STORAGE)
+    }
+
+    override fun showSnackbar() {
+        showSnack("App not installed, Please install it and try again", root)
     }
 }

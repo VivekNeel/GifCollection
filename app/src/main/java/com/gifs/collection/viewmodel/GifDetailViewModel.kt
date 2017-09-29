@@ -2,6 +2,7 @@ package com.gifs.collection.viewmodel
 
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -45,7 +46,6 @@ fun bindLottie(view: LottieAnimationView, fileName: String) {
 
 class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: String = "") : Observable() {
 
-    val urlKey = "url"
     private var url = url
     private var context = context
     var fileName: ObservableField<String> = ObservableField("check_fit.json")
@@ -293,7 +293,11 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe { }
         } else {
-            context.startActivity(Intent.createChooser(shareIntent, "Share with.."))
+            try {
+                context.startActivity(shareIntent)
+            } catch (e: ActivityNotFoundException) {
+                showDialogCallback.showSnackbar()
+            }
         }
     }
 

@@ -22,7 +22,7 @@ import java.util.*
  */
 class SearchFragment : BaseFragment(), Observer {
 
-    private var query: String ?= null
+    private var query: String? = null
 
     private lateinit var searchBinding: FragmentSearchBinding
 
@@ -67,7 +67,6 @@ class SearchFragment : BaseFragment(), Observer {
             is SearchGifViewModel -> {
                 val adapter = searchBinding.randomGifRV.adapter as TrendingGifAdapter
                 adapter.setGifList(o.getGifs())
-                getFragmentHost().showKeyboard()
             }
         }
     }
