@@ -14,8 +14,10 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.gifs.collection.*
+import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.databinding.ListItemDetailBinding
 import com.gifs.collection.viewmodel.GifDetailViewModel
+import com.google.android.gms.ads.InterstitialAd
 import kotlinx.android.synthetic.main.list_item_detail.*
 import java.lang.Exception
 
@@ -31,6 +33,12 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         super.onCreate(savedInstanceState)
         initDataBinding()
         getExtrasFromIntent()
+        setupAds()
+    }
+
+    fun setupAds() {
+        CommonUtils.setupBanner(adView)
+        CommonUtils.showInterstitialAds(InterstitialAd(this))
     }
 
     fun initDataBinding() {
