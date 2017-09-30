@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Gif Collection</string>
-    <string name="banner_ad_unit_id">ca-app-pub-2885720067654353/7567382224</string>
-    <string name="inter">ca-app-pub-2885720067654353/3996459417</string>
+    <string name="banner_ad_unit_id">ca-app-pub-2885720067654353/7253952226</string>
+    <string name="inter">ca-app-pub-2885720067654353/2790951272</string>
 
     <string name="category">Category</string>
     <string name="item_navrathri">Navrathri</string>
@@ -13,6 +13,11 @@
     <string name="item_trending">Trending</string>
     <string name="birthday">Birthday Wishes</string>
     <string name="anniversary">Anniversary</string>
+    <string name="morning">Good Morning</string>
+    <string name="night">Good Night</string>
+    <string name="music">Music</string>
+    <string name="funny">Funny</string>
+
 
 
 </resources>

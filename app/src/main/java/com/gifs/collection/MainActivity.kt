@@ -57,6 +57,11 @@ class MainActivity : BaseActivity() {
         val coding = PrimaryDrawerItem().withIdentifier(7).withName(R.string.item_coding).withIcon(R.drawable.programming)
         val birthday = PrimaryDrawerItem().withIdentifier(8).withName(R.string.birthday).withIcon(R.drawable.birthday)
         val anniversary = PrimaryDrawerItem().withIdentifier(9).withName(R.string.anniversary).withIcon(R.drawable.anniversary)
+        val morning = PrimaryDrawerItem().withIdentifier(10).withName(R.string.morning).withIcon(R.drawable.morning)
+        val night = PrimaryDrawerItem().withIdentifier(11).withName(R.string.night).withIcon(R.drawable.night)
+        val music = PrimaryDrawerItem().withIdentifier(12).withName(R.string.music).withIcon(R.drawable.music)
+        val funny = PrimaryDrawerItem().withIdentifier(13).withName(R.string.funny).withIcon(R.drawable.funny)
+
 
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
@@ -79,7 +84,11 @@ class MainActivity : BaseActivity() {
                         friends,
                         coding,
                         birthday,
-                        anniversary
+                        anniversary,
+                        morning,
+                        night,
+                        music,
+                        funny
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     if (drawerItem.identifier == 1.toLong()) {
@@ -108,6 +117,18 @@ class MainActivity : BaseActivity() {
 
                         } else if (drawerItem.identifier == 9.toLong()) {
                             bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "anniversary")
+
+                        } else if (drawerItem.identifier == 10.toLong()) {
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "good morning")
+
+                        } else if (drawerItem.identifier == 11.toLong()) {
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "good night")
+
+                        } else if (drawerItem.identifier == 12.toLong()) {
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "music")
+
+                        } else if (drawerItem.identifier == 13.toLong()) {
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "funny")
 
                         }
                         bottomBar.hide()
@@ -154,7 +175,7 @@ class MainActivity : BaseActivity() {
             TAG_SEARCH -> {
                 val fragment = SearchFragment()
                 fragment.arguments = bundle
-                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = true)
+                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM)
             }
 
         }

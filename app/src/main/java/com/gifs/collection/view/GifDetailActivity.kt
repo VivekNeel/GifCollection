@@ -14,8 +14,10 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.gifs.collection.*
+import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.databinding.ListItemDetailBinding
 import com.gifs.collection.viewmodel.GifDetailViewModel
+import com.google.android.gms.ads.InterstitialAd
 import kotlinx.android.synthetic.main.list_item_detail.*
 import java.lang.Exception
 
@@ -31,6 +33,12 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         super.onCreate(savedInstanceState)
         initDataBinding()
         getExtrasFromIntent()
+        setupAds()
+    }
+
+    fun setupAds() {
+        CommonUtils.setupBanner(adView)
+        CommonUtils.showInterstitialAds(InterstitialAd(this))
     }
 
     fun initDataBinding() {
@@ -76,13 +84,11 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         }
     }
 
-    fun run(f: () -> Unit): Unit {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            f()
-        }
-    }
-
     override fun showDialog() {
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.REQUEST_CODE_STORAGE)
+    }
+
+    override fun showSnackbar() {
+        showSnack("App not installed, Please install it and try again", root)
     }
 }

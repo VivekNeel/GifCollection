@@ -7,6 +7,7 @@ import android.os.Build.VERSION.SDK_INT
 import android.support.annotation.BoolRes
 import android.support.annotation.ColorRes
 import android.support.annotation.IdRes
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -99,4 +100,8 @@ operator inline fun <reified T : Any> SharedPreferences.get(key: String, value: 
 
 fun Context.toast(msg: String) {
     Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.showSnack(msg: String, root: View) {
+    Snackbar.make(root, msg, Snackbar.LENGTH_SHORT).show()
 }

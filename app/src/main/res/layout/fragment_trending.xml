@@ -29,20 +29,12 @@
             android:layout_height="wrap_content">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/randomGifRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:visibility="@{randomGifModel.gifRecyclerView}" />
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/activityAddView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/randomGifRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:visibility="@{randomGifModel.gifRecyclerView}" />
 
         </FrameLayout>
 

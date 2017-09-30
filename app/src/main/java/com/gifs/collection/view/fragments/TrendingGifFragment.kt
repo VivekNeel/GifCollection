@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gifs.collection.R
+import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.custom.CustomItemDecorator
 import com.gifs.collection.databinding.FragmentTrendingBinding
 import com.gifs.collection.view.TrendingGifAdapter
@@ -36,13 +37,7 @@ class TrendingGifFragment : BaseFragment(), Observer {
         setUPList(mainActivityDataBinding.randomGifRV)
         setUPObserver(mainActivityDataBinding.randomGifModel)
         mainActivityDataBinding.randomGifModel?.getData("")
-        setupAds()
-    }
-
-    fun setupAds() {
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-        activityAddView.loadAd(adRequest)
+        CommonUtils.setupBanner(adView)
     }
 
 

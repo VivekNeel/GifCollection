@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.gifs.collection.Constants
 import com.gifs.collection.R
+import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.custom.CustomItemDecorator
 import com.gifs.collection.databinding.FragmentSearchBinding
 import com.gifs.collection.showKeyboard
 import com.gifs.collection.view.TrendingGifAdapter
 import com.gifs.collection.viewmodel.search.SearchGifViewModel
+import com.google.android.gms.ads.InterstitialAd
 import java.util.*
 
 /**
@@ -22,7 +24,7 @@ import java.util.*
  */
 class SearchFragment : BaseFragment(), Observer {
 
-    private var query: String ?= null
+    private var query: String? = null
 
     private lateinit var searchBinding: FragmentSearchBinding
 
@@ -42,6 +44,7 @@ class SearchFragment : BaseFragment(), Observer {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
+        CommonUtils.showInterstitialAds(InterstitialAd(getFragmentHost()))
         setupList(searchBinding.randomGifRV)
         if (!TextUtils.isEmpty(query)) {
             doSearch(query)
@@ -67,7 +70,6 @@ class SearchFragment : BaseFragment(), Observer {
             is SearchGifViewModel -> {
                 val adapter = searchBinding.randomGifRV.adapter as TrendingGifAdapter
                 adapter.setGifList(o.getGifs())
-                getFragmentHost().showKeyboard()
             }
         }
     }
