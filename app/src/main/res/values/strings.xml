@@ -4,7 +4,7 @@
     <string name="inter">ca-app-pub-2885720067654353/2790951272</string>
 
     <string name="category">Category</string>
-    <string name="item_navrathri">Navrathri</string>
+    <string name="item_navrathri">Celebration</string>
     <string name="item_love">Love</string>
     <string name="item_sad">Sad</string>
     <string name="item_wedding">Wedding</string>
@@ -18,6 +18,9 @@
     <string name="music">Music</string>
     <string name="funny">Funny</string>
 
-
+    <string name="category_about">About</string>
+    <string name="app_share">Share</string>
+    <string name="app_info">Info</string>
+    <string name="app_url">https://play.google.com/store/apps/details?id=com.gifs.collection</string>
 
 </resources>

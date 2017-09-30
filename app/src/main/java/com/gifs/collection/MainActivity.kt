@@ -2,6 +2,7 @@ package com.gifs.collection
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
@@ -49,7 +50,7 @@ class MainActivity : BaseActivity() {
     fun setupDrawer() {
 
         val trending = PrimaryDrawerItem().withIdentifier(1).withName(R.string.item_trending).withIcon(R.drawable.trending)
-        val navrathri = PrimaryDrawerItem().withIdentifier(2).withName(R.string.item_navrathri).withIcon(R.drawable.navrathri)
+        val party = PrimaryDrawerItem().withIdentifier(2).withName(R.string.item_navrathri).withIcon(R.drawable.party)
         val love = PrimaryDrawerItem().withIdentifier(3).withName(R.string.item_love).withIcon(R.drawable.love)
         val sad = PrimaryDrawerItem().withIdentifier(4).withName(R.string.item_sad).withIcon(R.drawable.sad)
         val wedding = PrimaryDrawerItem().withIdentifier(5).withName(R.string.item_wedding).withIcon(R.drawable.wedding)
@@ -61,6 +62,9 @@ class MainActivity : BaseActivity() {
         val night = PrimaryDrawerItem().withIdentifier(11).withName(R.string.night).withIcon(R.drawable.night)
         val music = PrimaryDrawerItem().withIdentifier(12).withName(R.string.music).withIcon(R.drawable.music)
         val funny = PrimaryDrawerItem().withIdentifier(13).withName(R.string.funny).withIcon(R.drawable.funny)
+
+        val share = PrimaryDrawerItem().withIdentifier(17).withName(R.string.app_share).withIcon(R.drawable.share)
+        val about = PrimaryDrawerItem().withIdentifier(18).withName(R.string.app_info).withIcon(R.drawable.about)
 
 
         val headerResult = AccountHeaderBuilder()
@@ -77,7 +81,7 @@ class MainActivity : BaseActivity() {
                 .addDrawerItems(
                         SectionDrawerItem().withName(R.string.category),
                         trending,
-                        navrathri,
+                        party,
                         love,
                         sad,
                         wedding,
@@ -88,15 +92,24 @@ class MainActivity : BaseActivity() {
                         morning,
                         night,
                         music,
-                        funny
+                        funny,
+                        SectionDrawerItem().withName(R.string.category_about),
+                        share,
+                        about
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     if (drawerItem.identifier == 1.toLong()) {
                         isBottomNavigationSetup = true
                         setupBottomNavigation()
+                    } else if (drawerItem.identifier == 17.toLong()) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url)))
+                        startActivity(intent)
+
+                    } else if (drawerItem.identifier == 18.toLong()) {
+                        startActivity(Intent(this, AboutActivity::class.java))
                     } else {
                         if (drawerItem.identifier == 2.toLong()) {
-                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "navrathri")
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "celebration")
                         } else if (drawerItem.identifier == 3.toLong()) {
                             bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "love")
 
