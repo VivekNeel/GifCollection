@@ -173,6 +173,10 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
                 type = "slack"
 
             }
+
+            R.id.facebook -> {
+                type = "facebook"
+            }
         }
         context.runOnM {
             if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -269,6 +273,9 @@ class GifDetailViewModel(context: Context, callback: ShowDialogCallback, url: St
 
                 "slack" -> {
                     `package` = "com.Slack"
+                }
+                "facebook" -> {
+                    `package` = "com.facebook.katana"
                 }
             }
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

@@ -53,7 +53,7 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
         (binding.gifDetailViewModel as GifDetailViewModel).detailViewVisibility.set(View.VISIBLE)
         binding.animationView.show()
         shareButtonsContainer.hide()
-        save.hide()
+        slack.hide()
 
         Glide.with(binding.detailIv.context)
                 .load(imageUrl)
@@ -63,6 +63,7 @@ class GifDetailActivity : AppCompatActivity(), ShowDialogCallback {
                     override fun onResourceReady(resource: GifDrawable?, model: String?, target: Target<GifDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                         binding.animationView.hide()
                         shareButtonsContainer.show()
+                        slack.show()
                         return false
                     }
 
