@@ -87,9 +87,13 @@ class SearchFragment : BaseFragment(), Observer {
     override fun update(o: Observable?, arg: Any?) {
         when (o) {
             is SearchGifViewModel -> {
-                isLoading = false
+                if (isLoading) {
+                    isLoading = false
+                    if (loadMoreProgress != null) {
+                        loadMoreProgress.hide()
+                    }
+                }
                 val adapter = searchBinding.randomGifRV.adapter as TrendingGifAdapter
-                loadMoreProgress.hide()
                 adapter.setGifList(o.getGifs())
                 next = o.getNext()
             }
