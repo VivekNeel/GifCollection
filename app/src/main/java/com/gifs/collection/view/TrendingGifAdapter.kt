@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.Target
 import com.gifs.collection.*
 import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.Utils.PreferenceHelper
+import com.gifs.collection.anayltics.CustomAnayltics
 import com.gifs.collection.databinding.ListItemRandomGifBinding
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.viewmodel.CommonItemGifModel
@@ -69,10 +70,12 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                         oldSet.remove(list[position].id)
                         holder.itemView.fav.setBackgroundResource(R.drawable.fav_unselected)
                         view.context.toast("Removed from favourites :(")
+                        CustomAnayltics.logCustom("Removed from fav")
                     } else {
                         oldSet.add(list[position].id)
                         holder.itemView.fav.setBackgroundResource(R.drawable.fav_selected)
                         view.context.toast("Added to favourites!")
+                        CustomAnayltics.logCustom("Added to favourites")
                     }
                     PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = oldSet
 

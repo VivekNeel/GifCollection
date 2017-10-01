@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.EditText
 import com.gifs.collection.R
+import com.gifs.collection.anayltics.CustomAnayltics
 import com.gifs.collection.commitFragment
 import com.gifs.collection.custom.CustomSearchBar
 import com.gifs.collection.custom.CustomTransitionListener
@@ -72,6 +73,7 @@ class SearchActivity : BaseActivity() {
         setSupportActionBar(searchToolbar)
         searchEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                CustomAnayltics.logSearch(searchEditText.toString())
                 fragment.doSearch(searchEditText.text.toString())
                 return@OnKeyListener true
             }

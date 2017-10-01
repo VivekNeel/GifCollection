@@ -9,6 +9,7 @@ import android.transition.TransitionManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
+import com.gifs.collection.anayltics.CustomAnayltics
 import com.gifs.collection.custom.CustomTransitionListener
 import com.gifs.collection.custom.FadeInTransition
 import com.gifs.collection.custom.FadeOutTransition
@@ -102,8 +103,18 @@ class MainActivity : BaseActivity() {
                         isBottomNavigationSetup = true
                         setupBottomNavigation()
                     } else if (drawerItem.identifier == 17.toLong()) {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_url)))
-                        startActivity(intent)
+                        try {
+                            val i = Intent(Intent.ACTION_SEND)
+                            i.type = "text/plain"
+                            i.putExtra(Intent.EXTRA_SUBJECT, "Awesome Gif Collections")
+                            var desc = "\nTry this app to set gif as your what's app status\n\n"
+                            desc = "${desc}https://play.google.com/store/apps/details?id=com.gifs.collection \n\n"
+                            i.putExtra(Intent.EXTRA_TEXT, desc)
+                            CustomAnayltics.logShare("App share", "All")
+                            startActivity(Intent.createChooser(i, "choose one"))
+                        } catch (e: Exception) {
+                            toast("None of the application supports sharing!")
+                        }
 
                     } else if (drawerItem.identifier == 18.toLong()) {
                         startActivity(Intent(this, AboutActivity::class.java))
