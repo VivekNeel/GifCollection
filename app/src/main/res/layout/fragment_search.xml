@@ -9,7 +9,7 @@
             type="com.gifs.collection.viewmodel.search.SearchGifViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -61,8 +61,19 @@
             android:id="@+id/randomGifRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.gifRecyclerView}"></android.support.v7.widget.RecyclerView>
+            android:layout_above="@+id/loadMoreProgress"
+            android:visibility="@{viewModel.gifRecyclerView}" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadMoreProgress"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="moving_ball.json"
+            app:lottie_loop="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
