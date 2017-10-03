@@ -19,7 +19,7 @@ interface GifService {
     fun fetchTrendingGif(@Query("pos") offset: String?, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
 
     @GET("search")
-    fun fetchSearchableGifs(@Query("q") query: String?, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
+    fun fetchSearchableGifs(@Query("q") query: String?, @Query("pos") offset: String = "", @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
 
     @Headers("accept: image/*")
     @GET("gifs/translate")
