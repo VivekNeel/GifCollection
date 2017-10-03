@@ -1,6 +1,7 @@
 package com.gifs.collection.viewmodel.search
 
 import android.databinding.ObservableInt
+import android.text.TextUtils
 import android.view.View
 import com.gifs.collection.data.GifFactory
 import com.gifs.collection.model.tenor.GifResultsData
@@ -18,6 +19,7 @@ class SearchGifViewModel : Observable() {
     var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)
     var gifs: ArrayList<GifResultsData> = arrayListOf()
+    private var next: String? = null
 
     var noGifContainerVisibility: ObservableInt = ObservableInt(View.VISIBLE)
 
@@ -27,9 +29,11 @@ class SearchGifViewModel : Observable() {
         noGifContainerVisibility.set(View.GONE)
     }
 
-    fun fetchSearchableGif(search: String?) {
-        initialiseViews()
-        GifFactory.create().fetchSearchableGifs(search).enqueue(object : Callback<MediaGifResponse> {
+    fun fetchSearchableGif(search: String?, offset: String = "") {
+        if (TextUtils.isEmpty(offset)) {
+            initialiseViews()
+        }
+        GifFactory.create().fetchSearchableGifs(search, offset = offset).enqueue(object : Callback<MediaGifResponse> {
             override fun onFailure(call: Call<MediaGifResponse>?, t: Throwable?) {
                 gifProgress.set(View.GONE)
                 noGifContainerVisibility.set(View.VISIBLE)
@@ -39,7 +43,7 @@ class SearchGifViewModel : Observable() {
                 gifProgress.set(View.GONE)
                 if (response != null) {
                     if (response.body()?.results != null && response.body()!!.results!!.isNotEmpty()) {
-                        changeDataSet(response.body()!!.results!!)
+                        changeDataSet(response.body()!!.results!!, response.body()!!.next)
                         gifRecyclerView.set(View.VISIBLE)
                     } else {
                         noGifContainerVisibility.set(View.VISIBLE)
@@ -51,14 +55,18 @@ class SearchGifViewModel : Observable() {
         })
     }
 
-    fun changeDataSet(gifs: List<GifResultsData>) {
-        this.gifs.clear()
+    fun changeDataSet(gifs: List<GifResultsData>, next: String) {
         this.gifs.addAll(gifs)
+        this.next = next
         setChanged()
         notifyObservers()
     }
 
     fun getGifs(): List<GifResultsData> {
         return gifs
+    }
+
+    fun getNext(): String? {
+        return next
     }
 }
