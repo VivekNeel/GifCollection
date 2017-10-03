@@ -2,7 +2,6 @@ package com.gifs.collection
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
@@ -185,7 +184,6 @@ class MainActivity : BaseActivity() {
             setOnTabSelectListener { tabId ->
                 when (tabId) {
                     R.id.trending -> setupFragments(TAG_TRENDING, null)
-                    R.id.favourite -> setupFragments(TAG_FAVOURITE, null)
                     R.id.trendingTerm -> setupFragments(TAG_TRENDING_TERM, null)
                 }
             }

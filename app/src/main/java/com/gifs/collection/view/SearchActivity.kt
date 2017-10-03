@@ -73,7 +73,7 @@ class SearchActivity : BaseActivity() {
         setSupportActionBar(searchToolbar)
         searchEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                CustomAnayltics.logSearch(searchEditText.toString())
+                CustomAnayltics.logSearch(searchEditText.text.toString())
                 fragment.doSearch(searchEditText.text.toString())
                 return@OnKeyListener true
             }
