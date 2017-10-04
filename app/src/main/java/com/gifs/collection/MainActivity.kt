@@ -123,6 +123,7 @@ class MainActivity : BaseActivity() {
                     } else if (drawerItem.identifier == 18.toLong()) {
                         startActivity(Intent(this, AboutActivity::class.java))
                     } else if (drawerItem.identifier == 14.toLong()) {
+                        bottomBar.hide()
                         setupFragments(TAG_FAVOURITE, null)
                     } else {
                         if (drawerItem.identifier == 2.toLong()) {
