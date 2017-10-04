@@ -2,6 +2,7 @@ package com.gifs.collection.view
 
 import android.app.Activity
 import android.databinding.DataBindingUtil.inflate
+import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,10 @@ import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.viewmodel.CommonItemGifModel
 import kotlinx.android.synthetic.main.list_item_random_gif.view.*
 import java.lang.Exception
+import android.R.id.edit
+import android.content.Context
+import android.content.SharedPreferences
+
 
 /**
  * Created by vivek on 15/09/17.
@@ -33,7 +38,6 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
     val VIEW_TYPE_LOADING = 1
     val VIEW_TYPE_CONTENT = 2
     private var shouldLoadMore: Boolean = false
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
@@ -65,20 +69,23 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
                         }).into(view)
                 holder.bindGif(list[holder.adapterPosition], holder.adapterPosition, activity)
                 holder.itemView.fav.setOnClickListener {
-                    val oldSet: MutableSet<String> = PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE]
+                    val oldSet = HashSet<String>(PreferenceHelper.defaultPrefs(view.context).getStringSet(Constants.KEY_FAVOURITE, HashSet<String>()))
                     if (oldSet.contains(list[position].id)) {
                         oldSet.remove(list[position].id)
                         holder.itemView.fav.setBackgroundResource(R.drawable.fav_unselected)
+                        val newSet: Set<String> = oldSet
                         view.context.toast("Removed from favourites :(")
                         CustomAnayltics.logCustom("Removed from fav")
+                        PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = newSet
+
                     } else {
                         oldSet.add(list[position].id)
+                        val newSet: Set<String> = oldSet
                         holder.itemView.fav.setBackgroundResource(R.drawable.fav_selected)
                         view.context.toast("Added to favourites!")
                         CustomAnayltics.logCustom("Added to favourites")
+                        PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = newSet
                     }
-                    PreferenceHelper.defaultPrefs(view.context)[Constants.KEY_FAVOURITE] = oldSet
-
                 }
             }
 
@@ -102,9 +109,6 @@ class TrendingGifAdapter(activity: Activity) : RecyclerView.Adapter<RecyclerView
 
     }
 
-    fun setShouldLoadMore(boolean: Boolean) {
-        shouldLoadMore = boolean
-    }
 
     override fun getItemViewType(position: Int): Int {
         var result = 0

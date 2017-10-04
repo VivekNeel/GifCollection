@@ -2,7 +2,6 @@ package com.gifs.collection
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.transition.Transition
 import android.transition.TransitionManager
@@ -50,10 +49,12 @@ class MainActivity : BaseActivity() {
 
     fun setupDrawer() {
 
+        val fav = PrimaryDrawerItem().withIdentifier(14).withName(R.string.item_fav).withIcon(R.drawable.fav)
         val trending = PrimaryDrawerItem().withIdentifier(1).withName(R.string.item_trending).withIcon(R.drawable.trending)
         val party = PrimaryDrawerItem().withIdentifier(2).withName(R.string.item_navrathri).withIcon(R.drawable.party)
         val love = PrimaryDrawerItem().withIdentifier(3).withName(R.string.item_love).withIcon(R.drawable.love)
         val sad = PrimaryDrawerItem().withIdentifier(4).withName(R.string.item_sad).withIcon(R.drawable.sad)
+        val diwali = PrimaryDrawerItem().withIdentifier(15).withName(R.string.item_deepawali).withIcon(R.drawable.fireworks)
         val wedding = PrimaryDrawerItem().withIdentifier(5).withName(R.string.item_wedding).withIcon(R.drawable.wedding)
         val friends = PrimaryDrawerItem().withIdentifier(6).withName(R.string.item_friends).withIcon(R.drawable.friends)
         val coding = PrimaryDrawerItem().withIdentifier(7).withName(R.string.item_coding).withIcon(R.drawable.programming)
@@ -80,11 +81,14 @@ class MainActivity : BaseActivity() {
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
+                        SectionDrawerItem().withName(R.string.category_fav),
+                        fav,
                         SectionDrawerItem().withName(R.string.category),
                         trending,
                         party,
                         love,
                         sad,
+                        diwali,
                         wedding,
                         friends,
                         coding,
@@ -118,6 +122,9 @@ class MainActivity : BaseActivity() {
 
                     } else if (drawerItem.identifier == 18.toLong()) {
                         startActivity(Intent(this, AboutActivity::class.java))
+                    } else if (drawerItem.identifier == 14.toLong()) {
+                        bottomBar.hide()
+                        setupFragments(TAG_FAVOURITE, null)
                     } else {
                         if (drawerItem.identifier == 2.toLong()) {
                             bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "celebration")
@@ -154,6 +161,9 @@ class MainActivity : BaseActivity() {
                         } else if (drawerItem.identifier == 13.toLong()) {
                             bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "funny")
 
+                        } else if (drawerItem.identifier == 15.toLong()) {
+                            bundle.putString(Constants.KEY_FRAGMENT_SEARCH_QUERY, "Diwali")
+
                         }
                         bottomBar.hide()
                         setupFragments(TAG_SEARCH, bundle)
@@ -175,7 +185,6 @@ class MainActivity : BaseActivity() {
             setOnTabSelectListener { tabId ->
                 when (tabId) {
                     R.id.trending -> setupFragments(TAG_TRENDING, null)
-                    R.id.favourite -> setupFragments(TAG_FAVOURITE, null)
                     R.id.trendingTerm -> setupFragments(TAG_TRENDING_TERM, null)
                 }
             }

@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gifs.collection.R
+import com.gifs.collection.Utils.CommonUtils
 import com.gifs.collection.custom.CustomItemDecorator
 import com.gifs.collection.databinding.FragmentTrendingBinding
 import com.gifs.collection.view.TrendingGifAdapter
 import com.gifs.collection.viewmodel.trending.TrendingGifViewModel
+import com.google.android.gms.ads.InterstitialAd
 import java.util.*
 
 /**
@@ -30,6 +32,7 @@ class FavouritesFragment : BaseFragment(), Observer {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUPList(mainActivityDataBinding.randomGifRV)
+        CommonUtils.showInterstitialAds(InterstitialAd(getFragmentHost()))
         setUPObserver(mainActivityDataBinding.randomGifModel)
         mainActivityDataBinding.randomGifModel?.fetchFavouritesGifs()
     }

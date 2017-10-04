@@ -3,10 +3,11 @@
     <string name="banner_ad_unit_id">ca-app-pub-2885720067654353/7253952226</string>
     <string name="inter">ca-app-pub-2885720067654353/2790951272</string>
 
-    <string name="category">Category</string>
+    <string name="category">Gif Category</string>
+    <string name="category_fav">Favourites</string>
     <string name="item_navrathri">Celebration</string>
     <string name="item_love">Love</string>
-    <string name="item_sad">Sad</string>
+    <string name="item_sad">Bored</string>
     <string name="item_wedding">Wedding</string>
     <string name="item_friends">Friendship</string>
     <string name="item_coding">Programming</string>
@@ -17,6 +18,9 @@
     <string name="night">Good Night</string>
     <string name="music">Music</string>
     <string name="funny">Funny</string>
+    <string name="item_fav">Your Favorites</string>
+    <string name="item_deepawali">Diwali/Fireworks</string>
+
 
     <string name="category_about">About</string>
     <string name="app_share">Share</string>

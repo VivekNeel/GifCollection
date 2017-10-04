@@ -5,7 +5,10 @@ import agency.tango.materialintroscreen.MessageButtonBehaviour
 import android.os.Bundle
 import agency.tango.materialintroscreen.MaterialIntroActivity
 import android.Manifest;
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.gifs.collection.Constants
@@ -49,7 +52,10 @@ class IntroActivity : MaterialIntroActivity() {
 
     override fun onFinish() {
         super.onFinish()
-        PreferenceHelper.defaultPrefs(this).set(Constants.KEY_INTRO_DONE, true)
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val edit = pref.edit()
+        edit.putBoolean(Constants.KEY_INTRO_DONE, true)
+        edit.apply()
         startActivity(Intent(this, MainActivity::class.java))
     }
 }
