@@ -52,7 +52,7 @@ class IntroActivity : MaterialIntroActivity() {
 
     override fun onFinish() {
         super.onFinish()
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val pref = this.getSharedPreferences("custom" , Context.MODE_PRIVATE)
         val edit = pref.edit()
         edit.putBoolean(Constants.KEY_INTRO_DONE, true)
         edit.apply()
