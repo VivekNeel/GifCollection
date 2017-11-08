@@ -1,5 +1,5 @@
 @file: JvmName("PreferenceHelper.kt")
-package com.gifs.collection.Utils
+package com.gifs.collection.utils
 
 
 import android.content.Context

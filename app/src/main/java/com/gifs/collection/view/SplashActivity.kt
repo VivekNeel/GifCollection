@@ -1,13 +1,10 @@
 package com.gifs.collection.view
 
 import android.content.Intent
-import android.preference.PreferenceManager
 import android.support.v4.app.TaskStackBuilder
 import com.gifs.collection.MainActivity
 import android.support.v7.app.AppCompatActivity
 import com.gifs.collection.Constants
-import com.gifs.collection.Utils.PreferenceHelper
-import com.gifs.collection.get
 
 
 /**

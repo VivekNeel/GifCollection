@@ -3,7 +3,7 @@ package com.gifs.collection.viewmodel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.view.View
-import com.gifs.collection.Utils.NetworkUtil
+import com.gifs.collection.utils.NetworkUtil
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.model.tenor.tags.TagData
 import com.gifs.collection.view.GifDetailActivity

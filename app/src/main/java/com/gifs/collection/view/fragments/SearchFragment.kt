@@ -10,11 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.gifs.collection.Constants
 import com.gifs.collection.R
-import com.gifs.collection.Utils.CommonUtils
+import com.gifs.collection.utils.CommonUtils
 import com.gifs.collection.custom.CustomItemDecorator
 import com.gifs.collection.databinding.FragmentSearchBinding
 import com.gifs.collection.hide
-import com.gifs.collection.showKeyboard
 import com.gifs.collection.view.TrendingGifAdapter
 import com.gifs.collection.viewmodel.search.SearchGifViewModel
 import com.google.android.gms.ads.InterstitialAd

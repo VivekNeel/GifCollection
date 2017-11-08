@@ -1,4 +1,4 @@
-package com.gifs.collection.Utils
+package com.gifs.collection.utils
 
 import android.content.Context
 import com.gifs.collection.BuildConfig
@@ -10,7 +10,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_trending.*
 
 /**
  * Created by vivek on 21/09/17.

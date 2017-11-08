@@ -6,14 +6,13 @@ import android.text.TextUtils
 import android.view.View
 import com.gifs.collection.Constants
 import com.gifs.collection.GifApplication
-import com.gifs.collection.Utils.PreferenceHelper
+import com.gifs.collection.utils.PreferenceHelper
 import com.gifs.collection.data.GifFactory
 import com.gifs.collection.get
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.model.tenor.HourlyTrendingData
 import com.gifs.collection.model.tenor.MediaGifResponse
 import com.gifs.collection.model.tenor.exploreterm.ExploreResponse
-import com.gifs.collection.model.tenor.exploreterm.ExpoloreTermData
 import com.gifs.collection.model.tenor.tags.TagData
 import com.gifs.collection.model.tenor.tags.TagResponse
 import retrofit2.Call
