@@ -12,10 +12,15 @@ import com.gifs.collection.get
 import com.gifs.collection.model.tenor.GifResultsData
 import com.gifs.collection.model.tenor.HourlyTrendingData
 import com.gifs.collection.model.tenor.MediaGifResponse
+import com.gifs.collection.model.tenor.exploreterm.ExploreResponse
+import com.gifs.collection.model.tenor.exploreterm.ExpoloreTermData
+import com.gifs.collection.model.tenor.tags.TagData
+import com.gifs.collection.model.tenor.tags.TagResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by vivek on 15/09/17.
@@ -24,12 +29,15 @@ class TrendingGifViewModel(context: Context) : Observable() {
 
     var gifProgress: ObservableInt = ObservableInt(View.GONE)
     var gifRecyclerView: ObservableInt = ObservableInt(View.GONE)
-    var emptyState : ObservableInt = ObservableInt(View.GONE)
+    var emptyState: ObservableInt = ObservableInt(View.GONE)
 
     private var gifList: ArrayList<GifResultsData> = arrayListOf()
     private var trendingTerms: ArrayList<String> = arrayListOf()
     private var context = context
     private var next: String? = null
+    private var tagList: ArrayList<TagData> = arrayListOf()
+    private var exploreResponse: ExploreResponse? = null
+
 
     fun getData(offset: String) {
         initializeViews()
@@ -53,7 +61,6 @@ class TrendingGifViewModel(context: Context) : Observable() {
             }
         })
     }
-
 
     fun fetchFavouritesGifs() {
         initializeViews()
@@ -96,6 +103,45 @@ class TrendingGifViewModel(context: Context) : Observable() {
         })
     }
 
+    fun fetchTags(type : String) {
+        initializeViews()
+        GifFactory.create().fetchTags(type).enqueue(object : Callback<TagResponse> {
+            override fun onFailure(call: Call<TagResponse>?, t: Throwable?) {
+                gifProgress.set(View.GONE)
+                emptyState.set(View.VISIBLE)
+            }
+
+            override fun onResponse(call: Call<TagResponse>?, response: Response<TagResponse>?) {
+                if (response!!.isSuccessful) {
+                    changeTagDataSet(response.body()!!.tagList)
+                    gifRecyclerView.set(View.VISIBLE)
+                    gifProgress.set(View.GONE)
+                } else {
+                    gifProgress.set(View.GONE)
+                }
+            }
+        })
+    }
+
+    fun fetchExploreTerm(tag: String?) {
+        initializeViews()
+        GifFactory.create().exploreTerms(tag).enqueue(object : Callback<ExploreResponse> {
+            override fun onResponse(call: Call<ExploreResponse>?, response: Response<ExploreResponse>?) {
+                if (response!!.isSuccessful) {
+                    changeExploreTermDataSet(response!!.body()!!)
+                    gifRecyclerView.set(View.VISIBLE)
+                } else {
+                    changeExploreTermDataSet(ExploreResponse(emptyList()))
+                }
+            }
+
+            override fun onFailure(call: Call<ExploreResponse>?, t: Throwable?) {
+                gifProgress.set(View.GONE)
+                emptyState.set(View.VISIBLE)
+            }
+        })
+    }
+
 
     fun initializeViews() {
         gifProgress.set(View.VISIBLE)
@@ -115,15 +161,36 @@ class TrendingGifViewModel(context: Context) : Observable() {
         notifyObservers()
     }
 
+
+    fun changeTagDataSet(tagList: List<TagData>) {
+        this.tagList.addAll(tagList)
+        setChanged()
+        notifyObservers()
+    }
+
+    fun changeExploreTermDataSet(exploreSearches: ExploreResponse) {
+        this.exploreResponse = exploreSearches
+        setChanged()
+        notifyObservers()
+    }
+
     fun getGifs(): List<GifResultsData> {
         return gifList
     }
 
-    fun getTerms() : List<String>{
+    fun getTerms(): List<String> {
         return trendingTerms
     }
 
     fun getNext(): String? {
         return next
+    }
+
+    fun getTags(): List<TagData> {
+        return tagList
+    }
+
+    fun getExploreTerms(): ExploreResponse? {
+        return exploreResponse
     }
 }

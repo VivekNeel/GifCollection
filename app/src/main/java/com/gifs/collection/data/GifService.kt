@@ -5,6 +5,8 @@ import com.gifs.collection.model.RandomGifData
 import com.gifs.collection.model.TranslateData
 import com.gifs.collection.model.tenor.HourlyTrendingData
 import com.gifs.collection.model.tenor.MediaGifResponse
+import com.gifs.collection.model.tenor.exploreterm.ExploreResponse
+import com.gifs.collection.model.tenor.tags.TagResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -29,9 +31,20 @@ interface GifService {
     @GET("gifs/random?tag=&rating=G")
     fun fetchRandomGifs(@Query("tag") offset: String, @Query("api_key") key: String = BuildConfig.API_KEY): Call<RandomGifData>
 
-    @GET("gifs?key=LIVDSRZULELA")
-    fun fetchFavourites(@Query("ids") listOfIds: String): Call<MediaGifResponse>
+    @GET("gifs")
+    fun fetchFavourites(@Query("ids") listOfIds: String, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
 
     @GET("autocomplete?type=trending")
     fun fetchHourlyTrendingTerms(@Query("key") apiKey: String = BuildConfig.API_KEY): Call<HourlyTrendingData>
+
+    @GET("tags")
+    fun fetchTags(@Query("type") type: String, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<TagResponse>
+
+    @GET("search")
+    fun fetchTagSearchableGif(@Query("tag") tags: String?, @Query("pos") offset: String = "", @Query("key") apiKey: String = BuildConfig.API_KEY): Call<MediaGifResponse>
+
+    @GET("exploreterm")
+    fun exploreTerms(@Query("tag") tag: String?, @Query("key") apiKey: String = BuildConfig.API_KEY): Call<ExploreResponse>
+
 }
+
