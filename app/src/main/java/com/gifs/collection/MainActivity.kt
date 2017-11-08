@@ -217,7 +217,7 @@ class MainActivity : BaseActivity() {
             TAG_TRENDING -> {
                 val fragment = TrendingGifFragment()
                 fragment.arguments = bundle
-                commitFragment(fragment, R.id.frame, TAG_TRENDING, addToBackStack = true)
+                commitFragment(fragment, R.id.frame, TAG_TRENDING, addToBackStack = false)
             }
             TAG_FAVOURITE -> {
                 commitFragment(FavouritesFragment(), R.id.frame, TAG_FAVOURITE)
@@ -229,7 +229,7 @@ class MainActivity : BaseActivity() {
             TAG_SEARCH -> {
                 val fragment = SearchFragment()
                 fragment.arguments = bundle
-                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = true)
+                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = false)
             }
 
         }
