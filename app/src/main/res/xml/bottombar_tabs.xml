@@ -1,6 +1,18 @@
 <tabs>
     <tab
         barColorWhenSelected="@color/colorPrimaryDark"
+        icon="@drawable/icon_reactions"
+        id="@+id/reaction"
+        title="Reaction Gifs" />
+    <tab
+        barColorWhenSelected="@color/colorPrimaryDark"
+        icon="@drawable/icon_explore"
+        id="@+id/explore"
+        title="Explore Gifs" />
+
+
+    <tab
+        barColorWhenSelected="@color/colorPrimaryDark"
         icon="@drawable/ic_trending_up"
         id="@+id/trending"
         title="Trending" />

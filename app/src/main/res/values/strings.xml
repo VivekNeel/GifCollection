@@ -3,8 +3,10 @@
     <string name="banner_ad_unit_id">ca-app-pub-2885720067654353/7253952226</string>
     <string name="inter">ca-app-pub-2885720067654353/2790951272</string>
 
-    <string name="category">Gif Category</string>
+    <string name="category_all">All Gifs</string>
+    <string name="category">Filtered Gifs</string>
     <string name="category_fav">Favourites</string>
+    <string name="item_all">Gif Factory</string>
     <string name="item_navrathri">Celebration</string>
     <string name="item_love">Love</string>
     <string name="item_sad">Bored</string>

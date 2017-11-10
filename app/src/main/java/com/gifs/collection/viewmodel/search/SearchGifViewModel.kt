@@ -46,8 +46,9 @@ class SearchGifViewModel : Observable() {
                         changeDataSet(response.body()!!.results!!, response.body()!!.next)
                         gifRecyclerView.set(View.VISIBLE)
                     } else {
-                        noGifContainerVisibility.set(View.VISIBLE)
-                        gifRecyclerView.set(View.GONE)
+
+                      //  noGifContainerVisibility.set(View.VISIBLE)
+                      //  gifRecyclerView.set(View.GONE)
                     }
                 }
 

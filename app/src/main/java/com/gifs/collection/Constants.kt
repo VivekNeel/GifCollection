@@ -17,5 +17,9 @@ class Constants {
         const val KEY_FAVOURITE = "keyF"
         const val KEY_FRAGMENT_SEARCH_QUERY = "query"
         const val KEY_INTRO_DONE = "introDone"
+        const val TYPE_FRAGMENT = "type"
+        const val TYPE_TAG = "typeTag"
+        const val TYPE_TAG_EXPLORE = "explore"
+        const val TYPE_TAG_REACTION = "featured"
     }
 }

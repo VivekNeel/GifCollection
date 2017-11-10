@@ -3,7 +3,6 @@ package com.gifs.collection.view
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -14,7 +13,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.gifs.collection.*
-import com.gifs.collection.Utils.CommonUtils
+import com.gifs.collection.utils.CommonUtils
 import com.gifs.collection.databinding.ListItemDetailBinding
 import com.gifs.collection.viewmodel.GifDetailViewModel
 import com.google.android.gms.ads.InterstitialAd

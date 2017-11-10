@@ -3,8 +3,9 @@ package com.gifs.collection.viewmodel
 import android.content.Context
 import android.databinding.BaseObservable
 import android.view.View
-import com.gifs.collection.Utils.NetworkUtil
+import com.gifs.collection.utils.NetworkUtil
 import com.gifs.collection.model.tenor.GifResultsData
+import com.gifs.collection.model.tenor.tags.TagData
 import com.gifs.collection.view.GifDetailActivity
 
 /**
@@ -13,22 +14,29 @@ import com.gifs.collection.view.GifDetailActivity
 
 
 class CommonItemGifModel(context: Context, gifData: GifResultsData, pos: Int, term: String) : BaseObservable() {
+    private var tagData: TagData? = null
+
+    constructor(tagData: TagData, context: Context) : this(context, GifResultsData(emptyList(), ""), 0, "") {
+        this.tagData = tagData
+    }
 
     private var context = context
     private var gif = gifData
     private var pos = pos
     private var term: String = term
+    private var searchName: String = ""
 
-    fun getId(): String {
-        return gif.id
-    }
-
-    fun getImageUri(): String {
-        return this.gif.mediaData[pos].nano.url
+    fun getSearchName(): String {
+        return tagData?.name!!
     }
 
     fun setGif(gifData: GifResultsData) {
         this.gif = gifData
+        notifyChange()
+    }
+
+    fun setTag(tagData: TagData) {
+        this.tagData = tagData
         notifyChange()
     }
 

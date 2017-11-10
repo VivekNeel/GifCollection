@@ -50,7 +50,7 @@ class MainActivity : BaseActivity() {
     fun setupDrawer() {
 
         val fav = PrimaryDrawerItem().withIdentifier(14).withName(R.string.item_fav).withIcon(R.drawable.fav)
-        val trending = PrimaryDrawerItem().withIdentifier(1).withName(R.string.item_trending).withIcon(R.drawable.trending)
+        val trending = PrimaryDrawerItem().withIdentifier(1).withName(R.string.item_all).withIcon(R.drawable.icon_factory)
         val party = PrimaryDrawerItem().withIdentifier(2).withName(R.string.item_navrathri).withIcon(R.drawable.party)
         val love = PrimaryDrawerItem().withIdentifier(3).withName(R.string.item_love).withIcon(R.drawable.love)
         val sad = PrimaryDrawerItem().withIdentifier(4).withName(R.string.item_sad).withIcon(R.drawable.sad)
@@ -83,8 +83,9 @@ class MainActivity : BaseActivity() {
                 .addDrawerItems(
                         SectionDrawerItem().withName(R.string.category_fav),
                         fav,
-                        SectionDrawerItem().withName(R.string.category),
+                        SectionDrawerItem().withName(R.string.category_all),
                         trending,
+                        SectionDrawerItem().withName(R.string.category),
                         party,
                         love,
                         sad,
@@ -173,6 +174,7 @@ class MainActivity : BaseActivity() {
                 .build()
 
         result.setSelection(1)
+        result.openDrawer()
 
     }
 
@@ -180,11 +182,28 @@ class MainActivity : BaseActivity() {
     fun setupBottomNavigation() {
         bottomBar.show()
         val bottomNavigator = mainActivityBinding.bottomBar
+        val bundle = Bundle()
+
         bottomNavigator.apply {
-            setDefaultTab(R.id.trending)
+            setDefaultTab(R.id.reaction)
             setOnTabSelectListener { tabId ->
                 when (tabId) {
-                    R.id.trending -> setupFragments(TAG_TRENDING, null)
+                    R.id.reaction -> {
+                        bundle.putString(Constants.TYPE_FRAGMENT, "tags")
+                        bundle.putString(Constants.TYPE_TAG, Constants.TYPE_TAG_REACTION)
+                        setupFragments(TAG_TRENDING, bundle)
+                    }
+
+                    R.id.explore -> {
+                        bundle.putString(Constants.TYPE_FRAGMENT, "tags")
+                        bundle.putString(Constants.TYPE_TAG, Constants.TYPE_TAG_EXPLORE)
+                        setupFragments(TAG_TRENDING, bundle)
+
+                    }
+                    R.id.trending -> {
+                        bundle.putString(Constants.TYPE_FRAGMENT, "trending")
+                        setupFragments(TAG_TRENDING, bundle)
+                    }
                     R.id.trendingTerm -> setupFragments(TAG_TRENDING_TERM, null)
                 }
             }
@@ -196,7 +215,9 @@ class MainActivity : BaseActivity() {
 
         when (tag) {
             TAG_TRENDING -> {
-                commitFragment(TrendingGifFragment(), R.id.frame, TAG_TRENDING)
+                val fragment = TrendingGifFragment()
+                fragment.arguments = bundle
+                commitFragment(fragment, R.id.frame, TAG_TRENDING, addToBackStack = false)
             }
             TAG_FAVOURITE -> {
                 commitFragment(FavouritesFragment(), R.id.frame, TAG_FAVOURITE)
@@ -208,7 +229,7 @@ class MainActivity : BaseActivity() {
             TAG_SEARCH -> {
                 val fragment = SearchFragment()
                 fragment.arguments = bundle
-                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM)
+                commitFragment(fragment, R.id.frame, TAG_TRENDING_TERM, addToBackStack = false)
             }
 
         }

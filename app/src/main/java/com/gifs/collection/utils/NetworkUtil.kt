@@ -1,4 +1,4 @@
-package com.gifs.collection.Utils
+package com.gifs.collection.utils
 
 import android.content.Context
 import android.telephony.TelephonyManager

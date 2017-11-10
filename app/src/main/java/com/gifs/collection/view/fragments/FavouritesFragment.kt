@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gifs.collection.R
-import com.gifs.collection.Utils.CommonUtils
+import com.gifs.collection.utils.CommonUtils
 import com.gifs.collection.custom.CustomItemDecorator
 import com.gifs.collection.databinding.FragmentTrendingBinding
 import com.gifs.collection.view.TrendingGifAdapter
